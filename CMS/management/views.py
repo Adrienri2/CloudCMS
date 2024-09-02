@@ -12,6 +12,26 @@ class ManageCategory(View):
         return render(request, "management/category.html", {"categories": categories})
 
 
+class CreateCategory(View):
+    def get(self, request):
+        return render(request, "management/create_category.html")
+
+    def post(self, request):
+        data = request.POST
+        category = data.get("category")
+        desc = data.get("desc")
+
+        c = Category.objects.filter(category=category).first()
+        if c is not None:
+            messages.warning(request, "La categoría ya existe")
+        else:
+            c = Category(
+                category=category,
+                desc=desc
+            )
+            c.save()
+            messages.success(request, "Categoría creada")
+        return redirect("manage:create_category")
 
 class EditCategory(View):
     def get(self, request, id):
