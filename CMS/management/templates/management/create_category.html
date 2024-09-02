@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block title %}Añadir Categoría{% endblock %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+  <form method="post" action="{% url 'manage:create_category' %}">
+    {% csrf_token %}
+    <h1 class="text-center mb-3">
+      Añadir Categoría
+    </h1>
+    <div class="mb-3">
+      <label for="category" class="form-label">Categoría:</label>
+      <input type="text" class="form-control" id="category" placeholder="categoría" name="category">
+    </div>
+    <div class="mb-3">
+      <label for="desc" class="form-label">Descripción:</label>
+      <textarea class="form-control" id="desc" rows="5" name="desc" placeholder="Escribe la descripción aquí"></textarea>
+    </div>
+    <div class="row float-end">
+      <button type="submit" class="btn btn-outline-success">Crear</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
