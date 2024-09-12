@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plantilla de Login &mdash; documentación de CloudCMS - 1.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=4936afed"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/translations.js?v=d190bf04"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Plantilla de Registro" href="accounts_templates_register.html" />
+    <link rel="prev" title="Migración inicial" href="accounts_migration_0001_initial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CloudCMS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="accounts_migration_0001_initial.html">Migración inicial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Plantilla de Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#titulo-de-la-pagina">Título de la página</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cuerpo-de-la-pagina">Cuerpo de la página</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_templates_register.html">Plantilla de Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_managers.html">Administrador de Usuarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_models.html">Modelo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_urls.html">URLs del módulo accounts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_views.html">Vistas de Autenticación y Registro</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CloudCMS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Plantilla de Login</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/accounts_templates_login.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="plantilla-de-login">
+<h1>Plantilla de Login<a class="headerlink" href="#plantilla-de-login" title="Link to this heading"></a></h1>
+<p>Esta es la plantilla HTML para la página de inicio de sesión.</p>
+<p>Extiende de la plantilla base <code class="docutils literal notranslate"><span class="pre">layout.html</span></code> y muestra mensajes incluidos desde <code class="docutils literal notranslate"><span class="pre">includes/messages.html</span></code>.</p>
+<section id="titulo-de-la-pagina">
+<h2>Título de la página<a class="headerlink" href="#titulo-de-la-pagina" title="Link to this heading"></a></h2>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>Inicia sesión<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+</section>
+<section id="cuerpo-de-la-pagina">
+<h2>Cuerpo de la página<a class="headerlink" href="#cuerpo-de-la-pagina" title="Link to this heading"></a></h2>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container mt-5 mb-5&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;accounts:login&#39;</span> <span class="cp">%}</span><span class="s">&quot;</span><span class="p">&gt;</span>
+  <span class="cp">{%</span> <span class="k">csrf_token</span> <span class="cp">%}</span>
+  <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;text-center&quot;</span><span class="p">&gt;</span>
+    Iniciar
+  <span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;mb-3&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;username&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;form-label&quot;</span><span class="p">&gt;</span>
+      Nombre de usuario
+    <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;form-control&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;username&quot;</span> <span class="na">aria-describedby</span><span class="o">=</span><span class="s">&quot;usernameHelp&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;username&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Nombre de usuario&quot;</span> <span class="na">required</span> <span class="na">autofocus</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;mb-3&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;form-label&quot;</span><span class="p">&gt;</span>
+      Contraseña
+    <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;form-control&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;Contraseña&quot;</span> <span class="na">required</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;float-end text-decoration-none&quot;</span><span class="p">&gt;</span>Olvidaste tu contraseña?<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-success w-100 mt-3&quot;</span><span class="p">&gt;</span>Iniciar sesión<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;mt-3&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>No tienes cuenta? <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;accounts:register&#39;</span> <span class="cp">%}</span><span class="s">&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;text-decoration-none&quot;</span><span class="p">&gt;</span>Registrarse<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
+        <a href="accounts_migration_0001_initial.html" class="btn btn-neutral float-left" title="Migración inicial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="accounts_templates_register.html" class="btn btn-neutral float-right" title="Plantilla de Registro" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2024, Adrián.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
