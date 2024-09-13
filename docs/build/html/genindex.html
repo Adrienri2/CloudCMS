@@ -51,6 +51,9 @@
 <li class="toctree-l1"><a class="reference internal" href="accounts_models.html">Modelo de Usuario</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_urls.html">URLs del módulo accounts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_views.html">Vistas de Autenticación y Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_models.html">Artículo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_urls.html">URLs del módulo blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_views.html">Vistas para la Aplicación de Blogs</a></li>
 </ul>
 
         </div>
@@ -93,7 +96,10 @@
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -146,26 +152,155 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="accounts_models.html#accounts.models.User.blogs">blogs (atributo de accounts.models.User)</a>
+      <li><a href="blogs_models.html#blogs.models.BlogLike.blog">blog (atributo de blogs.models.BlogLike)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Bookmark.blog">(atributo de blogs.models.Bookmark)</a>
 </li>
+        <li><a href="blogs_models.html#blogs.models.Comment.blog">(atributo de blogs.models.Comment)</a>
+</li>
+      </ul></li>
+      <li><a href="blogs_models.html#blogs.models.Blog">Blog (clase en blogs.models)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Blog.DoesNotExist">Blog.DoesNotExist</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Blog.MultipleObjectsReturned">Blog.MultipleObjectsReturned</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.BlogLike.blog_id">blog_id (atributo de blogs.models.BlogLike)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Bookmark.blog_id">(atributo de blogs.models.Bookmark)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Comment.blog_id">(atributo de blogs.models.Comment)</a>
+</li>
+      </ul></li>
+      <li><a href="blogs_models.html#blogs.models.BlogLike">BlogLike (clase en blogs.models)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.BlogLike.DoesNotExist">BlogLike.DoesNotExist</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.BlogLike.MultipleObjectsReturned">BlogLike.MultipleObjectsReturned</a>
+</li>
+      <li><a href="accounts_models.html#accounts.models.User.blogs">blogs (atributo de accounts.models.User)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Category.blogs">(atributo de blogs.models.Category)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="accounts_models.html#accounts.models.User.bookmarks">bookmarks (atributo de accounts.models.User)</a>
+      <li>
+    blogs.models
+
+      <ul>
+        <li><a href="blogs_models.html#module-blogs.models">module</a>
 </li>
+      </ul></li>
+      <li>
+    blogs.urls
+
+      <ul>
+        <li><a href="blogs_urls.html#module-blogs.urls">module</a>
+</li>
+      </ul></li>
+      <li>
+    blogs.views
+
+      <ul>
+        <li><a href="blogs_views.html#module-blogs.views">module</a>
+</li>
+      </ul></li>
+      <li><a href="blogs_views.html#blogs.views.BlogView">BlogView (clase en blogs.views)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Bookmark">Bookmark (clase en blogs.models)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Bookmark.DoesNotExist">Bookmark.DoesNotExist</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Bookmark.MultipleObjectsReturned">Bookmark.MultipleObjectsReturned</a>
+</li>
+      <li><a href="accounts_models.html#accounts.models.User.bookmarks">bookmarks (atributo de accounts.models.User)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Blog.bookmarks">(atributo de blogs.models.Blog)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="blogs_models.html#blogs.models.Blog.categories">categories (atributo de blogs.models.Blog)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Category.category">category (atributo de blogs.models.Category)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Category">Category (clase en blogs.models)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Category.DoesNotExist">Category.DoesNotExist</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Category.MultipleObjectsReturned">Category.MultipleObjectsReturned</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Comment.comment">comment (atributo de blogs.models.Comment)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Reply.comment">(atributo de blogs.models.Reply)</a>
+</li>
+      </ul></li>
+      <li><a href="blogs_models.html#blogs.models.Comment">Comment (clase en blogs.models)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Comment.DoesNotExist">Comment.DoesNotExist</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Comment.MultipleObjectsReturned">Comment.MultipleObjectsReturned</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Reply.comment_id">comment_id (atributo de blogs.models.Reply)</a>
+</li>
       <li><a href="accounts_models.html#accounts.models.User.comments">comments (atributo de accounts.models.User)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Blog.comments">(atributo de blogs.models.Blog)</a>
+</li>
+      </ul></li>
+      <li><a href="blogs_models.html#blogs.models.Blog.content">content (atributo de blogs.models.Blog)</a>
+</li>
+      <li><a href="accounts_managers.html#accounts.managers.UserManager.create_superuser">create_superuser() (método de accounts.managers.UserManager)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="accounts_managers.html#accounts.managers.UserManager.create_superuser">create_superuser() (método de accounts.managers.UserManager)</a>
-</li>
       <li><a href="accounts_managers.html#accounts.managers.UserManager.create_user">create_user() (método de accounts.managers.UserManager)</a>
 </li>
+      <li><a href="blogs_views.html#blogs.views.CreateBookmark">CreateBookmark (clase en blogs.views)</a>
+</li>
+      <li><a href="blogs_views.html#blogs.views.CreateComment">CreateComment (clase en blogs.views)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Bookmark.created_on">created_on (atributo de blogs.models.Bookmark)</a>
+</li>
+      <li><a href="blogs_views.html#blogs.views.CreateLike">CreateLike (clase en blogs.views)</a>
+</li>
+      <li><a href="blogs_views.html#blogs.views.CreateReply">CreateReply (clase en blogs.views)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Blog.creator">creator (atributo de blogs.models.Blog)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.BlogLike.creator">(atributo de blogs.models.BlogLike)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Bookmark.creator">(atributo de blogs.models.Bookmark)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Comment.creator">(atributo de blogs.models.Comment)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Reply.creator">(atributo de blogs.models.Reply)</a>
+</li>
+      </ul></li>
+      <li><a href="blogs_models.html#blogs.models.Blog.creator_id">creator_id (atributo de blogs.models.Blog)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.BlogLike.creator_id">(atributo de blogs.models.BlogLike)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Bookmark.creator_id">(atributo de blogs.models.Bookmark)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Comment.creator_id">(atributo de blogs.models.Comment)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Reply.creator_id">(atributo de blogs.models.Reply)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -174,10 +309,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="accounts_models.html#accounts.models.User.date_joined">date_joined (atributo de accounts.models.User)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="accounts_migration_0001_initial.html#accounts.migrations.0001_initial.Migration.dependencies">dependencies (atributo de accounts.migrations.0001_initial.Migration)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="blogs_models.html#blogs.models.Blog.desc">desc (atributo de blogs.models.Blog)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Category.desc">(atributo de blogs.models.Category)</a>
+</li>
+      </ul></li>
       <li><a href="accounts_views.html#accounts.views.Logout.dispatch">dispatch() (método de accounts.views.Logout)</a>
 </li>
   </ul></td>
@@ -209,13 +350,37 @@
 </li>
         <li><a href="accounts_views.html#accounts.views.Register.get">(método de accounts.views.Register)</a>
 </li>
+        <li><a href="blogs_views.html#blogs.views.BlogView.get">(método de blogs.views.BlogView)</a>
+</li>
+      </ul></li>
+      <li><a href="blogs_views.html#blogs.views.get_blog_url">get_blog_url() (en el módulo blogs.views)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Bookmark.get_next_by_created_on">get_next_by_created_on() (método de blogs.models.Bookmark)</a>
+</li>
+      <li><a href="accounts_models.html#accounts.models.User.get_next_by_date_joined">get_next_by_date_joined() (método de accounts.models.User)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Blog.get_next_by_published_on">get_next_by_published_on() (método de blogs.models.Blog)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Comment.get_next_by_published_on">(método de blogs.models.Comment)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Reply.get_next_by_published_on">(método de blogs.models.Reply)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="accounts_models.html#accounts.models.User.get_next_by_date_joined">get_next_by_date_joined() (método de accounts.models.User)</a>
+      <li><a href="blogs_models.html#blogs.models.Bookmark.get_previous_by_created_on">get_previous_by_created_on() (método de blogs.models.Bookmark)</a>
 </li>
       <li><a href="accounts_models.html#accounts.models.User.get_previous_by_date_joined">get_previous_by_date_joined() (método de accounts.models.User)</a>
 </li>
+      <li><a href="blogs_models.html#blogs.models.Blog.get_previous_by_published_on">get_previous_by_published_on() (método de blogs.models.Blog)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Comment.get_previous_by_published_on">(método de blogs.models.Comment)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Reply.get_previous_by_published_on">(método de blogs.models.Reply)</a>
+</li>
+      </ul></li>
       <li><a href="accounts_models.html#accounts.models.User.groups">groups (atributo de accounts.models.User)</a>
 </li>
   </ul></td>
@@ -225,14 +390,40 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="accounts_models.html#accounts.models.User.id">id (atributo de accounts.models.User)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Blog.id">(atributo de blogs.models.Blog)</a>
 </li>
+        <li><a href="blogs_models.html#blogs.models.BlogLike.id">(atributo de blogs.models.BlogLike)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Bookmark.id">(atributo de blogs.models.Bookmark)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Category.id">(atributo de blogs.models.Category)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Comment.id">(atributo de blogs.models.Comment)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Reply.id">(atributo de blogs.models.Reply)</a>
+</li>
+      </ul></li>
       <li><a href="accounts_migration_0001_initial.html#accounts.migrations.0001_initial.Migration.initial">initial (atributo de accounts.migrations.0001_initial.Migration)</a>
-</li>
-      <li><a href="accounts_models.html#accounts.models.User.is_active">is_active (atributo de accounts.models.User)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="accounts_models.html#accounts.models.User.is_active">is_active (atributo de accounts.models.User)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Blog.is_active">(atributo de blogs.models.Blog)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Category.is_active">(atributo de blogs.models.Category)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Comment.is_active">(atributo de blogs.models.Comment)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Reply.is_active">(atributo de blogs.models.Reply)</a>
+</li>
+      </ul></li>
       <li><a href="accounts_models.html#accounts.models.User.is_author">is_author (atributo de accounts.models.User)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Blog.is_published">is_published (atributo de blogs.models.Blog)</a>
 </li>
       <li><a href="accounts_models.html#accounts.models.User.is_staff">is_staff (atributo de accounts.models.User)</a>
 </li>
@@ -249,7 +440,15 @@
       <li><a href="accounts_models.html#accounts.models.User.last_name">last_name (atributo de accounts.models.User)</a>
 </li>
       <li><a href="accounts_models.html#accounts.models.User.likes">likes (atributo de accounts.models.User)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Blog.likes">(atributo de blogs.models.Blog)</a>
 </li>
+        <li><a href="blogs_models.html#blogs.models.Comment.likes">(atributo de blogs.models.Comment)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Reply.likes">(atributo de blogs.models.Reply)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="accounts_models.html#accounts.models.User.logentry_set">logentry_set (atributo de accounts.models.User)</a>
@@ -280,6 +479,12 @@
 </li>
         <li><a href="accounts_views.html#module-accounts.views">accounts.views</a>
 </li>
+        <li><a href="blogs_models.html#module-blogs.models">blogs.models</a>
+</li>
+        <li><a href="blogs_urls.html#module-blogs.urls">blogs.urls</a>
+</li>
+        <li><a href="blogs_views.html#module-blogs.views">blogs.views</a>
+</li>
       </ul></li>
   </ul></td>
 </tr></table>
@@ -288,7 +493,21 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="accounts_models.html#accounts.models.User.objects">objects (atributo de accounts.models.User)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Blog.objects">(atributo de blogs.models.Blog)</a>
 </li>
+        <li><a href="blogs_models.html#blogs.models.BlogLike.objects">(atributo de blogs.models.BlogLike)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Bookmark.objects">(atributo de blogs.models.Bookmark)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Category.objects">(atributo de blogs.models.Category)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Comment.objects">(atributo de blogs.models.Comment)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Reply.objects">(atributo de blogs.models.Reply)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="accounts_migration_0001_initial.html#accounts.migrations.0001_initial.Migration.operations">operations (atributo de accounts.migrations.0001_initial.Migration)</a>
@@ -301,12 +520,28 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="accounts_models.html#accounts.models.User.password">password (atributo de accounts.models.User)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="accounts_views.html#accounts.views.Login.post">post() (método de accounts.views.Login)</a>
 
       <ul>
         <li><a href="accounts_views.html#accounts.views.Register.post">(método de accounts.views.Register)</a>
+</li>
+        <li><a href="blogs_views.html#blogs.views.CreateBookmark.post">(método de blogs.views.CreateBookmark)</a>
+</li>
+        <li><a href="blogs_views.html#blogs.views.CreateComment.post">(método de blogs.views.CreateComment)</a>
+</li>
+        <li><a href="blogs_views.html#blogs.views.CreateLike.post">(método de blogs.views.CreateLike)</a>
+</li>
+        <li><a href="blogs_views.html#blogs.views.CreateReply.post">(método de blogs.views.CreateReply)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="blogs_models.html#blogs.models.Blog.published_on">published_on (atributo de blogs.models.Blog)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Comment.published_on">(atributo de blogs.models.Comment)</a>
+</li>
+        <li><a href="blogs_models.html#blogs.models.Reply.published_on">(atributo de blogs.models.Reply)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -317,11 +552,55 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="accounts_views.html#accounts.views.Register">Register (clase en accounts.views)</a>
 </li>
+      <li><a href="accounts_models.html#accounts.models.User.replies">replies (atributo de accounts.models.User)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Comment.replies">(atributo de blogs.models.Comment)</a>
+</li>
+      </ul></li>
+      <li><a href="blogs_models.html#blogs.models.Reply.reply">reply (atributo de blogs.models.Reply)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="accounts_models.html#accounts.models.User.replies">replies (atributo de accounts.models.User)</a>
+      <li><a href="blogs_models.html#blogs.models.Reply">Reply (clase en blogs.models)</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Reply.DoesNotExist">Reply.DoesNotExist</a>
+</li>
+      <li><a href="blogs_models.html#blogs.models.Reply.MultipleObjectsReturned">Reply.MultipleObjectsReturned</a>
 </li>
       <li><a href="accounts_models.html#accounts.models.User.REQUIRED_FIELDS">REQUIRED_FIELDS (atributo de accounts.models.User)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="blogs_models.html#blogs.models.Blog.save">save() (método de blogs.models.Blog)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Category.save">(método de blogs.models.Category)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="blogs_models.html#blogs.models.Blog.slug">slug (atributo de blogs.models.Blog)</a>
+
+      <ul>
+        <li><a href="blogs_models.html#blogs.models.Category.slug">(atributo de blogs.models.Category)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="blogs_models.html#blogs.models.Blog.thumbnail">thumbnail (atributo de blogs.models.Blog)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="blogs_models.html#blogs.models.Blog.title">title (atributo de blogs.models.Blog)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -346,6 +625,14 @@
       <li><a href="accounts_models.html#accounts.models.User.username">username (atributo de accounts.models.User)</a>
 </li>
       <li><a href="accounts_models.html#accounts.models.User.USERNAME_FIELD">USERNAME_FIELD (atributo de accounts.models.User)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="blogs_models.html#blogs.models.Blog.views">views (atributo de blogs.models.Blog)</a>
 </li>
   </ul></td>
 </tr></table>

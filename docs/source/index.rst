@@ -22,3 +22,6 @@ documentation for details.
    accounts_models
    accounts_urls
    accounts_views
+   blogs_models
+   blogs_urls
+   blogs_views

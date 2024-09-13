@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>blogs.views &mdash; documentación de CloudCMS - 1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4936afed"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/translations.js?v=d190bf04"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CloudCMS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_migration_0001_initial.html">Migración inicial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_templates_login.html">Plantilla de Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_templates_register.html">Plantilla de Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_managers.html">Administrador de Usuarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_models.html">Modelo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_urls.html">URLs del módulo accounts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_views.html">Vistas de Autenticación y Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_models.html">Artículo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_urls.html">URLs del módulo blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_views.html">Vistas de Autenticación y Registro</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CloudCMS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Código de módulo</a></li>
+      <li class="breadcrumb-item active">blogs.views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Código fuente para blogs.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.</span>
+
+<span class="sd">Funciones:</span>
+<span class="sd">- get_blog_url(slug): Devuelve la URL de un blog basado en su slug.</span>
+
+<span class="sd">Clases:</span>
+<span class="sd">- BlogView: Vista para mostrar una entrada de blog.</span>
+<span class="sd">- CreateBookmark: Vista para crear o eliminar un marcador en un blog.</span>
+<span class="sd">- CreateLike: Vista para crear o eliminar un like en un blog.</span>
+<span class="sd">- CreateComment: Vista para crear un comentario en un blog.</span>
+<span class="sd">- CreateReply: Vista para crear una respuesta a un comentario.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="get_blog_url">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.get_blog_url">[documentos]</a>
+<span class="k">def</span> <span class="nf">get_blog_url</span><span class="p">(</span><span class="n">slug</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Devuelve la URL de un blog basado en su slug.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;blogs:blog&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">slug</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="BlogView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.BlogView">[documentos]</a>
+<span class="k">class</span> <span class="nc">BlogView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar una entrada de blog.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="BlogView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.BlogView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">slug</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja las solicitudes GET para mostrar una entrada de blog específica.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">slug</span><span class="p">)</span>
+        <span class="n">blog</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">queryset</span><span class="p">)</span>
+        <span class="n">blog</span><span class="o">.</span><span class="n">views</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="s2">&quot;views&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">blog</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">blog</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;blog&quot;</span><span class="p">:</span> <span class="n">blog</span><span class="p">,</span>
+            <span class="s2">&quot;comments&quot;</span><span class="p">:</span> <span class="n">blog</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+            <span class="n">context</span><span class="p">[</span><span class="s2">&quot;bookmarked&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bookmark</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">creator</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+            <span class="n">context</span><span class="p">[</span><span class="s2">&quot;liked&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">BlogLike</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">,</span> <span class="n">creator</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;blogs/blog.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="CreateBookmark">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CreateBookmark">[documentos]</a>
+<span class="k">class</span> <span class="nc">CreateBookmark</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para crear o eliminar un marcador en un blog.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CreateBookmark.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CreateBookmark.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja las solicitudes POST para crear o eliminar un marcador en un blog.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">blog</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)))</span>
+        <span class="n">bookmarked</span> <span class="o">=</span> <span class="n">Bookmark</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">creator</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">bookmarked</span><span class="p">:</span>
+            <span class="n">bookmarked</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Marcador eliminado&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">Bookmark</span><span class="p">(</span>
+                <span class="n">blog</span> <span class="o">=</span> <span class="n">blog</span><span class="p">,</span>
+                <span class="n">creator</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+            <span class="p">)</span>
+            <span class="n">b</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Marcador creado&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;blogs:blog&quot;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="CreateLike">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CreateLike">[documentos]</a>
+<span class="k">class</span> <span class="nc">CreateLike</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para crear o eliminar un like en un blog.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CreateLike.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CreateLike.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja las solicitudes POST para crear o eliminar un like en un blog.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">blog</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)))</span>
+        <span class="n">liked</span> <span class="o">=</span> <span class="n">BlogLike</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">,</span> <span class="n">creator</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">liked</span><span class="p">:</span>
+            <span class="n">liked</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Me gusta eliminado&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">BlogLike</span><span class="p">(</span><span class="n">creator</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">)</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Me gusta este blog&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;blogs:blog&#39;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span></div>
+</div>
+
+    
+<div class="viewcode-block" id="CreateComment">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CreateComment">[documentos]</a>
+<span class="k">class</span> <span class="nc">CreateComment</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para crear un comentario en un blog.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CreateComment.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CreateComment.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja las solicitudes POST para crear un comentario en un blog.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">blog</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)))</span>
+        <span class="n">comment</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">comment</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Comentario requerido&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;blogs:blog&quot;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">Comment</span><span class="p">(</span>
+            <span class="n">comment</span> <span class="o">=</span> <span class="n">comment</span><span class="p">,</span>
+            <span class="n">creator</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">blog</span> <span class="o">=</span> <span class="n">blog</span>
+        <span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Comentario creado&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">get_blog_url</span><span class="p">(</span><span class="n">blog</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;#comments&quot;</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="CreateReply">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CreateReply">[documentos]</a>
+<span class="k">class</span> <span class="nc">CreateReply</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para crear una respuesta a un comentario.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CreateReply.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CreateReply.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja las solicitudes POST para crear una respuesta a un comentario.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">comment</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Comment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)))</span>
+        <span class="n">reply</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reply&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">reply</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Respuesta requerida&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;blogs:blog&quot;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">comment</span><span class="o">.</span><span class="n">blog</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">Reply</span><span class="p">(</span>
+            <span class="n">reply</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reply&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">comment</span> <span class="o">=</span> <span class="n">comment</span><span class="p">,</span>
+            <span class="n">creator</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="p">)</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Respuesta creada&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">get_blog_url</span><span class="p">(</span><span class="n">comment</span><span class="o">.</span><span class="n">blog</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;#comments&quot;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2024, Adrián.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -17,4 +17,5 @@ http://localhost:8000/swagger/
 cd docs
 make html
 
-python manage.py test
+python manage.py test accounts.tests
+python manage.py test blogs.tests

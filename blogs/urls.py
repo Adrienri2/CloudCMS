@@ -1,6 +1,19 @@
+"""
+Este módulo define las rutas URL para la aplicación de blogs.
+
+Rutas:
+
+- create/comment/: Crea un comentario en un blog. Requiere autenticación.
+- create/reply/: Crea una respuesta a un comentario. Requiere autenticación.
+- create/bookmark/: Crea un marcador para un blog. Requiere autenticación.
+- create/like/: Crea un like en un blog. Requiere autenticación.
+- <slug:slug>/: Muestra una entrada de blog específica basada en el slug.
+"""
+
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from . import views
+
 
 app_name = "blogs"
 

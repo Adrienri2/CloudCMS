@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>URLs del módulo accounts &mdash; documentación de CloudCMS - 1.0</title>
+  <title>URLs del módulo blogs &mdash; documentación de CloudCMS - 1.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -22,8 +22,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Búsqueda" href="search.html" />
-    <link rel="next" title="Vistas de Autenticación y Registro" href="accounts_views.html" />
-    <link rel="prev" title="Modelo de Usuario" href="accounts_models.html" /> 
+    <link rel="next" title="Vistas de Autenticación y Registro" href="blogs_views.html" />
+    <link rel="prev" title="Artículo de Usuario" href="blogs_models.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,12 +52,11 @@
 <li class="toctree-l1"><a class="reference internal" href="accounts_templates_register.html">Plantilla de Registro</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_managers.html">Administrador de Usuarios</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_models.html">Modelo de Usuario</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">URLs del módulo accounts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#accounts.urls.app_name"><code class="docutils literal notranslate"><span class="pre">app_name</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#accounts.urls.urlpatterns"><code class="docutils literal notranslate"><span class="pre">urlpatterns</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_urls.html">URLs del módulo accounts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_views.html">Vistas de Autenticación y Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_models.html">Artículo de Usuario</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">URLs del módulo blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_views.html">Vistas de Autenticación y Registro</a></li>
 </ul>
 
         </div>
@@ -74,9 +73,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">URLs del módulo accounts</li>
+      <li class="breadcrumb-item active">URLs del módulo blogs</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/accounts_urls.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+            <a href="_sources/blogs_urls.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
       </li>
   </ul>
   <hr/>
@@ -84,29 +83,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-accounts.urls">
-<span id="urls-del-modulo-accounts"></span><h1>URLs del módulo accounts<a class="headerlink" href="#module-accounts.urls" title="Link to this heading"></a></h1>
-<dl class="py data">
-<dt class="sig sig-object py" id="accounts.urls.app_name">
-<span class="sig-prename descclassname"><span class="pre">accounts.urls.</span></span><span class="sig-name descname"><span class="pre">app_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'accounts'</span></em><a class="headerlink" href="#accounts.urls.app_name" title="Link to this definition"></a></dt>
-<dd><p>Nombre de la aplicación para el espacio de nombres de URL.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="accounts.urls.urlpatterns">
-<span class="sig-prename descclassname"><span class="pre">accounts.urls.</span></span><span class="sig-name descname"><span class="pre">urlpatterns</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;URLPattern</span> <span class="pre">'login/'</span> <span class="pre">[name='login']&gt;,</span> <span class="pre">&lt;URLPattern</span> <span class="pre">'logout/'</span> <span class="pre">[name='logout']&gt;,</span> <span class="pre">&lt;URLPattern</span> <span class="pre">'register/'</span> <span class="pre">[name='register']&gt;]</span></em><a class="headerlink" href="#accounts.urls.urlpatterns" title="Link to this definition"></a></dt>
-<dd><p>Lista de patrones de URL para la aplicación “accounts”.
-Cada entrada en la lista asocia una URL con una vista específica.</p>
-</dd></dl>
-
+  <section id="module-blogs.urls">
+<span id="urls-del-modulo-blogs"></span><h1>URLs del módulo blogs<a class="headerlink" href="#module-blogs.urls" title="Link to this heading"></a></h1>
+<p>Este módulo define las rutas URL para la aplicación de blogs.</p>
+<p>Rutas:</p>
+<ul class="simple">
+<li><p>create/comment/: Crea un comentario en un blog. Requiere autenticación.</p></li>
+<li><p>create/reply/: Crea una respuesta a un comentario. Requiere autenticación.</p></li>
+<li><p>create/bookmark/: Crea un marcador para un blog. Requiere autenticación.</p></li>
+<li><p>create/like/: Crea un like en un blog. Requiere autenticación.</p></li>
+<li><p>&lt;slug:slug&gt;/: Muestra una entrada de blog específica basada en el slug.</p></li>
+</ul>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
-        <a href="accounts_models.html" class="btn btn-neutral float-left" title="Modelo de Usuario" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="accounts_views.html" class="btn btn-neutral float-right" title="Vistas de Autenticación y Registro" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="blogs_models.html" class="btn btn-neutral float-left" title="Artículo de Usuario" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="blogs_views.html" class="btn btn-neutral float-right" title="Vistas de Autenticación y Registro" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
