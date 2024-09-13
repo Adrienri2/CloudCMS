@@ -1,0 +1,176 @@
+{% extends 'layout.html' %}
+
+{% block ogtitle %}{{ blog.title }}{% endblock %}
+{% block ogdescription %}{{ blog.desc }}{% endblock %}
+{% block ogimage %}{{ blog.thumbnail.url }}{% endblock %}
+
+{% block title %}Blog{% endblock %}
+
+{% block body %}
+{% load static %}
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <h2>
+      {{ blog.title }}
+    </h2>
+  </div>
+  <div class="row">
+    <p>Autor: {{ blog.creator }} | Vistas: {{ blog.views }} | Actualizado: hace {{ blog.published_on|timesince }}</p>
+  </div>
+  <div class="row mb-3">
+    {% for category in blog.categories.all %}
+      {% if category.is_active %}
+      <div class="col">
+        <a type="button" href="{% url 'get_category' category.slug %}" class="btn btn-primary btn-sm ms-auto">{{ category.category }}</a>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="row">
+    <div class="ratio ratio-16x9">
+      <img src="{{ blog.thumbnail.url }}" class="img-fluid rounded mx-auto d-block" alt="miniatura del blog">
+    </div>
+    <p>
+      {{ blog.content|safe }}
+    </p>
+  </div>
+  <br>
+  <div class="row" id="features">
+    <div class="col">
+      <form action="{% url 'blogs:create_like' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{blog.id}}">
+        <button type="submit" style="background:none!important;border:none;padding:0!important;" class="text-primary">
+          {% if liked %}
+          <i class="bi bi-hand-thumbs-up-fill"></i>
+          {% else %}
+          <i class="bi bi-hand-thumbs-up"></i>
+          {% endif %}
+          {{ blog.likes.count }}
+        </button>
+      </form>
+    </div>
+    <div class="col">
+      <a href="#comments" class="text-decoration-none">
+        <i class="bi bi-chat-text"></i>
+        {{ comments.count }}
+      </a>
+    </div>
+    <div class="col">
+      <form action="{% url 'blogs:create_bookmark' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{blog.id}}">
+        <button type="submit" style="background:none!important;border:none;padding:0!important;" class="float-end text-primary">
+          {% if bookmarked %}
+          <i class="bi bi-bookmark-check-fill"></i>
+          {% else %}
+          <i class="bi bi-bookmark-plus"></i>
+          {% endif %}
+        </button>
+      </form>
+    </div>
+    <div class="col">
+      <button class="text-primary float-end" style="background:none!important;border:none;padding:0!important;" data-bs-toggle="modal" data-bs-target="#shareModal">
+        <i class="bi bi-box-arrow-up"></i>
+      </button>
+    </div>
+  </div>
+  <br><br><hr>
+  
+  <div class="row mb-3" id="comments">
+    <h1>
+      <i class="bi bi-chat-left-text"></i>
+      Comentarios ({{ comments.count }})
+    </h1>
+  </div>
+  <div class="row">
+    <form action="{% url 'blogs:create_comment' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="id" value="{{ blog.id }}">
+      <div class="mb-3">
+        <label for="comment" class="form-label">Comentario:</label>
+        <textarea class="form-control" id="comment" rows="3" name="comment" placeholder="Añadir un comentario" required></textarea>
+      </div>
+      {% if request.user.is_authenticated %}
+      <button type="submit" class="float-end btn btn-primary">
+        <i class="bi bi-send"></i>
+        Enviar
+      </button>
+      {% else %}
+      <a href="{% url 'accounts:login' %}" class="btn btn-primary float-end">Iniciar sesión</a>
+      {% endif %}
+    </form>
+  </div>
+  <br>
+  <br><hr><br>
+  {% for comment in comments %}
+  <div class="row">
+    <b>@{{ comment.creator.username }}<b>
+    <span class="badge text-bg-primary">{{ comment.published_on }}</span>
+    <p>{{ comment.comment }}</p>
+    <a class="text-decoration-none" data-bs-toggle="collapse" href="#reply{{comment.id}}" role="button" aria-expanded="false" aria-controls="reply{{comment.id}}">
+      <i class="bi bi-reply"></i>
+      Responder
+    </a>
+    <div class="collapse" id="reply{{comment.id}}">
+      <div class="card card-body">
+        {% for reply in comment.replies.all %}
+        <b>@{{ reply.creator.username }}<b>
+        <span class="badge text-bg-primary">{{ reply.published_on }}</span>
+        <p>{{ reply.reply }}</p>
+        <hr>
+        {% endfor %}
+        <form action="{% url 'blogs:create_reply' %}" method="post">
+          {% csrf_token %}
+          <div class="row"> 
+            <input type="hidden" name="id" value="{{comment.id}}">
+            <div class="col-10">
+              <input type="text" class="form-control" name="reply" placeholder="Añadir una respuesta" required>
+            </div>
+            <div class="col-2">
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-send"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <hr>
+  {% endfor %}
+</div>
+
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Compartir</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <button class="btn btn-primary">
+          <i class="bi bi-facebook"></i>
+        </button>
+        <button class="btn btn-success">
+          <i class="bi bi-whatsapp"></i>
+        </button>
+        <button class="btn btn-dark">
+          <i class="bi bi-twitter-x"></i>
+        </button>
+        <button class="btn btn-info">
+          <i class="bi bi-instagram"></i>
+        </button>
+        <button class="btn btn-primary">
+          <i class="bi bi-telegram"></i>
+        </button>
+        <button class="btn btn-outline-secondary rounded-pill" id="copyBtn" onclick="copyUrl()">
+          <i class="bi bi-copy"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/blogs/blog.js' %}"></script>
+{% endblock %}
