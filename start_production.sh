@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Terminar cualquier proceso que esté utilizando el puerto 8000
+sudo fuser -k 8000/tcp
+
 # Crear un alias para python3.10
 #alias python='python3.10'
 #alias pip='python3.10 -m pip'

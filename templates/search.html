@@ -1,17 +1,17 @@
 {% extends 'layout.html' %}
 
-{% block title %}Recientes{% endblock %}
+{% block title %}{{ query }} - CloudCMS{% endblock %}
 
 {% block body %}
 <div class="container mt-5 mb-5">
   <div class="row">
-    <h1 class="text-center mt-3 mb-3">
-      Artículos recientes
-    </h1>
+    <h3>Resultados de búsqueda para "{{ query }}"</h3>
   </div>
   <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for blog in blogs %}
       {% include 'card.html' with blog=blog %}
+    {% empty %}
+    <p class="mt-5">No se encontraron datos!<p>
     {% endfor %}
   </div>
   {% include 'pagination.html' with blogs=blogs %}

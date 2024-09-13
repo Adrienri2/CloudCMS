@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block titlw %}comment{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+  <div class="row mb-3">
+    <h1 class="text-center">
+      Administrar comentarios
+    </h1>
+  </div>
+  <div class="row">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">ID</th>
+          <th scope="col">Comentario</th>
+          <th scope="col">Creador</th>
+          <th scope="col">ID del Artículo</th>
+          <th scope="col">Título del Artículo</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        {% for comment in comments %}
+        <tr>
+          <td scope="row">{{ forloop.counter }}</td>
+          <td>{{ comment.id }}</td>
+          <td>{{ comment.comment|truncatechars:30 }}</td>
+          <td>{{ comment.creator.username }}</td>
+          <td>{{ comment.blog.id }}</td>
+          <td>{{ comment.blog.title|truncatechars:30 }}</td>
+          <td>
+            <a class="btn btn-danger" href="{% url 'manage:delete_comment' comment.id %}" role="button">
+              <i class="bi bi-trash3"></i>
+              Borrar
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

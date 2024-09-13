@@ -8,24 +8,10 @@ from django.contrib import messages
 
 class Index(View):
     def get(self, request):
-        latest_blogs = Blog.objects.filter(is_active=True, is_published=True)[:6]
-        popular = Blog.objects.filter(is_active=True, is_published=True).order_by("-views")[:3]
-        return render(request, "index.html", {"latest": latest_blogs, "popular": popular})
+        blog_list = Blog.objects.filter(is_active=True, is_published=True).order_by("-views")
+        page = request.GET.get('page', 1)
 
-class Trendings(ListView):
-    model = Blog
-    template_name = 'trendings.html'
-    context_object_name = 'blogs'
-    paginate_by = 9
-
-    def get_queryset(self):
-        return Blog.objects.filter(is_active=True).order_by("-views")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        paginator = Paginator(self.object_list, self.get_paginate_by(self.object_list))
-        page = self.request.GET.get("page")
-
+        paginator = Paginator(blog_list, 9)
         try:
             blogs = paginator.page(page)
         except PageNotAnInteger:
@@ -33,56 +19,10 @@ class Trendings(ListView):
         except EmptyPage:
             blogs = paginator.page(paginator.num_pages)
 
-        context["blogs"] = blogs
-        return context
-
-class Popular(ListView):
-    model = Blog
-    template_name = 'popular.html'
-    context_object_name = 'blogs'
-    paginate_by = 9
-
-    def get_queryset(self):
-        return Blog.objects.filter(is_active=True).order_by("-views")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        paginator = Paginator(self.object_list, self.get_paginate_by(self.object_list))
-        page = self.request.GET.get("page")
-
-        try:
-            blogs = paginator.page(page)
-        except PageNotAnInteger:
-            blogs = paginator.page(1)
-        except EmptyPage:
-            blogs = paginator.page(paginator.num_pages)
-
-        context["blogs"] = blogs
-        return context
-
-class Latest(ListView):
-    model = Blog
-    template_name = 'latest.html'
-    context_object_name = 'blogs'
-    paginate_by = 9
-
-    def get_queryset(self):
-        return Blog.objects.filter(is_active=True).order_by("-published_on")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        paginator = Paginator(self.object_list, self.get_paginate_by(self.object_list))
-        page = self.request.GET.get("page")
-
-        try:
-            blogs = paginator.page(page)
-        except PageNotAnInteger:
-            blogs = paginator.page(1)
-        except EmptyPage:
-            blogs = paginator.page(paginator.num_pages)
-
-        context["blogs"] = blogs
-        return context
+        context = {
+            'blogs': blogs
+        }
+        return render(request, 'index.html', context)
 
 class Search(ListView):
     model = Blog
@@ -119,8 +59,8 @@ class CategoryView(View):
         return render(request, "category.html", {"categories": categories})
 
 class GetCategory(View):
-    def get(self, request, cat):
-        category = get_object_or_404(Category.objects.filter(slug=cat, is_active=True))
+    def get(self, request, slug):
+        category = get_object_or_404(Category, slug=slug, is_active=True)
         return render(request, "get_category.html", {"category": category})
 
 class TermsAndConditions(View):

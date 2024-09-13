@@ -5,4 +5,3 @@ db.sqlite3
 !**/migrations
 !**/migrations/__init__.py
 upload/questions.csv
-entorno1/

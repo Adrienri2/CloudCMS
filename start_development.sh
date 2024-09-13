@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Terminar cualquier proceso que esté utilizando el puerto 8000
+sudo fuser -k 8000/tcp
+
 # Configurar variables de entorno para desarrollo en el archivo .env
 sed -i 's/^DEBUG=.*/DEBUG=True/' .env
 

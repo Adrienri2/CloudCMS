@@ -10,6 +10,9 @@ python manage.py createsuperuser
 python manage.py runserver
 
 
+http://localhost:8000/swagger/
+
+
 
 cd docs
 make html

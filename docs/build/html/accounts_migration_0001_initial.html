@@ -22,8 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Búsqueda" href="search.html" />
-    <link rel="next" title="Plantilla de Login" href="accounts_templates_login.html" />
-    <link rel="prev" title="CloudCMS documentation" href="index.html" /> 
+    <link rel="prev" title="URLs del módulo accounts" href="accounts_urls.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,6 +46,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="accounts_urls.html">URLs del módulo accounts</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Migración inicial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#accounts.migrations.0001_initial.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.migrations.0001_initial.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
@@ -56,12 +56,6 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="accounts_templates_login.html">Plantilla de Login</a></li>
-<li class="toctree-l1"><a class="reference internal" href="accounts_templates_register.html">Plantilla de Registro</a></li>
-<li class="toctree-l1"><a class="reference internal" href="accounts_managers.html">Administrador de Usuarios</a></li>
-<li class="toctree-l1"><a class="reference internal" href="accounts_models.html">Modelo de Usuario</a></li>
-<li class="toctree-l1"><a class="reference internal" href="accounts_urls.html">URLs del módulo accounts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="accounts_views.html">Vistas de Autenticación y Registro</a></li>
 </ul>
 
         </div>
@@ -90,10 +84,13 @@
              
   <section id="module-accounts.migrations.0001_initial">
 <span id="migracion-inicial"></span><h1>Migración inicial<a class="headerlink" href="#module-accounts.migrations.0001_initial" title="Link to this heading"></a></h1>
+<p>Módulo de migración inicial para la aplicación de usuarios.</p>
+<p>Este módulo define la migración inicial para crear el modelo de usuario personalizado.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="accounts.migrations.0001_initial.Migration">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">accounts.migrations.0001_initial.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/migrations/0001_initial.html#Migration"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.migrations.0001_initial.Migration" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<p>Clase de migración para la creación del modelo de usuario personalizado.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="accounts.migrations.0001_initial.Migration.dependencies">
 <span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'0012_alter_user_first_name_max_length')]</span></em><a class="headerlink" href="#accounts.migrations.0001_initial.Migration.dependencies" title="Link to this definition"></a></dt>
@@ -117,8 +114,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
-        <a href="index.html" class="btn btn-neutral float-left" title="CloudCMS documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="accounts_templates_login.html" class="btn btn-neutral float-right" title="Plantilla de Login" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="accounts_urls.html" class="btn btn-neutral float-left" title="URLs del módulo accounts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
     </div>
 
   <hr/>

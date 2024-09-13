@@ -7,7 +7,7 @@ User = get_user_model()
 class LoginViewTests(TestCase):
     def setUp(self):
         self.username = "testuser"
-        self.password = "testpassworda"
+        self.password = "testpassword"
         self.user = User.objects.create_user(username=self.username, password=self.password)
 
     def test_login_view_redirects_authenticated_user(self):

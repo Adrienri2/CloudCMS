@@ -82,6 +82,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'cloudcms.context_processors.admin_media',
+                'cloudcms.context_processors.categories_processor', 
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
