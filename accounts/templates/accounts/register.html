@@ -32,7 +32,7 @@
       <label for="lastname" class="form-label">
         Apellido
       </label>
-      <input type="text" id="lastname" class="form-control" placeholder="Apellido (opcional)" name="lastname">
+      <input type="text" id="lastname" class="form-control" placeholder="Apellido" name="lastname">
     </div>
   </div>
   <div class="mb-3">
@@ -40,6 +40,17 @@
       Correo electrónico
     </label>
     <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
+  </div>
+  <div class="mb-3">
+    <label for="gender" class="form-label">
+      Género
+    </label>
+    <select class="form-control" id="gender" name="gender" required>
+      <option value="" disabled selected>Género</option>
+      <option value="M">Varón</option>
+      <option value="F">Mujer</option>
+      <option value="O">Otro</option>
+    </select>
   </div>
   <div class="mb-3">
     <label for="password1" class="form-label">

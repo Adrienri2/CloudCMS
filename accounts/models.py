@@ -10,8 +10,15 @@ class User(AbstractUser):
     Atributos:
         is_author (bool): Indica si el usuario es un autor.
         avatar (ImageField): Imagen de avatar del usuario.
+        gender (str): Género del usuario.
     """
 
+    GENDER_CHOICES = [
+        ('M', 'Varón'),
+        ('F', 'Mujer'),
+        ('O', 'Otro'),
+    ]
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True, blank=True)
     is_author = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to="avatars/", default="avatars/default.jpeg")
 

@@ -116,14 +116,14 @@ class Register(View):
             messages.warning(request, "Las contraseñas no coinciden")
             return redirect("accounts:register")
         
-        email, username, firstname = data.get("email"), data.get("username"), data.get("firstname")
-        if not (email and username and firstname):
-            messages.info(request, "Se requiere correo electrónico, nombre de usuario y nombre")
+        email, username, firstname, gender = data.get("email"), data.get("username"), data.get("firstname"), data.get("gender")
+        if not (email and username and firstname and gender):
+            messages.info(request, "Se requiere correo electrónico, nombre de usuario, género y nombre")
             return redirect("accounts:register")
         
         user = User.objects.filter(Q(email=email) | Q(username=username))
         if not user.exists():
-            user = User(email=email, username=username, first_name=firstname)
+            user = User(email=email, username=username, first_name=firstname, gender=gender)
             if lastname := data.get("lastname"):
                 user.last_name = lastname
             user.set_password(passwd1)
@@ -135,3 +135,10 @@ class Register(View):
 
         messages.info(request, "El usuario ya existe")
         return redirect("accounts:register")
+    
+@login_required
+def profile(request):
+    """
+    Vista para mostrar el perfil del usuario.
+    """
+    return render(request, 'accounts/profile.html')
