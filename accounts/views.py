@@ -6,6 +6,11 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import User
+from .decorators import role_required
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from management.forms import UserForm 
 
 class Login(View):
     """
@@ -116,14 +121,14 @@ class Register(View):
             messages.warning(request, "Las contraseñas no coinciden")
             return redirect("accounts:register")
         
-        email, username, firstname, gender = data.get("email"), data.get("username"), data.get("firstname"), data.get("gender")
+        email, username, firstname, gender= data.get("email"), data.get("username"), data.get("firstname"), data.get("gender")
         if not (email and username and firstname and gender):
             messages.info(request, "Se requiere correo electrónico, nombre de usuario, género y nombre")
             return redirect("accounts:register")
         
         user = User.objects.filter(Q(email=email) | Q(username=username))
         if not user.exists():
-            user = User(email=email, username=username, first_name=firstname, gender=gender)
+            user = User(email=email, username=username, first_name=firstname, gender=gender, role='suscriptor')
             if lastname := data.get("lastname"):
                 user.last_name = lastname
             user.set_password(passwd1)
@@ -142,3 +147,64 @@ def profile(request):
     Vista para mostrar el perfil del usuario.
     """
     return render(request, 'accounts/profile.html')
+
+
+@method_decorator(login_required, name='dispatch')
+class UserListView(View):
+    """
+    Vista para listar todos los usuarios.
+    """
+
+    def get(self, request):
+        """
+        Renderiza la página con la lista de usuarios.
+
+        Args:
+            request: El objeto de solicitud HTTP.
+
+        Returns:
+            HttpResponse: La respuesta HTTP con la página de lista de usuarios.
+        """
+        users = User.objects.all()
+        return render(request, 'accounts/user_list.html', {'users': users})
+
+
+@method_decorator(login_required, name='dispatch')
+class EditUserView(View):
+    """
+    Vista para editar un usuario.
+    """
+
+    def get(self, request, user_id):
+        """
+        Renderiza la página de edición de usuario.
+
+        Args:
+            request: El objeto de solicitud HTTP.
+            user_id: El ID del usuario a editar.
+
+        Returns:
+            HttpResponse: La respuesta HTTP con la página de edición de usuario.
+        """
+        user = get_object_or_404(User, id=user_id)
+        form = UserForm(instance=user)
+        return render(request, 'management/edit_user.html', {'form': form, 'user': user})
+
+    def post(self, request, user_id):
+        """
+        Maneja la solicitud POST para editar un usuario.
+
+        Args:
+            request: El objeto de solicitud HTTP.
+            user_id: El ID del usuario a editar.
+
+        Returns:
+            HttpResponseRedirect: Redirige a la página de lista de usuarios después de editar.
+        """
+        user = get_object_or_404(User, id=user_id)
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cambios guardados con éxito')  
+            return HttpResponseRedirect(reverse('manage:users'))
+        return render(request, 'accounts/edit_user.html', {'form': form, 'user': user})

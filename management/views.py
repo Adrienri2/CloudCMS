@@ -4,6 +4,9 @@ from django.views import View
 from blogs.models import Category, Blog, Comment
 from django.utils import timezone
 from .forms import CKEditorForm
+from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 class ManageBlog(View):
@@ -191,3 +194,5 @@ class DeleteComment(View):
         comment.save()
         messages.success(request, "Comentario eliminado")
         return redirect("manage:comment")
+    
+

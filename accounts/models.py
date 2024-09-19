@@ -8,7 +8,10 @@ class User(AbstractUser):
     Modelo de usuario personalizado que extiende el modelo de usuario abstracto de Django.
 
     Atributos:
+
         is_author (bool): Indica si el usuario es un autor.
+
+
         avatar (ImageField): Imagen de avatar del usuario.
         gender (str): Género del usuario.
     """
@@ -19,7 +22,18 @@ class User(AbstractUser):
         ('O', 'Otro'),
     ]
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True, blank=True)
+
+    ROLE_CHOICES = [
+        ('suscriptor', 'suscriptor'),
+        ('admin', 'Administrador'),
+        ('author', 'Autor'),
+        ('editor', 'Editor'),
+        ('publisher', 'Publicador'),
+    ]
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='suscriptor')
+    
     is_author = models.BooleanField(default=False)
+
     avatar = models.ImageField(upload_to="avatars/", default="avatars/default.jpeg")
 
     USERNAME_FIELD = "username"

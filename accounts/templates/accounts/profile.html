@@ -32,6 +32,11 @@
                     <strong>Género:</strong> {{ request.user.get_gender_display }}
                 </li>
 
+                 <!-- Rol en el sistema -->
+                 <li class="mb-3">
+                    <strong>Rol en el sistema:</strong> {{ request.user.get_role_display }}
+                </li>
+
                 <!--  Se unió el: -->
                 <li><i class="icono fas fa-user-check"></i><strong>Se unió el:</strong> {{ request.user.date_joined|date:"d M, Y" }}
                 </li>
