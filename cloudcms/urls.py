@@ -26,7 +26,7 @@ urlpatterns = [
     # Incluir URLs de las aplicaciones
     path("accounts/", include("accounts.urls")),
     path("blogs/", include("blogs.urls")),
-    path("manage/", include("management.urls")),
+    path("manage/", include("management.urls", namespace='management')),
 
     # Vistas principales
     path("", views.Index.as_view(), name="index"),

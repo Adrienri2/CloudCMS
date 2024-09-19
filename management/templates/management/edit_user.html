@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block title %}Editar Usuario{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2>Editar Usuario</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+        <a href="{% url 'management:users' %}" class="btn btn-secondary">Volver</a> 
+    </form>
+</div>
+{% endblock %}

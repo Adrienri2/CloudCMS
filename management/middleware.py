@@ -1,6 +1,20 @@
 from django.shortcuts import redirect
 from django.contrib import messages
 
+"""
+Proposito:
+Restringir el acceso a las rutas que comienzan con /manage/ a
+usuarios autenticados y autorizados.
+
+Comportamiento:
+Si la ruta comienza con /manage/ y el usuario no esta autenticado o no tiene
+el atributo is_author, se muestra un mensaje de advertencia y se redirige al
+usuario a la página de inicio ( index ).
+Si el usuario está autorizado, la solicitud se procesa normalmente.
+
+"""
+
+
 class ManagementAuthMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
