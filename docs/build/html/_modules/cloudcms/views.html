@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cloudcms.views &mdash; documentación de CloudCMS - 1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4936afed"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/translations.js?v=d190bf04"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CloudCMS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_migration_0001_initial.html">Migración inicial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_templates_login.html">Plantilla de Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_templates_register.html">Plantilla de Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_admin.html">Administración para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_apps.html">Aplicaciones para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_managers.html">Administrador de Usuarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_models.html">Modelo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_tests.html">Pruebas para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_urls.html">URLs del módulo accounts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_views.html">Vistas de Autenticación y Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_admin.html">Administración para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_apps.html">Aplicaciones para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_models.html">Artículo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_tests.html">Pruebas para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_urls.html">URLs del módulo blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_views.html">Vistas para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_asgi.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_context_processors.html">Context Processors para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_settings.html">Configuraciones para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_urls.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_views.html">Vistas para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_wsgi.html">WSGI para la Aplicación CloudCMS</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CloudCMS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Código de módulo</a></li>
+      <li class="breadcrumb-item active">cloudcms.views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Código fuente para cloudcms.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span>
+<span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span>
+<span class="kn">from</span> <span class="nn">blogs.models</span> <span class="kn">import</span> <span class="n">Blog</span><span class="p">,</span> <span class="n">Bookmark</span><span class="p">,</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span><span class="p">,</span> <span class="n">EmptyPage</span><span class="p">,</span> <span class="n">PageNotAnInteger</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+
+<div class="viewcode-block" id="Index">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.Index">[documentos]</a>
+<span class="k">class</span> <span class="nc">Index</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para la página de inicio.</span>
+
+<span class="sd">    Muestra una lista paginada de blogs activos y publicados, ordenados por número de vistas.</span>
+
+<span class="sd">    Métodos:</span>
+<span class="sd">        get: Renderiza la página de inicio con la lista de blogs paginada.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Index.get">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.Index.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja las solicitudes GET para la página de inicio.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request: El objeto de solicitud HTTP.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: La respuesta HTTP con la página de inicio renderizada.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">blog_list</span> <span class="o">=</span> <span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_published</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-views&quot;</span><span class="p">)</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">blog_list</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">blogs</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">PageNotAnInteger</span><span class="p">:</span>
+            <span class="n">blogs</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">EmptyPage</span><span class="p">:</span>
+            <span class="n">blogs</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">paginator</span><span class="o">.</span><span class="n">num_pages</span><span class="p">)</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;blogs&#39;</span><span class="p">:</span> <span class="n">blogs</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="Search">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.Search">[documentos]</a>
+<span class="k">class</span> <span class="nc">Search</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para la búsqueda de blogs.</span>
+
+<span class="sd">    Muestra una lista paginada de blogs que coinciden con la consulta de búsqueda.</span>
+
+<span class="sd">    Atributos:</span>
+<span class="sd">        model: El modelo de datos utilizado (Blog).</span>
+<span class="sd">        template_name: El nombre de la plantilla a renderizar.</span>
+<span class="sd">        context_object_name: El nombre de la variable de contexto para la lista de blogs.</span>
+<span class="sd">        paginate_by: El número de elementos por página.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Blog</span>    
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;search.html&quot;</span>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s2">&quot;blogs&quot;</span>
+    <span class="n">paginate_by</span> <span class="o">=</span> <span class="mi">9</span>
+
+<div class="viewcode-block" id="Search.get_queryset">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.Search.get_queryset">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene la lista de blogs que coinciden con la consulta de búsqueda.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            QuerySet: Un conjunto de objetos Blog filtrados por la consulta.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">blogs</span> <span class="o">=</span> <span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">title__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">desc__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)),</span> <span class="n">is_active</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-views&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">blogs</span></div>
+
+
+<div class="viewcode-block" id="Search.get_context_data">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.Search.get_context_data">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene el contexto para la plantilla, incluyendo la lista paginada de blogs y la consulta de búsqueda.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Un diccionario con el contexto para la plantilla.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_paginate_by</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_list</span><span class="p">))</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;page&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">blogs</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">PageNotAnInteger</span><span class="p">:</span>
+            <span class="n">blogs</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">EmptyPage</span><span class="p">:</span>
+            <span class="n">blogs</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">paginator</span><span class="o">.</span><span class="n">num_pages</span><span class="p">)</span>
+
+        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;blogs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blogs</span>
+        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">context</span></div>
+</div>
+
+
+<div class="viewcode-block" id="CategoryView">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.CategoryView">[documentos]</a>
+<span class="k">class</span> <span class="nc">CategoryView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar todas las categorías.</span>
+
+<span class="sd">    Métodos:</span>
+<span class="sd">        get: Renderiza la página de categorías con la lista de todas las categorías.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CategoryView.get">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.CategoryView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja las solicitudes GET para la página de categorías.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request: El objeto de solicitud HTTP.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: La respuesta HTTP con la página de categorías renderizada.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;category.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="n">categories</span><span class="p">})</span></div>
+</div>
+
+
+<div class="viewcode-block" id="GetCategory">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.GetCategory">[documentos]</a>
+<span class="k">class</span> <span class="nc">GetCategory</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar los blogs de una categoría específica.</span>
+
+<span class="sd">    Métodos:</span>
+<span class="sd">        get: Renderiza la página de una categoría específica.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GetCategory.get">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.GetCategory.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">slug</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja las solicitudes GET para la página de una categoría específica.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request: El objeto de solicitud HTTP.</span>
+<span class="sd">            slug: El slug de la categoría.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: La respuesta HTTP con la página de la categoría renderizada.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">slug</span><span class="p">,</span> <span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;get_category.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">})</span></div>
+</div>
+
+
+<div class="viewcode-block" id="TermsAndConditions">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.TermsAndConditions">[documentos]</a>
+<span class="k">class</span> <span class="nc">TermsAndConditions</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para la página de Términos y Condiciones.</span>
+
+<span class="sd">    Métodos:</span>
+<span class="sd">        get: Renderiza la página de Términos y Condiciones.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TermsAndConditions.get">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.TermsAndConditions.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja las solicitudes GET para la página de Términos y Condiciones.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request: El objeto de solicitud HTTP.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: La respuesta HTTP con la página de Términos y Condiciones renderizada.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;terms-and-conditions.html&quot;</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="BookmarkView">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.BookmarkView">[documentos]</a>
+<span class="k">class</span> <span class="nc">BookmarkView</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar los marcadores del usuario.</span>
+
+<span class="sd">    Muestra una lista paginada de marcadores del usuario autenticado.</span>
+
+<span class="sd">    Atributos:</span>
+<span class="sd">        model: El modelo de datos utilizado (Bookmark).</span>
+<span class="sd">        template_name: El nombre de la plantilla a renderizar.</span>
+<span class="sd">        context_object_name: El nombre de la variable de contexto para la lista de marcadores.</span>
+<span class="sd">        paginate_by: El número de elementos por página.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Bookmark</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;bookmark.html&#39;</span>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s1">&#39;bookmarks&#39;</span>
+    <span class="n">paginate_by</span> <span class="o">=</span> <span class="mi">9</span>
+
+<div class="viewcode-block" id="BookmarkView.get_queryset">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.BookmarkView.get_queryset">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene la lista de marcadores del usuario autenticado.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            QuerySet: Un conjunto de objetos Bookmark del usuario autenticado.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Auth required&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;accounts:login&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Bookmark</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">creator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-created_on&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BookmarkView.get_context_data">
+<a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.BookmarkView.get_context_data">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtiene el contexto para la plantilla, incluyendo la lista paginada de marcadores.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Un diccionario con el contexto para la plantilla.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_paginate_by</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_list</span><span class="p">))</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;page&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">bookmarks</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">PageNotAnInteger</span><span class="p">:</span>
+            <span class="n">bookmarks</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">EmptyPage</span><span class="p">:</span>
+            <span class="n">bookmarks</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">paginator</span><span class="o">.</span><span class="n">num_pages</span><span class="p">)</span>
+
+        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;bookmarks&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bookmarks</span>
+        <span class="k">return</span> <span class="n">context</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2024, Adrián.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
