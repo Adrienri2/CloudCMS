@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Permission
 from django.db import models
 from django.utils.translation import gettext as _
 from .managers import UserManager
@@ -23,6 +23,9 @@ class User(AbstractUser):
     ]
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True, blank=True)
 
+    """
+    Aqui se crean los roles que se asignarán a los usuarios.
+    """
     ROLE_CHOICES = [
         ('suscriptor', 'suscriptor'),
         ('admin', 'Administrador'),
@@ -41,6 +44,29 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+    class Meta:
+        """
+        Aqui se crean los permisos que se asignarán a los usuarios según su rol.
+        Si se desea agregar más permisos, se deben agregar a la lista de permisos.
+        """
+        permissions = [
+            ("can_assign_permissions", "Puede asignar permisos"),
+            ("can_create_category", "Puede crear categorías"),
+            ("can_edit_category", "Puede editar categorías"),
+            ("can_delete_category", "Puede eliminar categorías"),
+            ("can_create_blog", "Puede crear artículos"),
+            ("can_view_blog", "Puede ver artículos"),
+            ("can_publish_blog", "Puede publicar artículos"),
+            ("can_edit_blog", "Puede editar artículos"),
+            ("can_delete_blog", "Puede eliminar artículos"),
+            ("can_create_comment", "Puede crear comentarios"),
+            ("can_edit_comment", "Puede editar comentarios"),
+            ("can_delete_comment", "Puede eliminar comentarios"),
+            ("can_view_user", "Puede ver usuarios"),
+            ("can_edit_user", "Puede editar usuarios"),
+            ("can_delete_user", "Puede eliminar usuarios"),
+        ]
+
     def __str__(self):
         """
         Devuelve una representación en cadena del usuario.
@@ -49,3 +75,37 @@ class User(AbstractUser):
             str: El nombre de usuario del usuario.
         """
         return self.username
+    
+    def save(self, *args, **kwargs):
+        """
+        Sobrescribe el método save para asignar permisos basados en el rol del usuario.
+
+        Args:
+            *args: Argumentos posicionales.
+            **kwargs: Argumentos de palabras clave.
+        """
+        
+        # Verificar si se está guardando desde el formulario de edición
+        if kwargs.pop('update_permissions', True):
+            super().save(*args, **kwargs)
+
+            """
+            Aqui se le asignan los permisos a los usuarios según su rol.
+            """
+
+            if self.role == 'author':
+                self.user_permissions.add(Permission.objects.get(codename='can_create_blog'))
+                self.user_permissions.add(Permission.objects.get(codename='can_edit_blog'))
+                self.user_permissions.add(Permission.objects.get(codename='can_delete_blog'))
+            elif self.role == 'editor':
+                self.user_permissions.add(Permission.objects.get(codename='can_edit_blog'))
+            elif self.role == 'publisher':
+                self.user_permissions.add(Permission.objects.get(codename='can_publish_blog'))
+            elif self.role == 'admin':
+                all_permissions = Permission.objects.all()
+                self.user_permissions.set(all_permissions) 
+            elif self.role == 'suscriptor':
+                self.user_permissions.clear()
+                self.user_permissions.add(Permission.objects.get(codename='can_view_blog'))
+        else:
+            super().save(*args, **kwargs)

@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from accounts.views import UserListView, EditUserView
 
+
 app_name = "manage"
 
 urlpatterns = [

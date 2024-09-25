@@ -32,24 +32,36 @@
         <option value="{{ category.id }}">{{ category.category }}</option>
         {% endfor %}
       </select>
+      {% if perms.accounts.can_create_category %}
       <small>¿No tienes categoría? <a class="text-decoration-none" href="{% url 'manage:create_category' %}">Crear</a></small>
+      {% endif %}
     </div>
     <br>
     <div class="row">
       <div class="col-4">
         <p>Estado:</p>
       </div>
-      <div class="form-check col-4">
-        <input class="form-check-input" type="radio" name="status" value="0" id="draft">
-        <label class="form-check-label" for="draft">Borrador</label>
-      </div>
-      <div class="form-check col-4">
-        <input class="form-check-input" type="radio" name="status" value="1" id="publish" checked="checked">
-        <label class="form-check-label" for="publish">Publicar</label>
-      </div>
+      {% if perms.accounts.can_create_blog %}
+        <section style="display: flex; justify-content: space-between;">
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="0" id="draft">
+            <label class="form-check-label" for="draft">Borrador</label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="1" id="editing">
+            <label class="form-check-label" for="editing">Para edición</label>
+          </div>
+          {% if perms.accounts.can_edit_blog %}
+            <div class="form-check col-3">
+              <input class="form-check-input" type="radio" name="status" value="2" id="waiting">
+              <label class="form-check-label" for="waiting">A publicar</label>
+            </div>
+          {% endif %}
+        </section>
+      {% endif %}
     </div>
     <div class="row float-end">
-      <button type="submit" class="btn btn-outline-success">Publicar</button>
+      <button type="submit" class="btn btn-outline-success">Siguiente</button>
     </div>
   </form>
 </div>
