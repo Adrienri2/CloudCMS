@@ -67,13 +67,14 @@
             Marcadores
           </a>
         </li>
-        {% if request.user.is_author %}
+        {% if request.user.role != 'suscriptor' %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
             <i class="bi bi-sliders"></i>
             Administrar
           </a>
           <ul class="dropdown-menu">
+            {% if request.user.role == 'admin' %}
             <li>
               <a class="dropdown-item" href="{% url 'manage:blog' %}">
                 <i class="bi bi-book"></i>
@@ -98,6 +99,14 @@
                 Usuarios
               </a>
             </li>
+            {% elif request.user.role == 'author' or request.user.role == 'editor' or request.user.role == 'publisher' %}
+            <li>
+              <a class="dropdown-item" href="{% url 'manage:blog' %}">
+                <i class="bi bi-book"></i>
+                Artículos
+              </a>
+            </li>
+            {% endif %}
           </ul>
         </li>
         {% endif %}

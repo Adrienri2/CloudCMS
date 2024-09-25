@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.db.models import Q
@@ -8,7 +9,7 @@ from django.contrib import messages
 
 class Index(View):
     def get(self, request):
-        blog_list = Blog.objects.filter(is_active=True, is_published=True).order_by("-views")
+        blog_list = Blog.objects.filter(is_active=True, is_published=True).order_by("-published_on") 
         page = request.GET.get('page', 1)
 
         paginator = Paginator(blog_list, 9)
@@ -34,7 +35,7 @@ class Search(ListView):
         query = self.request.GET.get("query", "")
         blogs = Blog.objects.filter(
             (Q(title__icontains=query) | Q(desc__icontains=query)), is_active=True
-        ).order_by("-views")
+        ).order_by("-published_on")
         return blogs
 
     def get_context_data(self, **kwargs):

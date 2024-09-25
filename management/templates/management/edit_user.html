@@ -7,9 +7,45 @@
     <h2>Editar Usuario</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="form-group" style="margin-bottom: 15px;">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            {{ form.gender.label_tag }}
+            {{ form.gender }}
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            {{ form.role.label_tag }}
+            {{ form.role }}
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="id_permissions">Permisos:</label>
+            {{ form.permissions }}
+        </div>
         <button type="submit" class="btn btn-success">Guardar Cambios</button>
         <a href="{% url 'management:users' %}" class="btn btn-secondary">Volver</a> 
     </form>
+
+    <!-- Mostrar los permisos asignados -->
+<h3 style="margin-top: 30px;">Permisos Asignados</h3>
+<ul style="margin-top: 15px; padding-left: 20px;">
+    {% for perm in assigned_permissions %}
+        <li style="margin-bottom: 10px;">{{ perm.name }}</li>
+    {% endfor %}
+</ul>
+
 </div>
 {% endblock %}

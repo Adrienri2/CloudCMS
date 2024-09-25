@@ -42,6 +42,13 @@ class Blog(models.Model):
     """
     Modelo para representar una entrada de blog.
     """
+    STATUS_CHOICES = [
+        (0, 'Borrador'),
+        (1, 'En edición'),
+        (2, 'En espera'),
+        (3, 'Publicado'),
+    ]
+
     slug = models.SlugField(unique=True, null=False, blank=False, max_length=100)
     title = models.CharField(max_length=100)
     desc = models.TextField()
@@ -50,9 +57,15 @@ class Blog(models.Model):
     views = models.IntegerField(default=0)
     categories = models.ManyToManyField(Category, related_name="blogs")
     is_active = models.BooleanField(default=True)
-    is_published = models.BooleanField(default=True)
+    is_published = models.BooleanField(default=False)
     published_on = models.DateTimeField(auto_now_add=True)
     creator = models.ForeignKey(to=User, on_delete=models.SET_NULL, related_name="blogs", null=True)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+    status_comments = models.TextField(blank=True, null=True)
+    last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='modified_blogs')
+    last_modified_by_role = models.CharField(max_length=50, blank=True, null=True)
+
+    
 
     def __str__(self):
         """
