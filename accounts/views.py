@@ -192,6 +192,12 @@ class EditUserView(View):
         form = UserForm(instance=user)
         # Obtener los permisos asignados al usuario
         assigned_permissions = user.user_permissions.all()
+        # Obtener todos los permisos creados
+        all_permissions = Permission.objects.filter(codename__in=UserForm.specific_permissions)
+        # Filtrar los permisos que el usuario no tiene
+        available_permissions = all_permissions.difference(assigned_permissions)
+        form.fields['permissions'].queryset = available_permissions
+
         return render(request, 'management/edit_user.html', {
             'form': form, 
             'user': user, 
@@ -235,6 +241,14 @@ class EditUserView(View):
 
         # Obtener los permisos asignados al usuario en caso de error en el formulario
         assigned_permissions = user.user_permissions.all()
+        # Obtener todos los permisos creados
+        specific_permissions = Permission.objects.all()
+        # Filtrar los permisos que el usuario no tiene
+        available_permissions = specific_permissions.difference(assigned_permissions)
+        form.fields['permissions'].queryset = available_permissions
+
+
+
         return render(request, 'management/edit_user.html', {
             'form': form,
             'user': user,

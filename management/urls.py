@@ -10,6 +10,7 @@ urlpatterns = [
     path("category/", views.ManageCategory.as_view(), name="category"),
     path("comment/", views.ManageComment.as_view(), name="comment"),
 
+    path('kanban/', views.KanbanView.as_view(), name='kanban'),
     path("create/blog/", views.CreateBlog.as_view(), name="create_blog"),
     path("create/category/", views.CreateCategory.as_view(), name="create_category"),
 

@@ -31,21 +31,25 @@
             {{ form.role.label_tag }}
             {{ form.role }}
         </div>
+        
         <div class="form-group" style="margin-bottom: 15px;">
-            <label for="id_permissions">Permisos:</label>
-            {{ form.permissions }}
+        <!-- Mostrar los permisos asignados -->
+            <p style="margin-top: 30px;">Permisos Asignados</p>
+            <ul style="margin-top: 15px; padding-left: 20px;">
+                {% for perm in assigned_permissions %}
+                    <li style="margin-bottom: 10px;">{{ perm.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="id_permissions">Permisos a Asignar:</label>
+            <div style="margin-top: 10px;">
+                {{ form.permissions }}
+            </div>
         </div>
         <button type="submit" class="btn btn-success">Guardar Cambios</button>
         <a href="{% url 'management:users' %}" class="btn btn-secondary">Volver</a> 
     </form>
-
-    <!-- Mostrar los permisos asignados -->
-<h3 style="margin-top: 30px;">Permisos Asignados</h3>
-<ul style="margin-top: 15px; padding-left: 20px;">
-    {% for perm in assigned_permissions %}
-        <li style="margin-bottom: 10px;">{{ perm.name }}</li>
-    {% endfor %}
-</ul>
-
 </div>
 {% endblock %}

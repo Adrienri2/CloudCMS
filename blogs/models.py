@@ -81,6 +81,26 @@ class Blog(models.Model):
             self.slug = slugify(self.title)
         super(Blog, self).save(*args, **kwargs)
 
+    def can_edit_or_verify(self, user):
+        """
+        Determina si el usuario puede editar o verificar el blog.
+        """
+        return (
+            (user.has_perm('accounts.can_edit_blog') and self.status == 1) or
+            (user.has_perm('accounts.can_publish_blog') and self.status == 2) or
+            (user.has_perm('accounts.can_create_blog') and user.has_perm('accounts.can_edit_blog') and self.status in [0, 1])
+        )
+
+    def get_button_text(self, user):
+        """
+        Devuelve el texto del botón basado en los permisos del usuario.
+        """
+        if user.has_perm('accounts.can_publish_blog'):
+            return "Verificar"
+        return "Editar"
+
+    
+
 class Comment(models.Model):
     """
     Modelo para representar un comentario en un blog.
