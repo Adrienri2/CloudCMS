@@ -18,14 +18,18 @@ from accounts.decorators import role_required, permission_required_any
 class ManageBlog(View):
     def get(self, request):
 
-        if request.user.role == "editor" or request.user.role == "admin" or request.user.role == "publisher":
+        if request.user.role in ["editor", "admin", "publisher"]:
         # Si el usuario es un editor, admin o publicador, se muestran todos los blogs activos
             blogs = Blog.objects.filter(is_active=True)
         else:
         # Si el usuario es un autor, muestra solo sus blogs
             blogs = Blog.objects.filter(is_active=True, creator=request.user)
 
-        
+        # Añadir información adicional al contexto
+        for blog in blogs:
+            blog.can_edit_or_verify = blog.can_edit_or_verify(request.user)
+            blog.button_text = blog.get_button_text(request.user)
+
         return render(request, "management/blog.html", {"blogs": blogs})
 
 @method_decorator(role_required(['admin']), name='dispatch')
@@ -72,9 +76,8 @@ class CreateBlog(View):
             content=content,
             creator=request.user,
             thumbnail=thumbnail,
-            #is_published=status
             is_published=is_published,
-            status=status #se agrega el estado del blog (linea agregada para la prueba nomas)
+            status=status
         )
         blog.save()
         for id in categories:
@@ -146,6 +149,11 @@ class EditBlog(View):
         categories = data.getlist("categories")
         status_comments = data.get("status_comments")
 
+         # Verifica que el estado no sea None
+        if not status:
+            messages.warning(request, "Debe asignarle un estado")
+            return redirect("manage:edit_blog", id=blog.id)
+        
         # Actualiza los campos del blog
         blog.title = title
         blog.desc = desc
@@ -231,6 +239,37 @@ class DeleteCategory(View):
         category.save()
         messages.info(request, "Categoría eliminada")
         return redirect("manage:category")
+    
+
+
+
+
+class KanbanView(View):
+    def get(self, request):
+        user_role = request.user.role
+        blogs_by_status = {}
+
+        if user_role == 'author':
+            blogs_by_status['Borrador'] = Blog.objects.filter(status=0, creator=request.user, is_active=True)
+            blogs_by_status['En edición'] = Blog.objects.filter(status=1, creator=request.user, is_active=True)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, creator=request.user)
+            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True, creator=request.user)
+        elif user_role == 'editor':
+            blogs_by_status['En edición'] = Blog.objects.filter(status=1, is_active=True)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True)
+        elif user_role == 'publisher':
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True)
+            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True)
+            
+        else:
+            user_role = 'admin'
+            blogs_by_status['Borrador'] = Blog.objects.filter(status=0, is_active=True)
+            blogs_by_status['En edición'] = Blog.objects.filter(status=1, is_active=True)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True)
+            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True)
+
+
+        return render(request, "management/kanban.html", {"blogs_by_status": blogs_by_status})
 
 class ManageComment(View):
     def get(self, request):

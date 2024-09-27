@@ -19,6 +19,12 @@ class UserForm(forms.ModelForm):
         "can_publish_blog",
         "can_edit_blog",
         "can_delete_blog",
+        "can_create_comment",
+        "can_edit_comment",
+        "can_delete_comment",
+        "can_view_user",
+        "can_edit_user",
+        "can_delete_user",
     ]
 
     permissions = forms.ModelMultipleChoiceField(queryset=Permission.objects.filter(codename__in=specific_permissions), widget=forms.SelectMultiple, required=False, label="Permisos")

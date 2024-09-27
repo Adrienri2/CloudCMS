@@ -1,3 +1,63 @@
+<h3>Pendientes de publicar</h3>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">ID</th>
+      <th scope="col">Título</th>
+      <th scope="col">Descripción</th>
+      <th scope="col">Categorías</th>
+      <th scope="col">Creado el</th>
+      <th scope="col">Estado actual</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    {% for blog in blogs %}
+      {% if not blog.is_published %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <th>{{ blog.id }}</th>
+          <td>{{ blog.title|truncatechars:30 }}</td>
+          <td>{{ blog.desc|truncatechars:50 }}</td>
+          <td>[{{ blog.categories.all|join:", " }}]</td>
+          <td>{{ blog.published_on }}</td>
+          <td>
+            {% if blog.status == 0 %}
+              Borrador
+            {% elif blog.status == 1 %}
+              En Edición
+            {% elif blog.status == 2 %}
+              Por publicar
+            {% endif %}
+          </td>
+            <td>
+              {% if blog.can_edit_or_verify %}
+                <a class="btn btn-warning" href="{% url 'manage:edit_blog' blog.id %}" role="button">
+                  <i class="bi bi-pencil-square"></i>
+                  {{ blog.button_text }}
+                </a>
+              {% else %}
+                <a class="btn btn-warning disabled" href="#" role="button" aria-disabled="true">
+                  <i class="bi bi-pencil-square"></i>
+                  {{ blog.button_text }}
+                </a>
+              {% endif %}
+              
+              {% if perms.accounts.can_create_blog %}
+                <a class="btn btn-danger" href="{% url 'manage:delete_blog' blog.id %}" role="button">
+                  <i class="bi bi-trash3"></i>
+                  Borrar
+                </a>
+              {% endif %}
+            </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Publicados</h3>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -13,31 +73,41 @@
   </thead>
   <tbody class="table-group-divider">
     {% for blog in blogs %}
-    <tr>
-      <th scope="row">{{ forloop.counter }}</th>
-      <th>{{ blog.id }}</th>
-      <td>{{ blog.title|truncatechars:30 }}</td>
-      <td>{{ blog.desc|truncatechars:50 }}</td>
-      <td>[{{ blog.categories.all|join:", " }}]</td>
-      <td>{{ blog.published_on }}</td>
-      <td>{% if blog.is_published %}Yes{% else %}No{% endif %}</td>
-      <td>
-        <a class="btn btn-warning" href="{% url 'manage:edit_blog' blog.id %}" role="button">
-          <i class="bi bi-pencil-square"></i>
-          {% if perms.accounts.can_publish_blog %}
-            Verificar
-          {% else %}
-            Editar
-          {% endif %}
-        </a>
-        {% if perms.accounts.can_create_blog %}
-        <a class="btn btn-danger" href="{% url 'manage:delete_blog' blog.id %}" role="button">
-          <i class="bi bi-trash3"></i>
-          Borrar
-        </a>
-        {% endif %}
-      </td>
-    </tr>
+      {% if blog.is_published %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <th>{{ blog.id }}</th>
+          <td>{{ blog.title|truncatechars:30 }}</td>
+          <td>{{ blog.desc|truncatechars:50 }}</td>
+          <td>[{{ blog.categories.all|join:", " }}]</td>
+          <td>{{ blog.published_on }}</td>
+          <td>
+            {% if blog.is_published %}
+              Yes
+            {% else %}
+              No
+            {% endif %}
+          </td>
+          <td>
+            {% if perms.accounts.can_publish_blog %}
+              <a class="btn btn-warning" href="{% url 'manage:edit_blog' blog.id %}" role="button">
+                <i class="bi bi-pencil-square"></i>
+                {% if perms.accounts.can_publish_blog %}
+                  Verificar
+                {% else %}
+                  Editar
+                {% endif %}
+              </a>
+              {% if perms.accounts.can_create_blog %}
+                <a class="btn btn-danger" href="{% url 'manage:delete_blog' blog.id %}" role="button">
+                  <i class="bi bi-trash3"></i>
+                  Borrar
+                </a>
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+      {% endif %}
     {% endfor %}
   </tbody>
 </table>
