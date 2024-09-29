@@ -90,7 +90,7 @@ class CreateBlog(View):
         blog.save()
         messages.success(request, "Artículo creado")
 
-        return redirect("manage:create_blog")
+        return redirect("manage:blog")
 
 @method_decorator(role_required(['admin']), name='dispatch')
 class CreateCategory(View):
@@ -101,6 +101,11 @@ class CreateCategory(View):
         data = request.POST
         category = data.get("category")
         desc = data.get("desc")
+        category_type = data.get("category_type")
+        subcategory_type = data.get("subcategory_type")
+        if not category:
+            messages.warning(request, "El nombre de la categoría no puede estar vacío")
+            return redirect("manage:create_category")
 
         c = Category.objects.filter(category=category).first()
         if c is not None:
@@ -108,11 +113,13 @@ class CreateCategory(View):
         else:
             c = Category(
                 category=category,
-                desc=desc
+                desc=desc,
+                category_type=category_type,
+                subcategory_type=subcategory_type
             )
             c.save()
             messages.success(request, "Categoría creada")
-        return redirect("manage:create_category")
+        return redirect("manage:blog")
 
 
 @method_decorator(permission_required_any(['accounts.can_edit_blog', 'accounts.can_publish_blog']), name='dispatch')
@@ -222,11 +229,15 @@ class EditCategory(View):
         c = Category.objects.filter(id=id, is_active=True).first()
         data = request.POST
         category, desc = data.get("category"), data.get("desc")
-        if not ((category and desc) or c):
-            messages.warning(request, "La categoría o la descripción no pueden estar vacías. O la categoría no existe")
+        category_type = data.get("category_type")
+        subcategory_type = data.get("subcategory_type")
+        if not (category and desc and category_type and subcategory_type and c):
+            messages.warning(request, "No se pueden dejar los campos vacíos. O la categoría no existe")
             return redirect("manage:category")
         c.category = category
         c.desc = desc
+        c.category_type = category_type
+        c.subcategory_type = subcategory_type
         c.save()
         messages.success(request, "Cambios guardados")
         return redirect("manage:category")
@@ -248,28 +259,30 @@ class KanbanView(View):
     def get(self, request):
         user_role = request.user.role
         blogs_by_status = {}
+        category_type = request.GET.get('category_type', 'moderada')  # Obtener el tipo de categoría de los parámetros de la URL
+
 
         if user_role == 'author':
-            blogs_by_status['Borrador'] = Blog.objects.filter(status=0, creator=request.user, is_active=True)
-            blogs_by_status['En edición'] = Blog.objects.filter(status=1, creator=request.user, is_active=True)
-            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, creator=request.user)
-            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True, creator=request.user)
+            blogs_by_status['Borrador'] = Blog.objects.filter(status=0, creator=request.user, is_active=True, category_type=category_type)
+            blogs_by_status['En edición'] = Blog.objects.filter(status=1, creator=request.user, is_active=True, category_type=category_type)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, creator=request.user, category_type=category_type)
+            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True, creator=request.user, category_type=category_type)
         elif user_role == 'editor':
-            blogs_by_status['En edición'] = Blog.objects.filter(status=1, is_active=True)
-            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True)
+            blogs_by_status['En edición'] = Blog.objects.filter(status=1, is_active=True, category_type=category_type)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, category_type=category_type)
         elif user_role == 'publisher':
-            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True)
-            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, category_type=category_type)
+            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True, category_type=category_type)
             
         else:
             user_role = 'admin'
-            blogs_by_status['Borrador'] = Blog.objects.filter(status=0, is_active=True)
-            blogs_by_status['En edición'] = Blog.objects.filter(status=1, is_active=True)
-            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True)
-            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True)
+            blogs_by_status['Borrador'] = Blog.objects.filter(status=0, is_active=True, category_type=category_type)
+            blogs_by_status['En edición'] = Blog.objects.filter(status=1, is_active=True, category_type=category_type)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, category_type=category_type)
+            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True, category_type=category_type)
 
 
-        return render(request, "management/kanban.html", {"blogs_by_status": blogs_by_status})
+        return render(request, "management/kanban.html", {"blogs_by_status": blogs_by_status,  "category_type": category_type})
 
 class ManageComment(View):
     def get(self, request):
