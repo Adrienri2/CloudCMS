@@ -73,38 +73,36 @@
                 Administrar
               </a>
               <ul class="dropdown-menu">
-                {% if request.user.role == 'admin' %}
                   <li>
                     <a class="dropdown-item" href="{% url 'manage:blog' %}">
                       <i class="bi bi-book"></i>
-                      Artículos
+                        Artículos
                     </a>
                   </li>
                   <li>
+                    {% if request.user.role == 'admin' %}
                     <a class="dropdown-item" href="{% url 'manage:category' %}">
                       <i class="bi bi-grid"></i>
                       Categoría
                     </a>
+                    {% endif %}
                   </li>
                   <li>
+                    {% if request.user.role == 'admin' %}
                     <a class="dropdown-item" href="{% url 'manage:comment' %}">
                       <i class="bi bi-chat-left-text"></i>
                       Comentarios
                     </a>
+                    {% endif %}
                   </li>
                   <li>
+                    {% if request.user.role == 'admin' %}
                     <a class="dropdown-item" href="{% url 'manage:users' %}">
                       <i class="bi bi-people"></i>
                       Usuarios
                     </a>
+                    {% endif %}
                   </li>
-                {% endif %}
-                <li>
-                  <a class="dropdown-item" href="{% url 'manage:blog' %}">
-                    <i class="bi bi-book"></i>
-                      Artículos
-                  </a>
-                </li>
                 <li>
                   <a class="dropdown-item" href="{% url 'manage:kanban' %}">
                     <i class="bi bi-kanban"></i>

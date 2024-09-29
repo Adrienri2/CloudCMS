@@ -19,10 +19,26 @@ class Category(models.Model):
     """
     Modelo para representar una categoría de blog.
     """
+
+    CATEGORY_TYPE_CHOICES = [
+        ('moderada', 'Moderada'),
+        ('no_moderada', 'No Moderada'),
+    ]
+
+    SUBCATEGORY_TYPE_CHOICES = [
+        ('publica', 'Pública'),
+        ('suscriptores', 'Para Suscriptores'),
+        ('paga', 'De Paga'),
+    ]
+
+
     category = models.CharField(max_length=30, unique=True)
     slug = models.SlugField(default="", max_length=30)
     desc = models.TextField()
     is_active = models.BooleanField(default=True)
+    category_type = models.CharField(max_length=20, choices=CATEGORY_TYPE_CHOICES, default='moderada')
+    subcategory_type = models.CharField(max_length=20, choices=SUBCATEGORY_TYPE_CHOICES, default='publica')
+
 
     def save(self, *args, **kwargs):
         """
