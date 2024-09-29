@@ -18,10 +18,30 @@ documentation for details.
    accounts_migration_0001_initial
    accounts_templates_login
    accounts_templates_register
+   accounts_admin
+   accounts_apps
    accounts_managers
    accounts_models
+   accounts_tests
    accounts_urls
    accounts_views
+   blogs_admin
+   blogs_apps
    blogs_models
+   blogs_tests
    blogs_urls
    blogs_views
+   cloudcms_asgi
+   cloudcms_context_processors
+   cloudcms_settings
+   cloudcms_urls
+   cloudcms_views
+   cloudcms_wsgi
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

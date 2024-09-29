@@ -15,47 +15,109 @@
       <input type="hidden" name="id" value="{{ blog.id }}">
       <div class="row mb-3">
         <label for="title" class="form-label">Título:</label>
-        <input type="text" class="form-control" id="title" placeholder="Título" name="title" value="{{ blog.title }}" required autofocus>
+        <input type="text" class="form-control" id="title" placeholder="Título" name="title" value="{{ blog.title }}" required autofocus {% if perms.accounts.can_publish_blog %}readonly{% endif %}>
       </div>
       <div class="row mb-3">
         <label for="desc" class="form-label">Descripción:</label>
-        <textarea class="form-control" placeholder="Escribe la descripción aquí" id="desc" style="height: 100px" name="desc">{{ blog.desc }}</textarea>
+        <textarea class="form-control" placeholder="Escribe la descripción aquí" id="desc" style="height: 100px" name="desc" {% if perms.accounts.can_publish_blog %}readonly{% endif %}>{{ blog.desc }}</textarea>
       </div>
       <br>
       {{ form.media }}
       {{ form.as_p }}
       <div class="row mb-3">
         <label for="thumbnail" class="form-label">Miniatura:</label>
-        <input class="form-control" type="file" id="thumbnail" name="thumbnail" accept="image/*">
-        <small>Actual: <a class="text-decoration-none" href="{{ blog.thumbnail.url }}">{{ blog.thumbnail.url }}</a></small>
+        {% if perms.accounts.can_publish_blog %}
+          <div class="form-control" readonly>
+            <small>Actual: {{ blog.thumbnail.url }}</small>
+          </div>
+        {% else %}
+          <input class="form-control" type="file" id="thumbnail" name="thumbnail" accept="image/*">
+          <small>Actual: <a class="text-decoration-none" href="{{ blog.thumbnail.url }}">{{ blog.thumbnail.url }}</a></small>
+        {% endif %}
       </div>
       <div class="row mb-3">
-        <label for="categories" class="form-label">Categorías:</label>
-        <select id="categories" class="form-select" multiple aria-label="multiple select example" name="categories" required>
-          <option disabled value=''>Seleccionar categorías</option>
-          {% for category in categories %}
-          <option value="{{ category.id }}" {% if category in blog.categories.all %}selected{% endif %}>{{ category.category }}</option>
-          {% endfor %}
-        </select>
+        <label for="categories" class="form-label">Categoría:</label>
+          <select id="categories" class="form-select" multiple aria-label="multiple select example" name="categories" required>
+            <option disabled value=''>Seleccionar categorías</option>
+            {% for category in categories %}
+              <option value="{{ category.id }}">{{ category.category }}</option> {% if category in blog.categories.all %}selected{% endif %}
+            {% endfor %}
+          </select>
+        {% if perms.accounts.can_create_category %}
         <small>¿No tienes categoría? <a class="text-decoration-none" href="{% url 'manage:create_category' %}">Crear</a></small>
+        {% endif %}
       </div>
       <br>
       <div class="row">
         <div class="col-4">
-          <p>Estado:</p>
+          <p>Estado actual: 
+            {% if blog.status == 0 %}
+              Borrador
+            {% elif blog.status == 1 %}
+              En edición
+            {% elif blog.status == 2 %}
+              En espera
+            {% elif blog.status == 3 %}
+              Publicado
+            {% endif %}
+          </p>
         </div>
-        <div class="form-check col-4">
-          <input class="form-check-input" type="radio" name="status" value="0" id="draft" {% if not blog.is_published %}checked="checked"{% endif %}>
-          <label class="form-check-label" for="draft">Borrador</label>
+        <div class="col-4"></div>
+          <p>Cambiar de estado:</p>
         </div>
-        <div class="form-check col-4">
-          <input class="form-check-input" type="radio" name="status" value="1" id="publish" {% if blog.is_published %}checked="checked"{% endif %}>
-          <label class="form-check-label" for="publish">Publicar</label>
-        </div>
+      {% if perms.accounts.can_edit_blog %}
+        <section style="display: flex; justify-content: space-between;"> 
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="0" id="draft">
+            <label class="form-check-label" for="draft">Borrador</label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="1" id="editing">
+            <label class="form-check-label" for="editing">
+              {% if perms.accounts.can_create_blog %}
+                Para Edición
+              {% else %}
+                Mantener en edición
+              {% endif %}
+            </label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="2" id="waiting">
+            <label class="form-check-label" for="waiting">Aprobar</label>
+          </div>
+        </section>
+      {% elif perms.accounts.can_publish_blog %}
+        <section style="display: flex; justify-content: space-between;">
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="1" id="editing">
+            <label class="form-check-label" for="editing">Devolver</label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="2" id="waiting">
+            <label class="form-check-label" for="waiting">En espera</label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="3" id="publish">
+            <label class="form-check-label" for="publish">Publicar</label>
+          </div>
+        </section>
+      {% endif %}
       </div>
-      <div class="row float-end">
-        <button type="submit" class="btn btn-outline-success">Publicar</button>
+      <div class="row mb-3"></div>
+        <label for="status_comments" class="form-label">Comentarios:</label>
+        <textarea class="form-control" placeholder="Retroalimentación:" id="status_comments" style="height: 100px" name="status_comments">{{ blog.status_comments|default_if_none:"" }}</textarea>
       </div>
+      {% if blog.last_modified_by %}
+      <div class="row mb-3">
+        <p style="margin-top: 20px; margin-left: 100px;">Última modificación por: {{ blog.last_modified_by.username }} ({{ blog.last_modified_by_role }})</p>
+      </div>
+      {% endif %}
+      <section style="display: flex; justify-content: flex-end; margin-right: 100px";>
+        <div class="d-flex">
+          <button type="submit" class="btn btn-outline-success" style="margin-right: 10px";>Confirmar</button>
+          <button type="button" class="btn btn-outline-success" onclick="window.location.href='/manage/blog/'">Cancelar</button>
+        </div>
+      </section>
     </form>
   </div>
 </div>
