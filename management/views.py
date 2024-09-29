@@ -259,30 +259,28 @@ class KanbanView(View):
     def get(self, request):
         user_role = request.user.role
         blogs_by_status = {}
-        category_type = request.GET.get('category_type', 'moderada')  # Obtener el tipo de categoría de los parámetros de la URL
-
 
         if user_role == 'author':
-            blogs_by_status['Borrador'] = Blog.objects.filter(status=0, creator=request.user, is_active=True, category_type=category_type)
-            blogs_by_status['En edición'] = Blog.objects.filter(status=1, creator=request.user, is_active=True, category_type=category_type)
-            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, creator=request.user, category_type=category_type)
-            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True, creator=request.user, category_type=category_type)
+            blogs_by_status['Borrador'] = Blog.objects.filter(status=0, creator=request.user, is_active=True)
+            blogs_by_status['En edición'] = Blog.objects.filter(status=1, creator=request.user, is_active=True)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, creator=request.user)
+            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True, creator=request.user)
         elif user_role == 'editor':
-            blogs_by_status['En edición'] = Blog.objects.filter(status=1, is_active=True, category_type=category_type)
-            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, category_type=category_type)
+            blogs_by_status['En edición'] = Blog.objects.filter(status=1, is_active=True)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True)
         elif user_role == 'publisher':
-            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, category_type=category_type)
-            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True, category_type=category_type)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True)
+            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True)
             
         else:
             user_role = 'admin'
-            blogs_by_status['Borrador'] = Blog.objects.filter(status=0, is_active=True, category_type=category_type)
-            blogs_by_status['En edición'] = Blog.objects.filter(status=1, is_active=True, category_type=category_type)
-            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True, category_type=category_type)
-            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True, category_type=category_type)
+            blogs_by_status['Borrador'] = Blog.objects.filter(status=0, is_active=True)
+            blogs_by_status['En edición'] = Blog.objects.filter(status=1, is_active=True)
+            blogs_by_status['En espera'] = Blog.objects.filter(status=2, is_active=True)
+            blogs_by_status['Publicado'] = Blog.objects.filter(status=3, is_active=True, is_published=True)
 
 
-        return render(request, "management/kanban.html", {"blogs_by_status": blogs_by_status,  "category_type": category_type})
+        return render(request, "management/kanban.html", {"blogs_by_status": blogs_by_status})
 
 class ManageComment(View):
     def get(self, request):
