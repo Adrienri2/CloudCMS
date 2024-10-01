@@ -3,60 +3,189 @@
 {% block title %}Editar Artículo{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-  <div class="row mb-3">
-    <h1 class="text-center">
+<div class="container mt-5 mb-5">
+  <form method="post" action="{% url 'manage:edit_blog' blog.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ blog.id }}">
+    <h1 class="text-center mb-3">
       Editar Artículo
     </h1>
-  </div>
-  <div class="row">
-    <form method="post" action="{% url 'manage:edit_blog' blog.id %}" enctype="multipart/form-data">
-      {% csrf_token %}
-      <input type="hidden" name="id" value="{{ blog.id }}">
-      <div class="row mb-3">
-        <label for="title" class="form-label">Título:</label>
-        <input type="text" class="form-control" id="title" placeholder="Título" name="title" value="{{ blog.title }}" required autofocus>
-      </div>
-      <div class="row mb-3">
-        <label for="desc" class="form-label">Descripción:</label>
-        <textarea class="form-control" placeholder="Escribe la descripción aquí" id="desc" style="height: 100px" name="desc">{{ blog.desc }}</textarea>
-      </div>
-      <br>
-      {{ form.media }}
-      {{ form.as_p }}
-      <div class="row mb-3">
+    <div class="mb-3">
+      <label for="title" class="form-label">Título:</label>
+      <input type="text" class="form-control" id="title" placeholder="Título" name="title" value="{{ blog.title }}" required autofocus>
+    </div>
+    <div class="mb-3">
+      <label for="desc" class="form-label">Descripción:</label>
+      <textarea class="form-control" placeholder="Escribe la descripción aquí" id="desc" style="height: 100px" name="desc">{{ blog.desc }}</textarea>
+    </div>
+    <br>
+    {{ form.media }}
+    {{ form.as_p }}
+    <div class="row mb-3">
         <label for="thumbnail" class="form-label">Miniatura:</label>
-        <input class="form-control" type="file" id="thumbnail" name="thumbnail" accept="image/*">
-        <small>Actual: <a class="text-decoration-none" href="{{ blog.thumbnail.url }}">{{ blog.thumbnail.url }}</a></small>
+        {% if perms.accounts.can_publish_blog %}
+          <div class="form-control" readonly>
+            <small>Actual: {{ blog.thumbnail.url }}</small>
+          </div>
+        {% else %}
+          <input class="form-control" type="file" id="thumbnail" name="thumbnail" accept="image/*">
+          <small>Actual: <a class="text-decoration-none" href="{{ blog.thumbnail.url }}">{{ blog.thumbnail.url }}</a></small>
+        {% endif %}
       </div>
-      <div class="row mb-3">
-        <label for="categories" class="form-label">Categorías:</label>
-        <select id="categories" class="form-select" multiple aria-label="multiple select example" name="categories" required>
-          <option disabled value=''>Seleccionar categorías</option>
-          {% for category in categories %}
-          <option value="{{ category.id }}" {% if category in blog.categories.all %}selected{% endif %}>{{ category.category }}</option>
-          {% endfor %}
-        </select>
-        <small>¿No tienes categoría? <a class="text-decoration-none" href="{% url 'manage:create_category' %}">Crear</a></small>
+    <div class="mb-3">
+      <label for="current_category_type" class="form-label">Tipo de categoría actual:</label>
+      <input type="text" class="form-control" id="current_category_type" value="{{ blog.categories.first.category_type }}" disabled>
+    </div>
+    <div class="mb-3">
+      <label for="current_category" class="form-label">Categoría actual:</label>
+      <input type="text" class="form-control" id="current_category" value="{{ blog.categories.first.category }}" disabled>
+    </div>
+    <div class="mb-3">
+      <label for="category_type" class="form-label">Seleccione el tipo de categoría:</label>
+      <select id="category_type" class="form-select" aria-label="select example" required>
+        <option disabled selected value=''>Seleccionar tipo de categoría</option>
+        <option value="moderada">Moderada</option>
+        <option value="no_moderada">No Moderada</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="categories" class="form-label">Categoría:</label>
+      <select id="categories" class="form-select" multiple aria-label="multiple select example" name="categories" required>
+        <option disabled value=''>Seleccionar categoría</option>
+        {% for category in categories %}
+        <option value="{{ category.id }}" data-type="{{ category.category_type }}" {% if category in blog.categories.all %}selected{% endif %}>{{ category.category }}</option>
+        {% endfor %}
+      </select>
+      {% if perms.accounts.can_create_category %}
+      <small>¿No tienes categoría? <a class="text-decoration-none" href="{% url 'manage:create_category' %}">Crear</a></small>
+      {% endif %}
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="current_status" class="form-label">Estado actual:</label>
+      <input type="text" class="form-control" id="current_status" value="{% if blog.status == 0 %}Borrador{% elif blog.status == 1 %}En edición{% elif blog.status == 2 %}En espera{% elif blog.status == 3 %}Publicado{% endif %}" disabled>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <p>Cambiar de estado:</p>
       </div>
-      <br>
-      <div class="row">
-        <div class="col-4">
-          <p>Estado:</p>
+      <div class="col-8">
+        <div id="status-options">
+          <!-- Opciones de estado se llenarán dinámicamente con JavaScript -->
         </div>
-        <div class="form-check col-4">
-          <input class="form-check-input" type="radio" name="status" value="0" id="draft" {% if not blog.is_published %}checked="checked"{% endif %}>
-          <label class="form-check-label" for="draft">Borrador</label>
-        </div>
-        <div class="form-check col-4">
-          <input class="form-check-input" type="radio" name="status" value="1" id="publish" {% if blog.is_published %}checked="checked"{% endif %}>
-          <label class="form-check-label" for="publish">Publicar</label>
-        </div>
       </div>
-      <div class="row float-end">
-        <button type="submit" class="btn btn-outline-success">Publicar</button>
+    </div>
+    <div class="row mb-3">
+      <label for="status_comments" class="form-label">Comentarios:</label>
+      <textarea class="form-control" placeholder="Retroalimentación:" id="status_comments" style="height: 100px" name="status_comments">{{ blog.status_comments|default_if_none:"" }}</textarea>
+    </div>
+    {% if blog.last_modified_by %}
+    <div class="row mb-3">
+      <p style="margin-top: 20px; margin-left: 100px;">Última modificación por: {{ blog.last_modified_by.username }} ({{ blog.last_modified_by_role }})</p>
+    </div>
+    {% endif %}
+    <section style="display: flex; justify-content: flex-end; margin-right: 100px; margin-top: 50px;">
+      <div class="d-flex">
+        <button type="submit" class="btn btn-outline-success" style="margin-right: 10px;">Guardar</button>
+        <button type="button" class="btn btn-outline-success" onclick="window.location.href='/manage/blog/'">Cancelar</button>
       </div>
-    </form>
-  </div>
+    </section>
+  </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const categoryTypeSelect = document.getElementById('category_type');
+  const categoriesSelect = document.getElementById('categories');
+  const statusOptionsDiv = document.getElementById('status-options');
+
+  const statusOptions = {
+    moderada: `
+      {% if perms.accounts.can_edit_blog %}
+        <section style="display: flex; justify-content: space-between;"> 
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="0" id="draft">
+            <label class="form-check-label" for="draft">Borrador</label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="1" id="editing">
+            <label class="form-check-label" for="editing">
+              {% if perms.accounts.can_create_blog %}
+                Para Edición
+              {% else %}
+                Mantener en edición
+              {% endif %}
+            </label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="2" id="waiting">
+            <label class="form-check-label" for="waiting">Aprobar</label>
+          </div>
+        </section>
+      {% elif perms.accounts.can_publish_blog %}
+        <section style="display: flex; justify-content: space-between;">
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="1" id="editing">
+            <label class="form-check-label" for="editing">Devolver</label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="2" id="waiting">
+            <label class="form-check-label" for="waiting">En espera</label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="3" id="publish">
+            <label class="form-check-label" for="publish">Publicar</label>
+          </div>
+        </section>
+      {% endif %}
+    `,
+    no_moderada: `
+      {% if perms.accounts.can_create_blog %}
+        <section style="display: flex; justify-content: space-between;">
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="0" id="draft" {% if blog.status == 0 %}checked{% endif %}>
+            <label class="form-check-label" for="draft">Borrador</label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="3" id="publish" {% if blog.status == 3 %}checked{% endif %}>
+            <label class="form-check-label" for="publish">Publicar</label>
+          </div>
+        </section>
+      {% elif perms.accounts.can_publish_blog %}
+        <section style="display: flex; justify-content: space-between;">
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="0" id="draft">
+            <label class="form-check-label" for="draft">Devolver</label>
+          </div>
+        </section>
+      {% endif %}
+    `
+  };
+
+  function updateStatusOptions() {
+    const selectedCategoryType = categoryTypeSelect.value;
+    const options = statusOptions[selectedCategoryType] || '';
+    statusOptionsDiv.innerHTML = options;
+  }
+
+  function filterCategories() {
+    const selectedCategoryType = categoryTypeSelect.value;
+    for (let option of categoriesSelect.options) {
+      if (option.getAttribute('data-type') === selectedCategoryType) {
+        option.style.display = 'block';
+      } else {
+        option.style.display = 'none';
+      }
+    }
+  }
+
+  categoryTypeSelect.addEventListener('change', function() {
+    updateStatusOptions();
+    filterCategories();
+  });
+
+  updateStatusOptions(); // Llamar inicialmente para establecer las opciones correctas
+  filterCategories(); // Llamar inicialmente para filtrar las categorías correctas
+});
+</script>
 {% endblock %}

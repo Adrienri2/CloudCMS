@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from accounts.views import UserListView, EditUserView
+
 
 app_name = "manage"
 
@@ -8,6 +10,7 @@ urlpatterns = [
     path("category/", views.ManageCategory.as_view(), name="category"),
     path("comment/", views.ManageComment.as_view(), name="comment"),
 
+    path('kanban/', views.KanbanView.as_view(), name='kanban'),
     path("create/blog/", views.CreateBlog.as_view(), name="create_blog"),
     path("create/category/", views.CreateCategory.as_view(), name="create_category"),
 
@@ -17,4 +20,7 @@ urlpatterns = [
 
     path("edit/blog/<int:id>/", views.EditBlog.as_view(), name="edit_blog"),
     path("edit/category/<int:id>", views.EditCategory.as_view(), name="edit_category"),
+    path('users/', UserListView.as_view(), name='users'),
+    path('edit/<int:user_id>/', EditUserView.as_view(), name='edit_user'),
+    
 ]

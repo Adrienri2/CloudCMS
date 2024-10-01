@@ -5,7 +5,14 @@ from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from .models import User
+from accounts.models import User
+from .decorators import role_required
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from management.forms import UserForm 
+from django.contrib.auth.models import Permission
+from django.contrib.auth.decorators import permission_required
 
 class Login(View):
     """
@@ -116,14 +123,14 @@ class Register(View):
             messages.warning(request, "Las contraseñas no coinciden")
             return redirect("accounts:register")
         
-        email, username, firstname = data.get("email"), data.get("username"), data.get("firstname")
-        if not (email and username and firstname):
-            messages.info(request, "Se requiere correo electrónico, nombre de usuario y nombre")
+        email, username, firstname, gender= data.get("email"), data.get("username"), data.get("firstname"), data.get("gender")
+        if not (email and username and firstname and gender):
+            messages.info(request, "Se requiere correo electrónico, nombre de usuario, género y nombre")
             return redirect("accounts:register")
         
         user = User.objects.filter(Q(email=email) | Q(username=username))
         if not user.exists():
-            user = User(email=email, username=username, first_name=firstname)
+            user = User(email=email, username=username, first_name=firstname, gender=gender, role='suscriptor')
             if lastname := data.get("lastname"):
                 user.last_name = lastname
             user.set_password(passwd1)
@@ -135,3 +142,119 @@ class Register(View):
 
         messages.info(request, "El usuario ya existe")
         return redirect("accounts:register")
+    
+@login_required
+def profile(request):
+    """
+    Vista para mostrar el perfil del usuario.
+    """
+    return render(request, 'accounts/profile.html')
+
+
+@method_decorator(permission_required('accounts.can_view_user', raise_exception=True), name='dispatch')
+class UserListView(View):
+    """
+    Vista para listar todos los usuarios.
+    """
+
+    def get(self, request):
+        """
+        Renderiza la página con la lista de usuarios.
+
+        Args:
+            request: El objeto de solicitud HTTP.
+
+        Returns:
+            HttpResponse: La respuesta HTTP con la página de lista de usuarios.
+        """
+        users = User.objects.all()
+        return render(request, 'accounts/user_list.html', {'users': users})
+
+
+@method_decorator(permission_required('accounts.can_edit_user', raise_exception=True), name='dispatch')
+class EditUserView(View):
+    """
+    Vista para editar un usuario.
+    """
+
+    def get(self, request, user_id):
+        """
+        Renderiza la página de edición de usuario.
+
+        Args:
+            request: El objeto de solicitud HTTP.
+            user_id: El ID del usuario a editar.
+
+        Returns:
+            HttpResponse: La respuesta HTTP con la página de edición de usuario.
+        """
+        user = get_object_or_404(User, id=user_id)
+        form = UserForm(instance=user)
+        # Obtener los permisos asignados al usuario
+        assigned_permissions = user.user_permissions.all()
+        # Obtener todos los permisos creados
+        all_permissions = Permission.objects.filter(codename__in=UserForm.specific_permissions)
+        # Filtrar los permisos que el usuario no tiene
+        available_permissions = all_permissions.difference(assigned_permissions)
+        form.fields['permissions'].queryset = available_permissions
+
+        return render(request, 'management/edit_user.html', {
+            'form': form, 
+            'user': user, 
+            'assigned_permissions': assigned_permissions
+            })
+
+    def post(self, request, user_id):
+        """
+        Maneja la solicitud POST para editar un usuario.
+
+        Args:
+            request: El objeto de solicitud HTTP.
+            user_id: El ID del usuario a editar.
+
+        Returns:
+            HttpResponseRedirect: Redirige a la página de lista de usuarios después de editar.
+        """
+        user = get_object_or_404(User, id=user_id)
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            user.save(update_permissions=False)  # No actualizar permisos automáticamente
+            form.save_m2m() # Guardar los permisos seleccionados
+            selected_permissions = form.cleaned_data.get('permissions')
+            print("Permisos seleccionados:", [perm.name for perm in selected_permissions])
+
+            # Asignar los permisos seleccionados al usuario
+            user.user_permissions.set(selected_permissions)
+            user.save()
+
+            # Obtener los permisos asignados al usuario después de guardar
+            assigned_permissions = user.user_permissions.all()
+            print("Permisos asignados después de guardar:", [perm.name for perm in assigned_permissions])
+
+            messages.success(request, 'Cambios guardados con éxito')  
+            return HttpResponseRedirect(reverse('management:users'))
+        else:
+            print("Errores del formulario:", form.errors)
+            print("Datos del formulario:", form.cleaned_data)
+
+        # Obtener los permisos asignados al usuario en caso de error en el formulario
+        assigned_permissions = user.user_permissions.all()
+        # Obtener todos los permisos creados
+        specific_permissions = Permission.objects.all()
+        # Filtrar los permisos que el usuario no tiene
+        available_permissions = specific_permissions.difference(assigned_permissions)
+        form.fields['permissions'].queryset = available_permissions
+
+
+
+        return render(request, 'management/edit_user.html', {
+            'form': form,
+            'user': user,
+            'assigned_permissions': assigned_permissions,
+        })
+        
+
+
+    
