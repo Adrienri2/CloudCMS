@@ -33,11 +33,20 @@
       </select>
     </div>
     <div class="mb-3">
+      <label for="subcategory_type" class="form-label">Seleccione el tipo de subcategoría:</label>
+      <select id="subcategory_type" class="form-select" aria-label="select example" name="subcategory_type" required>
+        <option disabled selected value=''>Seleccionar tipo de subcategoría</option>
+        <option value="publica">Pública</option>
+        <option value="suscriptores">Para Suscriptores</option>
+        <option value="paga">De Paga</option>
+      </select>
+    </div>
+    <div class="mb-3">
       <label for="categories" class="form-label">Categorías:</label>
-      <select id="categories" class="form-select" multiple aria-label="multiple select example" name="categories" required>
-        <option disabled value=''>Seleccionar categorías</option>
+      <select id="category" class="form-select" aria-label="select example" name="category" required>
+        <option disabled selected value=''>Seleccionar categoría</option>
         {% for category in categories %}
-        <option value="{{ category.id }}" data-type="{{ category.category_type }}">{{ category.category }}</option>
+        <option value="{{ category.id }}" data-type="{{ category.category_type }}" data-subtype="{{ category.subcategory_type }}">{{ category.category }}</option>
         {% endfor %}
       </select>
       {% if perms.accounts.can_create_category %}
@@ -67,9 +76,11 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const categoryTypeSelect = document.getElementById('category_type');
-  const categoriesSelect = document.getElementById('categories');
+  const subcategoryTypeSelect = document.getElementById('subcategory_type');
+  const categoriesSelect = document.getElementById('category');
   const statusOptionsDiv = document.getElementById('status-options');
 
+  // Opciones de estado según el tipo de categoría
   const statusOptions = {
     moderada: `
       {% if perms.accounts.can_create_blog %}
@@ -107,16 +118,19 @@ document.addEventListener('DOMContentLoaded', function() {
     `
   };
 
+  // Función para actualizar las opciones de estado según el tipo de categoría seleccionado
   function updateStatusOptions() {
     const selectedCategoryType = categoryTypeSelect.value;
     const options = statusOptions[selectedCategoryType] || '';
     statusOptionsDiv.innerHTML = options;
   }
 
+  // Función para filtrar las categorías según el tipo de categoría y subcategoría seleccionados
   function filterCategories() {
     const selectedCategoryType = categoryTypeSelect.value;
+    const selectedSubcategoryType = subcategoryTypeSelect.value;
     for (let option of categoriesSelect.options) {
-      if (option.getAttribute('data-type') === selectedCategoryType) {
+      if (option.getAttribute('data-type') === selectedCategoryType && option.getAttribute('data-subtype') === selectedSubcategoryType) {
         option.style.display = 'block';
       } else {
         option.style.display = 'none';
@@ -124,13 +138,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Evento para actualizar las opciones de estado y filtrar las categorías cuando se cambia el tipo de categoría
   categoryTypeSelect.addEventListener('change', function() {
     updateStatusOptions();
     filterCategories();
   });
 
-  updateStatusOptions(); // Llamar inicialmente para establecer las opciones correctas
-  filterCategories(); // Llamar inicialmente para filtrar las categorías correctas
+  // Evento para filtrar las categorías cuando se cambia el tipo de subcategoría
+  subcategoryTypeSelect.addEventListener('change', function() {
+    filterCategories();
+  });
+
+  // Llamar inicialmente para establecer las opciones correctas y filtrar las categorías correctas
+  updateStatusOptions();
+  filterCategories();
 });
 </script>
 {% endblock %}

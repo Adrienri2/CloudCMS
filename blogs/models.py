@@ -71,7 +71,7 @@ class Blog(models.Model):
     content = RichTextField()
     thumbnail = models.ImageField(upload_to="thumbnails/%Y/%m/%d/")
     views = models.IntegerField(default=0)
-    categories = models.ManyToManyField(Category, related_name="blogs")
+    category = models.ForeignKey(Category, related_name="blogs", on_delete=models.CASCADE, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_published = models.BooleanField(default=False)
     published_on = models.DateTimeField(auto_now_add=True)
@@ -91,10 +91,11 @@ class Blog(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Sobrescribe el método save para generar automáticamente el slug a partir del título si no se proporciona.
+         Sobrescribe el método save para asignar el slug como el id del blog después de guardarlo.
         """
+        super(Blog, self).save(*args, **kwargs)
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = str(self.id)
         super(Blog, self).save(*args, **kwargs)
 
     def can_edit_or_verify(self, user):
