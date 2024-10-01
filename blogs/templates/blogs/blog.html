@@ -18,13 +18,11 @@
     <p>Autor: {{ blog.creator }} | Vistas: {{ blog.views }} | Actualizado: hace {{ blog.published_on|timesince }}</p>
   </div>
   <div class="row mb-3">
-    {% for category in blog.categories.all %}
-      {% if category.is_active %}
+      {% if blog.category.is_active %}
       <div class="col">
-        <a type="button" href="{% url 'get_category' category.slug %}" class="btn btn-primary btn-sm ms-auto">{{ category.category }}</a>
+        <a type="button" href="{% url 'get_category' blog.category.slug %}" class="btn btn-primary btn-sm ms-auto">{{ blog.category.category }}</a>
       </div>
       {% endif %}
-    {% endfor %}
   </div>
   <div class="row">
     <div class="ratio ratio-16x9">

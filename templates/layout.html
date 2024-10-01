@@ -40,11 +40,47 @@
             Categorías
           </a>
           <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
-            {% for category in categories %}
-            <li>
-              <a class="dropdown-item text-dark fs-5" href="{% url 'get_category' category.slug %}">{{ category.category }}</a>
+            <!-- Submenú para categorías públicas -->
+            <li class="dropdown-submenu">
+              <a class="dropdown-item dropdown-toggle" href="#">Públicas</a>
+              <ul class="dropdown-menu">
+                {% for category in categories %}
+                {% if category.subcategory_type == 'publica' %}
+                <li>
+                  <a class="dropdown-item text-dark fs-5" href="{% url 'get_category' category.slug %}">{{ category.category }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
             </li>
-            {% endfor %}
+            <!-- Submenú para categorías de suscriptores -->
+          {% if request.user.is_authenticated %}
+            <li class="dropdown-submenu">
+              <a class="dropdown-item dropdown-toggle" href="#">Para Suscriptores</a>
+              <ul class="dropdown-menu">
+                {% for category in categories %}
+                {% if category.subcategory_type == 'suscriptores' %}
+                <li>
+                  <a class="dropdown-item text-dark fs-5" href="{% url 'get_category' category.slug %}">{{ category.category }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+            <!-- Submenú para categorías de paga -->
+            <li class="dropdown-submenu">
+              <a class="dropdown-item dropdown-toggle" href="#">De Paga</a>
+              <ul class="dropdown-menu">
+                {% for category in categories %}
+                {% if category.subcategory_type == 'paga' %}
+                <li>
+                  <a class="dropdown-item text-dark fs-5" href="{% url 'get_category' category.slug %}">{{ category.category }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+          {% endif %}
           </ul>
         </li>
       </ul>
@@ -186,5 +222,36 @@
 <!-- Javascripts -->
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<!-- JavaScript para manejar submenús -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.dropdown-submenu a.dropdown-toggle').forEach(function(element) {
+    element.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      let submenu = this.nextElementSibling;
+      if (submenu) {
+        submenu.classList.toggle('show');
+      }
+    });
+  });
+});
+</script>
+
+<!-- Estilos CSS para submenús -->
+<style>
+/* Estilos para submenús */
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
+}
+</style>
+
 </body>
 </html>

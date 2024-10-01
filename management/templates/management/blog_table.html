@@ -6,7 +6,7 @@
       <th scope="col">ID</th>
       <th scope="col">Título</th>
       <th scope="col">Descripción</th>
-      <th scope="col">Categorías</th>
+      <th scope="col">Categoría</th>
       <th scope="col">Creado el</th>
       <th scope="col">Estado actual</th>
       <th scope="col">Acciones</th>
@@ -20,7 +20,7 @@
           <th>{{ blog.id }}</th>
           <td>{{ blog.title|truncatechars:30 }}</td>
           <td>{{ blog.desc|truncatechars:50 }}</td>
-          <td>[{{ blog.categories.all|join:", " }}]</td>
+          <td>{{ blog.category}}</td>
           <td>{{ blog.published_on }}</td>
           <td>
             {% if blog.status == 0 %}
@@ -65,7 +65,7 @@
       <th scope="col">ID</th>
       <th scope="col">Título</th>
       <th scope="col">Descripción</th>
-      <th scope="col">Categorías</th>
+      <th scope="col">Categoría</th>
       <th scope="col">Creado el</th>
       <th scope="col">Está Publicado</th>
       <th scope="col">Acciones</th>
@@ -79,7 +79,7 @@
           <th>{{ blog.id }}</th>
           <td>{{ blog.title|truncatechars:30 }}</td>
           <td>{{ blog.desc|truncatechars:50 }}</td>
-          <td>[{{ blog.categories.all|join:", " }}]</td>
+          <td>{{ blog.category}}</td>
           <td>{{ blog.published_on }}</td>
           <td>
             {% if blog.is_published %}
