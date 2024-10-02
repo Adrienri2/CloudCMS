@@ -74,7 +74,7 @@
                 {% for category in categories %}
                 {% if category.subcategory_type == 'paga' %}
                 <li>
-                  <a class="dropdown-item text-dark fs-5" href="{% url 'get_category' category.slug %}">{{ category.category }}</a>
+                  <a class="dropdown-item text-dark fs-5 category-paga" href="{% url 'get_category' category.slug %}">{{ category.category }}</a>
                 </li>
                 {% endif %}
                 {% endfor %}
@@ -225,19 +225,45 @@
 
 <!-- JavaScript para manejar submenús -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.dropdown-submenu a.dropdown-toggle').forEach(function(element) {
-    element.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      let submenu = this.nextElementSibling;
-      if (submenu) {
-        submenu.classList.toggle('show');
-      }
+  document.addEventListener('DOMContentLoaded', function() {
+    let targetCategoryUrl = ''; // Variable para almacenar la URL de la categoría de paga
+  
+    // Manejar el clic en los submenús
+    document.querySelectorAll('.dropdown-submenu a.dropdown-toggle').forEach(function(element) {
+      element.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let submenu = this.nextElementSibling;
+        if (submenu) {
+          submenu.classList.toggle('show');
+        }
+      });
+    });
+  
+  // Seleccionar todos los enlaces de categorías de paga
+  const pagaLinks = document.querySelectorAll('.category-paga');
+  
+  pagaLinks.forEach(link => {
+    link.addEventListener('click', function(event) {
+      event.preventDefault(); // Prevenir la navegación por defecto
+      targetCategoryUrl = this.href; // Guardar la URL de la categoría
+        
+      // Mostrar la pasarela de pago
+      const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+      paymentModal.show();
     });
   });
-});
-</script>
+  
+  
+    // Manejar el clic en el botón "Continuar"
+    const continueButton = document.getElementById('continueButton');
+    continueButton.addEventListener('click', function() {
+      // Redirigir a la categoría de paga
+      window.location.href = targetCategoryUrl;
+    });
+  
+  });
+  </script>
 
 <!-- Estilos CSS para submenús -->
 <style>
@@ -252,6 +278,24 @@ document.addEventListener('DOMContentLoaded', function() {
   margin-top: -1px;
 }
 </style>
+
+
+<!-- Modal para la pasarela de pago -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="paymentModalLabel">Categoria de Paga</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenido de la pasarela de pago -->
+        <p>Para tener acceso a esta categoría, debe pagar una membresía única</p>
+        <button id="continueButton" class="btn btn-primary">Continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

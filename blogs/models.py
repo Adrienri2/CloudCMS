@@ -38,7 +38,7 @@ class Category(models.Model):
     is_active = models.BooleanField(default=True)
     category_type = models.CharField(max_length=20, choices=CATEGORY_TYPE_CHOICES, default='moderada')
     subcategory_type = models.CharField(max_length=20, choices=SUBCATEGORY_TYPE_CHOICES, default='publica')
-
+    costo_membresia = models.IntegerField(default=0)  # Nuevo campo agregado
 
     def save(self, *args, **kwargs):
         """

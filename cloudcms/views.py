@@ -68,9 +68,30 @@ class CategoryView(View):
         return render(request, "category.html", {"categories": categories})
 
 class GetCategory(View):
+    """
+    Vista para mostrar los blogs de una categoría específica.
+
+    Métodos:
+        get: Renderiza la página de una categoría específica.
+    """
+
     def get(self, request, slug):
-        category = get_object_or_404(Category, slug=slug, is_active=True)
-        return render(request, "get_category.html", {"category": category})
+        """
+        Maneja las solicitudes GET para la página de una categoría específica.
+
+        Args:
+            request: El objeto de solicitud HTTP.
+            slug: El slug de la categoría.
+
+        Returns:
+            HttpResponse: La respuesta HTTP con la página de la categoría renderizada.
+        """
+        category = get_object_or_404(Category, slug=slug)
+        costo_membresia = category.costo_membresia if category else None
+        return render(request, 'get_category.html', {
+            'category': category,  # Pasar la categoría al contexto
+            'costo_membresia': costo_membresia,  # Pasar el costo de la membresía al contexto
+        })
 
 class TermsAndConditions(View):
     def get(self, request):
