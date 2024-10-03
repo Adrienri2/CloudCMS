@@ -133,8 +133,12 @@ class GetCategory(View):
         Returns:
             HttpResponse: La respuesta HTTP con la página de la categoría renderizada.
         """
-        category = get_object_or_404(Category, slug=slug, is_active=True)
-        return render(request, "get_category.html", {"category": category})
+        category = get_object_or_404(Category, slug=slug)
+        costo_membresia = category.costo_membresia if category else None
+        return render(request, 'get_category.html', {
+            'category': category,  # Pasar la categoría al contexto
+            'costo_membresia': costo_membresia,  # Pasar el costo de la membresía al contexto
+        })
 
 class TermsAndConditions(View):
     """

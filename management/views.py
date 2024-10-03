@@ -105,11 +105,13 @@ class CreateCategory(View):
         desc = data.get("desc")
         category_type = data.get("category_type")
         subcategory_type = data.get("subcategory_type")
+        costo_membresia = request.POST.get('costo_membresia')
+
         if not category:
             messages.warning(request, "El nombre de la categoría no puede estar vacío")
             return redirect("manage:create_category")
 
-        c = Category.objects.filter(category=category).first()
+        c = Category.objects.filter(category=category, is_active=True).first()
         if c is not None:
             messages.warning(request, "La categoría ya existe")
         else:
@@ -117,7 +119,9 @@ class CreateCategory(View):
                 category=category,
                 desc=desc,
                 category_type=category_type,
-                subcategory_type=subcategory_type
+                subcategory_type=subcategory_type,
+                costo_membresia=costo_membresia,
+            
             )
             c.save()
             messages.success(request, "Categoría creada")
@@ -228,6 +232,9 @@ class EditCategory(View):
         category, desc = data.get("category"), data.get("desc")
         category_type = data.get("category_type")
         subcategory_type = data.get("subcategory_type")
+        nuevo_costo_membresia = data.get("nuevo_costo_membresia")
+
+        
         if not (category and desc and category_type and subcategory_type and c):
             messages.warning(request, "No se pueden dejar los campos vacíos. O la categoría no existe")
             return redirect("manage:category")
@@ -235,16 +242,28 @@ class EditCategory(View):
         c.desc = desc
         c.category_type = category_type
         c.subcategory_type = subcategory_type
+
+        if nuevo_costo_membresia:
+            try:
+                nuevo_costo_membresia = float(nuevo_costo_membresia)
+                c.costo_membresia = nuevo_costo_membresia
+                print(f"Nuevo costo de la Membresía: {nuevo_costo_membresia}")  # Mensaje de depuración
+            except ValueError:
+                messages.error(request, "El costo de la membresía debe ser un número válido.")
+                return redirect("manage:edit_category", id=id)
+
+
         c.save()
         messages.success(request, "Cambios guardados")
         return redirect("manage:category")
+
         
 
 class DeleteCategory(View):
     def get(self, request, id):
         category = get_object_or_404(Category, id=id)
-        category.is_active = False
-        category.save()
+        print("Categoría eliminada:", category.id)  # Mensaje de depuración
+        category.delete()
         messages.info(request, "Categoría eliminada")
         return redirect("manage:category")
     
