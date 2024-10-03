@@ -24,13 +24,17 @@
         <option value="no_moderada">No Moderada</option>
       </select>
     </div>
-    <div class="mb-3"></div>
+    <div class="mb-3">
       <label for="subcategory_type" class="form-label">Tipo de Subcategoría:</label>
       <select class="form-control" id="subcategory_type" name="subcategory_type" required>
         <option value="publica">Pública</option>
         <option value="suscriptores">Para Suscriptores</option>
         <option value="paga">De Paga</option>
       </select>
+    </div>
+    <div class="mb-3" id="costo_membresia_container" style="display: none;">
+      <label for="costo_membresia" class="form-label">Ingrese el costo de la membresía de esta categoría:</label>
+      <input type="number" class="form-control" id="costo_membresia" name="costo_membresia" value="0">
     </div>
     <section style="display: flex; justify-content: flex-end; margin-right: 100px; margin-top: 50px";>
       <div class="d-flex">
@@ -40,4 +44,19 @@
     </section>
   </form>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const subcategoryTypeSelect = document.getElementById('subcategory_type');
+    const costoMembresiaContainer = document.getElementById('costo_membresia_container');
+  
+    subcategoryTypeSelect.addEventListener('change', function() {
+      if (this.value === 'paga') {
+        costoMembresiaContainer.style.display = 'block';
+      } else {
+        costoMembresiaContainer.style.display = 'none';
+      }
+    });
+  });
+  </script>
 {% endblock %}

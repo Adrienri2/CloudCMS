@@ -94,6 +94,20 @@
     python manage.py createsuperuser
     ```
 
+3. Asignarle el rol de admin al superusario:
+    ```sh
+    python manage.py shell
+    from accounts.models import User
+    # Obtén el usuario
+    user = User.objects.get(username='nombre_de_usuario')  # Reemplaza 'nombre_de_usuario' con el nombre de usuario real
+    # Asigna el rol de admin
+    user.role = 'admin'
+    user.save()
+    print(f"El usuario {user.username} ahora tiene el rol de {user.role}.")
+    exit()
+    ```
+
+
 ## Ejecución de Scripts
 
 1. Ejecutar los scripts:

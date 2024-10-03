@@ -11,11 +11,12 @@
   <select id="category_type" class="form-select" aria-label="select example" required>
     <option disabled selected value=''>Seleccionar tipo de categoría</option>
     <option value="moderada" {% if category_type == 'moderada' %}selected{% endif %}>Moderada</option>
-    {% if request.user.role == 'admin' or perms.accounts.can_create_blog %}
+    {% if request.user.role == 'admin' or perms.accounts.can_create_blog  or perms.accounts.can_publish_blog%}
       <option value="no_moderada" {% if category_type == 'no_moderada' %}selected{% endif %}>No Moderada</option>
     {% endif %}
   </select>
 </div>
+
 
 <style>
 .kanban-board {
@@ -92,6 +93,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const categoryTypeSelect = document.getElementById('category_type');
+ 
 
   categoryTypeSelect.addEventListener('change', function() {
     const selectedCategoryType = categoryTypeSelect.value;
@@ -99,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
     url.searchParams.set('category_type', selectedCategoryType);
     window.location.href = url.toString();
   });
+
 });
 </script>
 
