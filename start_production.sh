@@ -9,10 +9,10 @@ source entorno1/bin/activate
 # Asegurar permisos correctos para los archivos estáticos y el directorio del proyecto
 sudo chmod o+x /home/$USER
 sudo chmod o+x /home/$USER/CloudCMS
-sudo chown -R www-data:www-data static_prod/
-sudo chown -R $USER:$USER static_prod/
-sudo chmod -R 755 static_prod/
-sudo chmod -R o+rX static_prod/
+sudo chown -R www-data:www-data /static_prod/
+sudo chown -R $USER:$USER $(pwd)/static_prod/
+sudo chmod -R 755 $(pwd)/static_prod/
+sudo chmod -R o+rX $(pwd)/static_prod/
 
 # Configurar Nginx para servir la aplicación Django
 sudo tee /etc/nginx/sites-available/django_project > /dev/null <<EOL
