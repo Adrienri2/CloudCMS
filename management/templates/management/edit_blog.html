@@ -88,6 +88,11 @@
         </div>
       </div>
     </div>
+    <!-- Agregar campo para programar la publicación -->
+    <div class="mb-3" id="schedule-publication" style="display: none;">
+      <label for="scheduled_date" class="form-label">Programar publicación:</label>
+      <input type="datetime-local" class="form-control" id="scheduled_date" name="scheduled_date">
+    </div>
     <div class="row mb-3">
       <label for="status_comments" class="form-label">Comentarios:</label>
       <textarea class="form-control" placeholder="Retroalimentación:" id="status_comments" style="height: 100px" name="status_comments">{{ blog.status_comments|default_if_none:"" }}</textarea>
@@ -112,6 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const subcategoryTypeSelect = document.getElementById('subcategory_type'); // Añadido: Selección de subcategoría
   const categoriesSelect = document.getElementById('category');
   const statusOptionsDiv = document.getElementById('status-options');
+  const schedulePublicationDiv = document.getElementById('schedule-publication'); //Referencia al div de programación
+  const scheduledDateInput = document.getElementById('scheduled_date'); //Referencia al input de fecha programada
+
 
   // Opciones de estado según el tipo de categoría
   const statusOptions = {
@@ -151,6 +159,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <input class="form-check-input" type="radio" name="status" value="3" id="publish">
             <label class="form-check-label" for="publish">Publicar</label>
           </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="2" id="schedule"> <!--Opción para programar publicación -->
+            <label class="form-check-label" for="schedule">Programar Publicación</label>
+          </div>
         </section>
       {% endif %}
     `,
@@ -165,6 +177,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <input class="form-check-input" type="radio" name="status" value="3" id="publish" {% if blog.status == 3 %}checked{% endif %}>
             <label class="form-check-label" for="publish">Publicar</label>
           </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="2" id="schedule"> <!--Opción para programar publicación -->
+            <label class="form-check-label" for="schedule">Programar Publicación</label>
         </section>
       {% elif perms.accounts.can_publish_blog %}
         <section style="display: flex; justify-content: space-between;">
@@ -182,12 +197,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedCategoryType = categoryTypeSelect.value;
     const options = statusOptions[selectedCategoryType] || '';
     statusOptionsDiv.innerHTML = options;
+
+    // Mostrar u ocultar el campo de programación según la opción seleccionada
+    const scheduleRadio = document.getElementById('schedule'); //Referencia al radio button de programación
+    if (scheduleRadio) {
+      scheduleRadio.addEventListener('change', function() {
+        if (this.checked) {
+          schedulePublicationDiv.style.display = 'block'; // Mostrar el div de programación
+        } else {
+          schedulePublicationDiv.style.display = 'none'; // Ocultar el div de programación
+        }
+      });
+    }
+
   }
 
   // Función para filtrar las categorías según el tipo de categoría y subcategoría seleccionados
   function filterCategories() {
     const selectedCategoryType = categoryTypeSelect.value;
-    const selectedSubcategoryType = subcategoryTypeSelect.value; // Añadido: Obtener el valor de la subcategoría seleccionada
+    const selectedSubcategoryType = subcategoryTypeSelect.value; // Obtener el valor de la subcategoría seleccionada
     for (let option of categoriesSelect.options) {
       if (option.getAttribute('data-type') === selectedCategoryType && option.getAttribute('data-subtype') === selectedSubcategoryType) {
         option.style.display = 'block';

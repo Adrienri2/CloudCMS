@@ -119,7 +119,7 @@
                     {% if request.user.role == 'admin' %}
                     <a class="dropdown-item" href="{% url 'manage:category' %}">
                       <i class="bi bi-grid"></i>
-                      Categoría
+                      Categorías
                     </a>
                     {% endif %}
                   </li>
@@ -233,6 +233,13 @@
       element.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
+
+        // Aquí hice la modificación: Cerrar todos los submenús
+        document.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(function(submenu) {
+          submenu.classList.remove('show');
+        });
+
+        // Abrir el submenú correspondiente
         let submenu = this.nextElementSibling;
         if (submenu) {
           submenu.classList.toggle('show');

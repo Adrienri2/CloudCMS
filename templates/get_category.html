@@ -9,13 +9,13 @@
       <p>{{ category.desc }}</p>
     </div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      {% for blog in category.blogs.all %}
-        {% if blog.is_active %}
+      {% if blog.is_active and blog.is_published %}
+        {% for blog in category.blogs.all %}
           {% include "card.html" with blog=blog %}
-        {% endif %}
-      {% empty %}
+        {% endfor %}
+      {% else %}
         <p class="text-center">No se encontraron blogs!</p>
-      {% endfor %}
+      {% endif %}
     </div>
   </div>
 

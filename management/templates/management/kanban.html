@@ -7,15 +7,15 @@
 <h1 class="text-center mb-3" style="margin-top: 50px;">Tabla Kanban</h1>
 
 <div class="mb-3">
-  <label for="category_type" class="form-label">Seleccione el tipo de categoría:</label>
-  <select id="category_type" class="form-select" aria-label="select example" required>
-    <option disabled selected value=''>Seleccionar tipo de categoría</option>
-    <option value="moderada" {% if category_type == 'moderada' %}selected{% endif %}>Moderada</option>
-    {% if request.user.role == 'admin' or perms.accounts.can_create_blog  or perms.accounts.can_publish_blog%}
-      <option value="no_moderada" {% if category_type == 'no_moderada' %}selected{% endif %}>No Moderada</option>
-    {% endif %}
-  </select>
-</div>
+    <label for="category_type" class="form-label">Seleccione el tipo de categoría:</label>
+    <select id="category_type" class="form-select" aria-label="select example" required>
+      <option disabled selected value=''>Seleccionar tipo de categoría</option>
+      <option value="moderada" {% if category_type == 'moderada' %}selected{% endif %}>Moderada</option>
+      {% if request.user.role == 'admin' or perms.accounts.can_create_blog  or perms.accounts.can_publish_blog%}
+        <option value="no_moderada" {% if category_type == 'no_moderada' %}selected{% endif %}>No Moderada</option>
+      {% endif %}
+    </select>
+  </div>
 
 
 <style>
@@ -83,6 +83,7 @@
                     <li>
                         <h3>{{ blog.title }}</h3>
                         <p>{{ blog.desc|truncatewords:15 }}</p>
+                        <p><strong>Autor:</strong> {{ blog.creator }}</p>
                     </li>
                 {% endfor %}
             </ul>

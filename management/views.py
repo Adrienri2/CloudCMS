@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.core.exceptions import PermissionDenied
 from accounts.decorators import role_required, permission_required_any 
+import pytz
 # Importa el decorador desde accounts
 
 
@@ -161,6 +162,9 @@ class EditBlog(View):
         thumbnail = request.FILES.get("thumbnail")
         category_id = data.get("category")
         status_comments = data.get("status_comments")
+        scheduled_date = data.get("scheduled_date")  # Obtener la fecha programada
+
+
 
         # Verifica que el estado no sea None
         if not status:
@@ -183,6 +187,24 @@ class EditBlog(View):
             
             if blog.is_published:
                 blog.published_on = timezone.now()
+            elif status == 2 and scheduled_date:  # Manejar la programación de la publicación
+                
+                # Convertir la fecha y hora ingresada a un objeto datetime
+                local_scheduled_date = timezone.datetime.strptime(scheduled_date, '%Y-%m-%dT%H:%M')
+                
+                # Asegurarse de que el objeto datetime tenga información de zona horaria
+                local_scheduled_date = timezone.make_aware(local_scheduled_date, timezone.get_current_timezone())
+                
+                # Convertir la fecha y hora local a UTC
+                utc_scheduled_date = local_scheduled_date.astimezone(pytz.UTC)
+                
+                if utc_scheduled_date > timezone.now():
+                    blog.scheduled_date = utc_scheduled_date
+                else:
+                    messages.warning(request, "La fecha y hora programadas deben estar en el futuro.")
+                    return redirect("manage:edit_blog", id=blog.id)
+            else:
+                blog.scheduled_date = None
         except ValueError:
             # Si hay un error al convertir el estado, muestra un mensaje de información
             messages.info(request, "Error al actualizar el estado")
