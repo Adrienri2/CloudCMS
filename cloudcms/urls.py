@@ -21,19 +21,21 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
+    # Ruta para el panel de administración de Django
     path('admin/', admin.site.urls),
 
     # Incluir URLs de las aplicaciones
-    path("accounts/", include("accounts.urls")),
-    path("blogs/", include("blogs.urls")),
-    path("manage/", include("management.urls", namespace='management')),
+    # Cada aplicación tiene su propio archivo urls.py para manejar sus rutas específicas
+    path("accounts/", include("accounts.urls")),  # URLs relacionadas con cuentas de usuario
+    path("blogs/", include("blogs.urls")),        # URLs relacionadas con blogs
+    path("manage/", include("management.urls", namespace='management')),  # URLs relacionadas con la gestión del sitio
 
     # Vistas principales
-    path("", views.Index.as_view(), name="index"),
-    path("search/", views.Search.as_view(), name="search"),
-    path("bookmark/", views.BookmarkView.as_view(), name="bookmark"),
-    path("terms-and-conditions/", views.TermsAndConditions.as_view(), name="terms_and_conditions"),
-    path("category/", views.CategoryView.as_view(), name="category"),
+    path("", views.Index.as_view(), name="index"), # Página de inicio
+    path("search/", views.Search.as_view(), name="search"), # Página de búsqueda
+    path("bookmark/", views.BookmarkView.as_view(), name="bookmark"), # Página de marcadores
+    path("terms-and-conditions/", views.TermsAndConditions.as_view(), name="terms_and_conditions"), # Términos y condiciones
+    path("category/", views.CategoryView.as_view(), name="category"), # Lista de categorías
     path("category/<slug:slug>/", views.GetCategory.as_view(), name="get_category"),  # Asegúrate de usar 'slug' aquí
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

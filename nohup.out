@@ -1,0 +1,186 @@
+[2024-10-04 15:46:16,623: INFO/MainProcess] beat: Starting...
+[2024-10-04 15:46:16,635: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+ 
+ -------------- celery@Carlos v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35 2024-10-04 15:46:16
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f7af43c6200
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 16 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-04 15:46:17,427: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:46:17,499: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-04 15:46:17,499: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:46:17,501: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-04 15:46:18,517: INFO/MainProcess] mingle: all alone
+[2024-10-04 15:46:18,525: INFO/MainProcess] celery@Carlos ready.
+[2024-10-04 15:46:18,527: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[f00d9095-b604-4e75-9c99-f994d8f71ca1] received
+[2024-10-04 15:46:18,545: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[f00d9095-b604-4e75-9c99-f994d8f71ca1] succeeded in 0.017198781999468338s: None
+[2024-10-04 15:46:25,839: INFO/MainProcess] beat: Starting...
+[2024-10-04 15:46:25,843: ERROR/MainProcess] Removing corrupted schedule file 'celerybeat-schedule': error(11, 'Resource temporarily unavailable')
+Traceback (most recent call last):
+  File "/home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/beat.py", line 531, in setup_schedule
+    self._store = self._open_schedule()
+  File "/home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/beat.py", line 521, in _open_schedule
+    return self.persistence.open(self.schedule_filename, writeback=True)
+  File "/usr/lib/python3.10/shelve.py", line 243, in open
+    return DbfilenameShelf(filename, flag, protocol, writeback)
+  File "/usr/lib/python3.10/shelve.py", line 227, in __init__
+    Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback)
+  File "/usr/lib/python3.10/dbm/__init__.py", line 95, in open
+    return mod.open(file, flag, mode)
+_gdbm.error: [Errno 11] Resource temporarily unavailable: 'celerybeat-schedule'
+ 
+ -------------- celery@Carlos v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35 2024-10-04 15:46:25
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f96f0546200
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 16 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-04 15:46:26,735: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:46:26,746: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-04 15:46:26,747: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:46:26,749: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-04 15:46:27,784: INFO/MainProcess] mingle: all alone
+[2024-10-04 15:46:27,792: INFO/MainProcess] celery@Carlos ready.
+[2024-10-04 15:47:00,058: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-04 15:47:00,066: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[92b57813-3676-49cd-beef-31237ed4e688] received
+[2024-10-04 15:47:00,085: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[92b57813-3676-49cd-beef-31237ed4e688] succeeded in 0.017580460997123737s: None
+
+Restarting celery worker (/home/carlitos/CloudCMS/entorno1/bin/celery -A cloudcms worker --loglevel=info)
+
+Restarting celery worker (/home/carlitos/CloudCMS/entorno1/bin/celery -A cloudcms worker --loglevel=info)
+
+worker: Warm shutdown (MainProcess)
+celery beat v5.4.0 (opalescent) is starting.
+__    -    ... __   -        _
+LocalTime -> 2024-10-04 15:46:25
+Configuration ->
+    . broker -> redis://localhost:6379/0
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> 5.00 minutes (300s)
+ 
+ -------------- celery@Carlos v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35 2024-10-04 15:47:56
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7fd6ebc1d360
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 16 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+ 
+ -------------- celery@Carlos v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35 2024-10-04 15:47:56
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f0850c71360
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 16 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-04 15:47:57,891: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:47:57,921: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-04 15:47:57,921: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:47:57,929: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-04 15:47:57,974: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:47:57,985: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-04 15:47:57,985: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:47:57,986: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-04 15:47:58,977: INFO/MainProcess] mingle: all alone
+[2024-10-04 15:47:58,990: INFO/MainProcess] celery@Carlos ready.
+[2024-10-04 15:47:59,025: INFO/MainProcess] mingle: all alone
+[2024-10-04 15:47:59,038: INFO/MainProcess] celery@Carlos ready.
+[2024-10-04 15:48:32,128: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-04 15:48:32,135: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ac65e200-e051-4396-b1d0-f06ee52953b4] received
+[2024-10-04 15:48:32,183: INFO/ForkPoolWorker-16] Task blogs.tasks.publish_scheduled_blogs[ac65e200-e051-4396-b1d0-f06ee52953b4] succeeded in 0.04421488200023305s: None
+[2024-10-04 15:49:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-04 15:49:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[d410d86a-2432-424c-8dc5-f317b69fd49c] received
+[2024-10-04 15:49:00,039: INFO/ForkPoolWorker-16] Task blogs.tasks.publish_scheduled_blogs[d410d86a-2432-424c-8dc5-f317b69fd49c] succeeded in 0.032176238993997686s: None
+[2024-10-04 15:50:00,009: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-04 15:50:00,014: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[2833bd1c-b7e2-4920-81f6-d58176cae801] received
+[2024-10-04 15:50:00,026: INFO/ForkPoolWorker-16] Task blogs.tasks.publish_scheduled_blogs[2833bd1c-b7e2-4920-81f6-d58176cae801] succeeded in 0.011070660002587829s: None
