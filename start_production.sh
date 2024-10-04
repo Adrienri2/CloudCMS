@@ -58,5 +58,11 @@ python manage.py collectstatic --noinput
 # Aplicar migraciones de la base de datos
 python manage.py migrate
 
+# Ejecutar el worker de Celery en segundo plano
+nohup celery -A cloudcms worker --loglevel=info &
+
+# Ejecutar el beat scheduler de Celery en segundo plano
+nohup celery -A cloudcms beat --loglevel=info &
+
 # Iniciar Gunicorn con la configuración especificada
 gunicorn --pythonpath $(pwd) --bind 127.0.0.1:8000 --workers 3 cloudcms.wsgi:application
