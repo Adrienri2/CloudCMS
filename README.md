@@ -19,7 +19,7 @@
 
 4. Instalar `nginx`:
     ```sh
-    sudo apt install nginx-full
+    sudo apt install nginx
     ```
 
 5. Instalar `virtualenv` para crear entornos virtuales:
