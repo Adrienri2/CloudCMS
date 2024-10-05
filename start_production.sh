@@ -19,7 +19,7 @@ sudo tee /etc/nginx/sites-available/django_project > /dev/null <<EOL
 server {
     listen 80;
     server_name 127.0.0.1;
-
+    client_max_body_size 100M;
     location /static/ {
         alias $(pwd)/static_prod/;
     }
