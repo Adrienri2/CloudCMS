@@ -219,6 +219,16 @@ class EditBlog(View):
         category = get_object_or_404(Category, id=category_id)
         blog.category = category
 
+         # Verifica que el category_id no sea None y que la categoría exista
+        if category_id:
+            category = get_object_or_404(Category, id=category_id)
+            blog.category = category
+        else:
+            messages.warning(request, "Debe asignarle una categoría")
+            return redirect("manage:edit_blog", id=blog.id)
+        
+
+
         # Guarda el blog con los cambios realizados
         blog.save()
         # Muestra un mensaje de éxito indicando que los cambios se han guardado

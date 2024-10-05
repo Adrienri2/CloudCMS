@@ -16,5 +16,6 @@ export $(cat .env | xargs)
 #python manage.py makemigrations
 #python manage.py migrate
 
+
 # Ejecutar el servidor en modo desarrollo
 python manage.py runserver
