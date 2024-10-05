@@ -1,45 +1,68 @@
-# CloudCMS
-
 ## Instalación
 
-1. Instalar `python3-pip`:
+1. Actualizar y corregir paquetes faltantes:
+    ```sh
+    sudo apt update --fix-missing
+    ```
+
+2. Actualizar paquetes:
+    ```sh
+    sudo apt upgrade
+    ```
+
+3. Instalar `python3-pip`:
     ```sh
     sudo apt install python3-pip
     ```
 
-2. Instalar `nginx`:
+4. Instalar `nginx`:
     ```sh
-    sudo apt install nginx-full=1.18.0-6ubuntu14.4
+    sudo apt install nginx
     ```
 
-3. Instalar `virtualenv` para crear entornos virtuales:
+5. Instalar `virtualenv` para crear entornos virtuales:
     ```sh
-    pip install virtualenv
+    sudo apt install python3-virtualenv
     ```
 
-4. Crear un entorno virtual:
+6. Instalar `redis-server`:
+    ```sh
+    sudo apt-get install redis-server
+    ```
+
+7. Crear un entorno virtual:
     ```sh
     virtualenv entorno1
     ```
 
-5. Instalar las dependencias en el entorno virtual:
+8. Activar el entorno virtual:
+    ```sh
+    source entorno1/bin/activate
+    ```
+
+9. Instalar las dependencias en el entorno virtual:
     ```sh
     pip install -r requirements.txt
     ```
 
-6. Otorgar permisos a los scripts:
+10. Otorgar permisos a los scripts:
     ```sh
     chmod +x start_production.sh start_development.sh
     ```
 
 ## Configuración de PostgreSQL
 
-1. Conéctate a PostgreSQL como el usuario `postgres`:
+1. Instalar PostgreSQL si no está instalado:
+    ```sh
+    sudo apt install postgresql postgresql-contrib
+    ```
+
+2. Conéctate a PostgreSQL como el usuario `postgres`:
     ```sh
     sudo -u postgres psql
     ```
 
-2. Dentro de `psql`, ejecuta los siguientes comandos:
+3. Dentro de `psql`, ejecuta los siguientes comandos:
 
     - Crear el usuario:
         ```sql
@@ -74,6 +97,20 @@
     python manage.py createsuperuser
     ```
 
+3. Asignarle el rol de admin al superusario:
+    ```sh
+    python manage.py shell
+    from accounts.models import User
+    # Obtén el usuario
+    user = User.objects.get(username='nombre_de_usuario')  # Reemplaza 'nombre_de_usuario' con el nombre de usuario real
+    # Asigna el rol de admin
+    user.role = 'admin'
+    user.save()
+    print(f"El usuario {user.username} ahora tiene el rol de {user.role}.")
+    exit()
+    ```
+
+
 ## Ejecución de Scripts
 
 1. Ejecutar los scripts:
@@ -84,7 +121,13 @@
 
 ## Documentación
 
-1. Generar la documentación:
+1. Instalar Sphinx y el tema:
+    ```sh
+    pip install sphinx
+    pip install sphinx_rtd_theme
+    ```
+
+2. Generar la documentación:
     ```sh
     cd docs
     make html

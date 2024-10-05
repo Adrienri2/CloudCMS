@@ -3,19 +3,97 @@
 {% block title %}Categoría{% endblock %}
 
 {% block body %}
-<div class="container mt-5 mb-5">
-  <div class="row mb-5">
-    <h2 class="text-center">{{ category.category }}</h2>
-    <p>{{ category.desc }}</p>
+  <div class="container mt-5 mb-5">
+    <div class="row mb-5">
+      <h2 class="text-center">{{ category.category }}</h2>
+      <p>{{ category.desc }}</p>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for blog in category.blogs.all %}
+        {% if blog.is_active and blog.is_published %}
+          {% include "card.html" with blog=blog %}
+        {% endif %}
+      {% empty %}
+        <p class="text-center">No se encontraron blogs!</p>
+      {% endfor %}
+    </div>
   </div>
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for blog in category.blogs.all %}
-      {% if blog.is_active %}
-        {% include "card.html" with blog=blog %}
-      {% endif %}
-    {% empty %}
-      <p class="text-center">No se encontraron blogs!</p>
-    {% endfor %}
-  </div>
-</div>
+
+  {% if category.subcategory_type == "paga" %}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Definir el HTML del modal con un id único
+        const modalHtml = `
+          <div class="modal fade" id="paymentModalUnique" tabindex="-1" aria-labelledby="paymentModalLabelUnique" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="paymentModalLabelUnique">¡Esta es una categoría de paga!</h5>
+                </div>
+                <div class="modal-body">
+                  <p>Para tener acceso a esta categoría, debe pagar una membresía única de Gs: {{ costo_membresia }}</p>
+                  <p>Costo de la membresia Gs: {{ costo_membresia }}</p>
+                  <button id="buyMembershipButtonUnique" class="btn btn-primary">Comprar membresía</button>
+                  <button id="continueButtonUnique" class="btn btn-secondary">Continuar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+        // Mostrar el modal con opciones para deshabilitar el cierre automático
+        const paymentModal = new bootstrap.Modal(document.getElementById('paymentModalUnique'), {
+          backdrop: 'static',
+          keyboard: false
+        });
+        paymentModal.show();
+
+        // Manejar el clic en el botón "Comprar membresía"
+        const buyMembershipButton = document.getElementById('buyMembershipButtonUnique');
+        buyMembershipButton.addEventListener('click', function() {
+          // Crear y enviar el formulario de pago
+          const form = document.createElement('form');
+          form.action = 'https://checkout.wompi.co/p/';
+          form.method = 'GET';
+
+          const publicKey = document.createElement('input');
+          publicKey.type = 'hidden';
+          publicKey.name = 'public-key';
+          publicKey.value = 'pub_test_501zz4iE1TnIknS0Ob5DEs22JFFVaxYe';
+          form.appendChild(publicKey);
+
+          const currency = document.createElement('input');
+          currency.type = 'hidden';
+          currency.name = 'currency';
+          currency.value = 'COP';
+          form.appendChild(currency);
+
+          const amount = document.createElement('input');
+          amount.type = 'hidden';
+          amount.name = 'amount-in-cents';
+          amount.value = '{{ costo_membresia|floatformat:0 }}';  // '1000';
+          form.appendChild(amount);
+
+          const reference = document.createElement('input');
+          reference.type = 'hidden';
+          reference.name = 'reference';
+          reference.value = 'referencia_pago_web_checkout_ejemplo_01';
+          form.appendChild(reference);
+
+          document.body.appendChild(form);
+          form.submit();
+        });
+
+        // Manejar el clic en el botón "Continuar"
+        const continueButton = document.getElementById('continueButtonUnique');
+        continueButton.addEventListener('click', function() {
+          // Cerrar el modal
+          const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModalUnique'));
+          paymentModal.hide();
+        });
+      });
+    </script>
+  {% endif %}
 {% endblock %}

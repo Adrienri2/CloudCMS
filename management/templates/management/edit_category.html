@@ -20,10 +20,52 @@
         <label for="desc" class="form-label">Descripción:</label>
         <textarea class="form-control" placeholder="Escribe la descripción aquí" id="desc" style="height: 100px" name="desc">{{ category.desc }}</textarea>
       </div>
-      <div class="row float-end">
-        <button type="submit" class="btn btn-outline-success">Guardar</button>
+      <div class="row mb-3">
+        <label for="category_type" class="form-label">Tipo de Categoría:</label>
+        <select class="form-control" id="category_type" name="category_type" required>
+          <option value="moderada" {% if category.category_type == 'moderada' %}selected{% endif %}>Moderada</option>
+          <option value="no_moderada" {% if category.category_type == 'no_moderada' %}selected{% endif %}>No Moderada</option>
+        </select>
       </div>
+      <div class="row mb-3">
+        <label for="subcategory_type" class="form-label">Tipo de Subcategoría:</label>
+        <select class="form-control" id="subcategory_type" name="subcategory_type" required>
+          <option value="publica" {% if category.subcategory_type == 'publica' %}selected{% endif %}>Pública</option>
+          <option value="suscriptores" {% if category.subcategory_type == 'suscriptores' %}selected{% endif %}>Para Suscriptores</option>
+          <option value="paga" {% if category.subcategory_type == 'paga' %}selected{% endif %}>De Paga</option>
+        </select>
+      </div>
+      <div class="row mb-3 {% if category.subcategory_type != 'paga' %}d-none{% endif %}" id="costo_membresia_container">
+        <label for="costo_membresia" class="form-label">Costo Actual de la Membresía:</label>
+        <input type="number" class="form-control" id="costo_membresia" placeholder="Costo de la Membresía" name="costo_membresia" value="{{ category.costo_membresia }}" readonly>
+      </div>
+      <div class="row mb-3 {% if category.subcategory_type != 'paga' %}d-none{% endif %}" id="nuevo_costo_membresia_container">
+        <label for="nuevo_costo_membresia" class="form-label">Cambiar el costo de la membresía:</label>
+        <input type="number" class="form-control" id="nuevo_costo_membresia" placeholder="Nuevo costo de la Membresía" name="nuevo_costo_membresia" value="">
+      </div>
+      <section style="display: flex; justify-content: flex-end; margin-right: 100px">
+        <div class="d-flex">
+          <button type="submit" class="btn btn-outline-success" style="margin-right: 10px";>Confirmar</button>
+          <button type="button" class="btn btn-outline-success" onclick="window.location.href='/manage/blog/'">Cancelar</button>
+        </div>
+      </section>
     </form>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const subcategoryTypeSelect = document.getElementById('subcategory_type');
+    const costoMembresiaContainer = document.getElementById('costo_membresia_container');
+  
+    subcategoryTypeSelect.addEventListener('change', function() {
+      if (this.value === 'paga') {
+        costoMembresiaContainer.classList.remove('d-none');
+      } else {
+        costoMembresiaContainer.classList.add('d-none');
+      }
+    });
+  });
+</script>
+
 {% endblock %}

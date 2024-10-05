@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.db.models import Q
@@ -17,19 +18,16 @@ class Index(View):
     """
 
     def get(self, request):
-        """
-        Maneja las solicitudes GET para la página de inicio.
+        if request.user.is_authenticated:  # Si el usuario está autenticado, mostrar todos los blogs
+            blog_list = Blog.objects.filter(is_active=True, is_published=True).order_by("-published_on") 
+        else: # Si el usuario no está autenticado, mostrar solo los blogs de categorías públicas
+            public_categories = Category.objects.filter(subcategory_type='publica')
+            blog_list = Blog.objects.filter(is_active=True, is_published=True, category__in=public_categories).order_by("-published_on")
 
-        Args:
-            request: El objeto de solicitud HTTP.
-
-        Returns:
-            HttpResponse: La respuesta HTTP con la página de inicio renderizada.
-        """
-        blog_list = Blog.objects.filter(is_active=True, is_published=True).order_by("-views")
+        
         page = request.GET.get('page', 1)
-
         paginator = Paginator(blog_list, 9)
+
         try:
             blogs = paginator.page(page)
         except PageNotAnInteger:
@@ -70,7 +68,7 @@ class Search(ListView):
         query = self.request.GET.get("query", "")
         blogs = Blog.objects.filter(
             (Q(title__icontains=query) | Q(desc__icontains=query)), is_active=True
-        ).order_by("-views")
+        ).order_by("-published_on")
         return blogs
 
     def get_context_data(self, **kwargs):
@@ -135,8 +133,14 @@ class GetCategory(View):
         Returns:
             HttpResponse: La respuesta HTTP con la página de la categoría renderizada.
         """
-        category = get_object_or_404(Category, slug=slug, is_active=True)
-        return render(request, "get_category.html", {"category": category})
+        category = get_object_or_404(Category, slug=slug)
+        blogs = category.blogs.filter(is_active=True, is_published=True).order_by("-published_on")
+        costo_membresia = category.costo_membresia if category else None
+        return render(request, 'get_category.html', {
+            'category': category,  # Pasar la categoría al contexto
+            'blogs': blogs,  # Pasar los blogs al contexto
+            'costo_membresia': costo_membresia,  # Pasar el costo de la membresía al contexto
+        })
 
 class TermsAndConditions(View):
     """

@@ -28,7 +28,7 @@ urlpatterns = [
     # Cada aplicación tiene su propio archivo urls.py para manejar sus rutas específicas
     path("accounts/", include("accounts.urls")),  # URLs relacionadas con cuentas de usuario
     path("blogs/", include("blogs.urls")),        # URLs relacionadas con blogs
-    path("manage/", include("management.urls")),  # URLs relacionadas con la gestión del sitio
+    path("manage/", include("management.urls", namespace='management')),  # URLs relacionadas con la gestión del sitio
 
     # Vistas principales
     path("", views.Index.as_view(), name="index"), # Página de inicio
