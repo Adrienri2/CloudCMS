@@ -240,16 +240,15 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.bookmarks">
 <span class="sig-name descname"><span class="pre">bookmarks</span></span><a class="headerlink" href="#blogs.models.Blog.bookmarks" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related objects manager on the reverse side of a
-many-to-one relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al administrador de objetos relacionados en el lado inverso de una
+relación de muchos a uno.</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
-<p>Most of the implementation is delegated to a dynamically defined manager
-class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+<p>La mayor parte de la implementación se delega a una clase de gestor definida dinámicamente construida por<code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> definido a continuación.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -261,9 +260,8 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.category">
 <span class="sig-name descname"><span class="pre">category</span></span><a class="headerlink" href="#blogs.models.Blog.category" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado directo de una relación de muchos a uno o uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -279,31 +277,27 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.comments">
 <span class="sig-name descname"><span class="pre">comments</span></span><a class="headerlink" href="#blogs.models.Blog.comments" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related objects manager on the reverse side of a
-many-to-one relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al gestor de objetos relacionados en el lado inverso de una relación de muchos a uno.</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
-<p>Most of the implementation is delegated to a dynamically defined manager
-class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+<p>La mayor parte de la implementación se delega a una clase de gestor definida dinámicamente construida por <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> definido a continuación.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.content">
 <span class="sig-name descname"><span class="pre">content</span></span><a class="headerlink" href="#blogs.models.Blog.content" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un envoltorio para un campo de carga diferida. Cuando el valor se lee de este objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.creator">
 <span class="sig-name descname"><span class="pre">creator</span></span><a class="headerlink" href="#blogs.models.Blog.creator" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado delantero de una relación de muchos a uno o de uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -319,8 +313,7 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.desc">
 <span class="sig-name descname"><span class="pre">desc</span></span><a class="headerlink" href="#blogs.models.Blog.desc" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -347,30 +340,28 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.id">
 <span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#blogs.models.Blog.id" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.is_active">
 <span class="sig-name descname"><span class="pre">is_active</span></span><a class="headerlink" href="#blogs.models.Blog.is_active" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.is_published">
 <span class="sig-name descname"><span class="pre">is_published</span></span><a class="headerlink" href="#blogs.models.Blog.is_published" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.last_modified_by">
 <span class="sig-name descname"><span class="pre">last_modified_by</span></span><a class="headerlink" href="#blogs.models.Blog.last_modified_by" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado delantero de una relación de muchos a uno o de uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -386,23 +377,22 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.last_modified_by_role">
 <span class="sig-name descname"><span class="pre">last_modified_by_role</span></span><a class="headerlink" href="#blogs.models.Blog.last_modified_by_role" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.likes">
 <span class="sig-name descname"><span class="pre">likes</span></span><a class="headerlink" href="#blogs.models.Blog.likes" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related objects manager on the reverse side of a
-many-to-one relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al administrador de objetos relacionados en el lado inverso de una
+relación de muchos a uno.</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
-<p>Most of the implementation is delegated to a dynamically defined manager
-class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+<p>La mayor parte de la implementación se delega a una clase de administrador definida dinámicamente y creada por <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> definido a continuación.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -413,8 +403,8 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.published_on">
 <span class="sig-name descname"><span class="pre">published_on</span></span><a class="headerlink" href="#blogs.models.Blog.published_on" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -426,50 +416,50 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.scheduled_date">
 <span class="sig-name descname"><span class="pre">scheduled_date</span></span><a class="headerlink" href="#blogs.models.Blog.scheduled_date" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.slug">
 <span class="sig-name descname"><span class="pre">slug</span></span><a class="headerlink" href="#blogs.models.Blog.slug" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.status">
 <span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#blogs.models.Blog.status" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.status_comments">
 <span class="sig-name descname"><span class="pre">status_comments</span></span><a class="headerlink" href="#blogs.models.Blog.status_comments" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.thumbnail">
 <span class="sig-name descname"><span class="pre">thumbnail</span></span><a class="headerlink" href="#blogs.models.Blog.thumbnail" title="Link to this definition"></a></dt>
-<dd><p>Just like the FileDescriptor, but for ImageFields. The only difference is
-assigning the width/height to the width_field/height_field, if appropriate.</p>
+<dd><p>Igual que FileDescriptor, pero para ImageFields. La única diferencia es
+asignar el ancho/alto al campo ancho/alto, si corresponde.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.title">
 <span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#blogs.models.Blog.title" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.views">
 <span class="sig-name descname"><span class="pre">views</span></span><a class="headerlink" href="#blogs.models.Blog.views" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 </dd></dl>
@@ -494,9 +484,8 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.BlogLike.blog">
 <span class="sig-name descname"><span class="pre">blog</span></span><a class="headerlink" href="#blogs.models.BlogLike.blog" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado delantero de una relación de muchos a uno o de uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -512,9 +501,8 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.BlogLike.creator">
 <span class="sig-name descname"><span class="pre">creator</span></span><a class="headerlink" href="#blogs.models.BlogLike.creator" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado delantero de una relación de muchos a uno o de uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -530,8 +518,8 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.BlogLike.id">
 <span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#blogs.models.BlogLike.id" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -561,9 +549,8 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Bookmark.blog">
 <span class="sig-name descname"><span class="pre">blog</span></span><a class="headerlink" href="#blogs.models.Bookmark.blog" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado delantero de una relación de muchos a uno o de uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -579,16 +566,15 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Bookmark.created_on">
 <span class="sig-name descname"><span class="pre">created_on</span></span><a class="headerlink" href="#blogs.models.Bookmark.created_on" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Bookmark.creator">
 <span class="sig-name descname"><span class="pre">creator</span></span><a class="headerlink" href="#blogs.models.Bookmark.creator" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado delantero de una relación de muchos a uno o de uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -614,8 +600,8 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Bookmark.id">
 <span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#blogs.models.Bookmark.id" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -655,44 +641,43 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Category.blogs">
 <span class="sig-name descname"><span class="pre">blogs</span></span><a class="headerlink" href="#blogs.models.Category.blogs" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related objects manager on the reverse side of a
-many-to-one relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al administrador de objetos relacionados en el lado inverso de una
+relación de muchos a uno.</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
-<p>Most of the implementation is delegated to a dynamically defined manager
-class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+<p>La mayor parte de la implementación se delega a una clase de administrador definida dinámicamente y creada por<code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> definido a continuación.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Category.category">
 <span class="sig-name descname"><span class="pre">category</span></span><a class="headerlink" href="#blogs.models.Category.category" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+  objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Category.category_type">
 <span class="sig-name descname"><span class="pre">category_type</span></span><a class="headerlink" href="#blogs.models.Category.category_type" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Category.costo_membresia">
 <span class="sig-name descname"><span class="pre">costo_membresia</span></span><a class="headerlink" href="#blogs.models.Category.costo_membresia" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Category.desc">
 <span class="sig-name descname"><span class="pre">desc</span></span><a class="headerlink" href="#blogs.models.Category.desc" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -708,15 +693,15 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Category.id">
 <span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#blogs.models.Category.id" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Category.is_active">
 <span class="sig-name descname"><span class="pre">is_active</span></span><a class="headerlink" href="#blogs.models.Category.is_active" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -733,15 +718,15 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Category.slug">
 <span class="sig-name descname"><span class="pre">slug</span></span><a class="headerlink" href="#blogs.models.Category.slug" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Category.subcategory_type">
 <span class="sig-name descname"><span class="pre">subcategory_type</span></span><a class="headerlink" href="#blogs.models.Category.subcategory_type" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 </dd></dl>
@@ -766,9 +751,8 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Comment.blog">
 <span class="sig-name descname"><span class="pre">blog</span></span><a class="headerlink" href="#blogs.models.Comment.blog" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado delantero de una relación de muchos a uno o de uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -784,16 +768,15 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Comment.comment">
 <span class="sig-name descname"><span class="pre">comment</span></span><a class="headerlink" href="#blogs.models.Comment.comment" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Comment.creator">
 <span class="sig-name descname"><span class="pre">creator</span></span><a class="headerlink" href="#blogs.models.Comment.creator" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado delantero de una relación de muchos a uno o de uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -819,22 +802,22 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Comment.id">
 <span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#blogs.models.Comment.id" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+  objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Comment.is_active">
 <span class="sig-name descname"><span class="pre">is_active</span></span><a class="headerlink" href="#blogs.models.Comment.is_active" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Comment.likes">
 <span class="sig-name descname"><span class="pre">likes</span></span><a class="headerlink" href="#blogs.models.Comment.likes" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -845,23 +828,22 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Comment.published_on">
 <span class="sig-name descname"><span class="pre">published_on</span></span><a class="headerlink" href="#blogs.models.Comment.published_on" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Comment.replies">
 <span class="sig-name descname"><span class="pre">replies</span></span><a class="headerlink" href="#blogs.models.Comment.replies" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related objects manager on the reverse side of a
-many-to-one relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al administrador de objetos relacionados en el lado inverso de una
+relación de muchos a uno.</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
-<p>Most of the implementation is delegated to a dynamically defined manager
-class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+<p>La mayor parte de la implementación se delega a una clase de administrador definida dinámicamente y creada por<code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> definido a continuación.</p>
 </dd></dl>
 
 </dd></dl>
@@ -886,9 +868,8 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Reply.comment">
 <span class="sig-name descname"><span class="pre">comment</span></span><a class="headerlink" href="#blogs.models.Reply.comment" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado delantero de una relación de muchos a uno o de uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -904,9 +885,8 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Reply.creator">
 <span class="sig-name descname"><span class="pre">creator</span></span><a class="headerlink" href="#blogs.models.Reply.creator" title="Link to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
+<dd><p>Accesor al objeto relacionado en el lado delantero de una relación de muchos a uno o de uno a uno (a través de la subclase ForwardOneToOneDescriptor).</p>
+<p>En el ejemplo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
 </pre></div>
@@ -939,15 +919,15 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Reply.is_active">
 <span class="sig-name descname"><span class="pre">is_active</span></span><a class="headerlink" href="#blogs.models.Reply.is_active" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Reply.likes">
 <span class="sig-name descname"><span class="pre">likes</span></span><a class="headerlink" href="#blogs.models.Reply.likes" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -958,15 +938,15 @@ object the first time, the query is executed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Reply.published_on">
 <span class="sig-name descname"><span class="pre">published_on</span></span><a class="headerlink" href="#blogs.models.Reply.published_on" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Reply.reply">
 <span class="sig-name descname"><span class="pre">reply</span></span><a class="headerlink" href="#blogs.models.Reply.reply" title="Link to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
+<dd><p>Un contenedor para un campo de carga diferida. Cuando se lee el valor de este
+objeto por primera vez, se ejecuta la consulta.</p>
 </dd></dl>
 
 </dd></dl>
