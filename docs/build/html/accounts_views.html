@@ -57,6 +57,12 @@
 <li class="toctree-l1"><a class="reference internal" href="accounts_tests.html">Pruebas para la Aplicación de Cuentas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_urls.html">URLs del módulo accounts</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Vistas de Autenticación y Registro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#accounts.views.EditUserView"><code class="docutils literal notranslate"><span class="pre">EditUserView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.views.EditUserView.dispatch"><code class="docutils literal notranslate"><span class="pre">EditUserView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.views.EditUserView.get"><code class="docutils literal notranslate"><span class="pre">EditUserView.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.views.EditUserView.post"><code class="docutils literal notranslate"><span class="pre">EditUserView.post()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#accounts.views.Login"><code class="docutils literal notranslate"><span class="pre">Login</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.views.Login.get"><code class="docutils literal notranslate"><span class="pre">Login.get()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.views.Login.post"><code class="docutils literal notranslate"><span class="pre">Login.post()</span></code></a></li>
@@ -72,6 +78,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#accounts.views.Register.post"><code class="docutils literal notranslate"><span class="pre">Register.post()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#accounts.views.UserListView"><code class="docutils literal notranslate"><span class="pre">UserListView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.views.UserListView.dispatch"><code class="docutils literal notranslate"><span class="pre">UserListView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.views.UserListView.get"><code class="docutils literal notranslate"><span class="pre">UserListView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#accounts.views.profile"><code class="docutils literal notranslate"><span class="pre">profile()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blogs_admin.html">Administración para la Aplicación de Blogs</a></li>
@@ -114,6 +126,58 @@
              
   <section id="module-accounts.views">
 <span id="vistas-de-autenticacion-y-registro"></span><h1>Vistas de Autenticación y Registro<a class="headerlink" href="#module-accounts.views" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="accounts.views.EditUserView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">accounts.views.</span></span><span class="sig-name descname"><span class="pre">EditUserView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/views.html#EditUserView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.views.EditUserView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para editar un usuario.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.views.EditUserView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#accounts.views.EditUserView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.views.EditUserView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/views.html#EditUserView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.views.EditUserView.get" title="Link to this definition"></a></dt>
+<dd><p>Renderiza la página de edición de usuario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> – El objeto de solicitud HTTP.</p></li>
+<li><p><strong>user_id</strong> – El ID del usuario a editar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>La respuesta HTTP con la página de edición de usuario.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.views.EditUserView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/views.html#EditUserView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.views.EditUserView.post" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud POST para editar un usuario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> – El objeto de solicitud HTTP.</p></li>
+<li><p><strong>user_id</strong> – El ID del usuario a editar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Redirige a la página de lista de usuarios después de editar.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="accounts.views.Login">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">accounts.views.</span></span><span class="sig-name descname"><span class="pre">Login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/views.html#Login"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.views.Login" title="Link to this definition"></a></dt>
@@ -237,6 +301,41 @@ post: Crea un nuevo usuario y lo autentica.</p>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="accounts.views.UserListView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">accounts.views.</span></span><span class="sig-name descname"><span class="pre">UserListView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/views.html#UserListView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.views.UserListView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para listar todos los usuarios.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.views.UserListView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#accounts.views.UserListView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.views.UserListView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/views.html#UserListView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.views.UserListView.get" title="Link to this definition"></a></dt>
+<dd><p>Renderiza la página con la lista de usuarios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> – El objeto de solicitud HTTP.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>La respuesta HTTP con la página de lista de usuarios.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="accounts.views.profile">
+<span class="sig-prename descclassname"><span class="pre">accounts.views.</span></span><span class="sig-name descname"><span class="pre">profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/views.html#profile"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.views.profile" title="Link to this definition"></a></dt>
+<dd><p>Vista para mostrar el perfil del usuario.</p>
 </dd></dl>
 
 </section>
