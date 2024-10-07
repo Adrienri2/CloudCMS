@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formularios para la Aplicación CloudCMS &mdash; documentación de CloudCMS - 1.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=4936afed"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/translations.js?v=d190bf04"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CloudCMS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="accounts_migration_0001_initial.html">Migración inicial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_templates_login.html">Plantilla de Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_templates_register.html">Plantilla de Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_admin.html">Administración para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_apps.html">Aplicaciones para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_managers.html">Administrador de Usuarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_models.html">Modelo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_tests.html">Pruebas para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_urls.html">URLs del módulo accounts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_views.html">Vistas de Autenticación y Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_admin.html">Administración para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_apps.html">Aplicaciones para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_models.html">Artículo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_tests.html">Pruebas para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_urls.html">URLs del módulo blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_views.html">Vistas para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_asgi.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_context_processors.html">Context Processors para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_settings.html">Configuraciones para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_urls.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_views.html">Vistas para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_wsgi.html">WSGI para la Aplicación CloudCMS</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CloudCMS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Formularios para la Aplicación CloudCMS</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/management_forms.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-management.forms">
+<span id="formularios-para-la-aplicacion-cloudcms"></span><h1>Formularios para la Aplicación CloudCMS<a class="headerlink" href="#module-management.forms" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="management.forms.CKEditorForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.forms.</span></span><span class="sig-name descname"><span class="pre">CKEditorForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_order=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/forms.html#CKEditorForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.forms.CKEditorForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="management.forms.CKEditorForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'content':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#management.forms.CKEditorForm.base_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="management.forms.CKEditorForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'content':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#management.forms.CKEditorForm.declared_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="management.forms.CKEditorForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#management.forms.CKEditorForm.media" title="Link to this definition"></a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.forms.UserForm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.forms.</span></span><span class="sig-name descname"><span class="pre">UserForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/forms.html#UserForm"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.forms.UserForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="management.forms.UserForm.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/management/forms.html#UserForm.Meta"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.forms.UserForm.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="management.forms.UserForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['username',</span> <span class="pre">'email',</span> <span class="pre">'first_name',</span> <span class="pre">'last_name',</span> <span class="pre">'gender',</span> <span class="pre">'role',</span> <span class="pre">'permissions']</span></em><a class="headerlink" href="#management.forms.UserForm.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="management.forms.UserForm.Meta.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'email':</span> <span class="pre">'Correo</span> <span class="pre">electrónico',</span> <span class="pre">'first_name':</span> <span class="pre">'Nombre',</span> <span class="pre">'gender':</span> <span class="pre">'Género',</span> <span class="pre">'last_name':</span> <span class="pre">'Apellido',</span> <span class="pre">'permissions':</span> <span class="pre">'Permisos',</span> <span class="pre">'role':</span> <span class="pre">'Rol',</span> <span class="pre">'username':</span> <span class="pre">'Nombre</span> <span class="pre">de</span> <span class="pre">usuario'}</span></em><a class="headerlink" href="#management.forms.UserForm.Meta.labels" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="management.forms.UserForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#management.forms.UserForm.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias de <a class="reference internal" href="accounts_models.html#accounts.models.User" title="accounts.models.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="management.forms.UserForm.Meta.widgets">
+<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'role':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#management.forms.UserForm.Meta.widgets" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="management.forms.UserForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'email':</span> <span class="pre">&lt;django.forms.fields.EmailField</span> <span class="pre">object&gt;,</span> <span class="pre">'first_name':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'gender':</span> <span class="pre">&lt;django.forms.fields.TypedChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'last_name':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'permissions':</span> <span class="pre">&lt;django.forms.models.ModelMultipleChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'role':</span> <span class="pre">&lt;django.forms.fields.TypedChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'username':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#management.forms.UserForm.base_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="management.forms.UserForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'permissions':</span> <span class="pre">&lt;django.forms.models.ModelMultipleChoiceField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#management.forms.UserForm.declared_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="management.forms.UserForm.media">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#management.forms.UserForm.media" title="Link to this definition"></a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="management.forms.UserForm.specific_permissions">
+<span class="sig-name descname"><span class="pre">specific_permissions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['can_assign_permissions',</span> <span class="pre">'can_create_category',</span> <span class="pre">'can_edit_category',</span> <span class="pre">'can_delete_category',</span> <span class="pre">'can_create_blog',</span> <span class="pre">'can_view_blog',</span> <span class="pre">'can_publish_blog',</span> <span class="pre">'can_edit_blog',</span> <span class="pre">'can_delete_blog',</span> <span class="pre">'can_create_comment',</span> <span class="pre">'can_edit_comment',</span> <span class="pre">'can_delete_comment',</span> <span class="pre">'can_view_user',</span> <span class="pre">'can_edit_user',</span> <span class="pre">'can_delete_user']</span></em><a class="headerlink" href="#management.forms.UserForm.specific_permissions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2024, Adrián.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

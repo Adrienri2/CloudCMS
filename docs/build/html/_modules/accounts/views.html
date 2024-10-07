@@ -100,7 +100,14 @@
 <span class="kn">from</span> <span class="nn">django.utils.decorators</span> <span class="kn">import</span> <span class="n">method_decorator</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
 <span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
-<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">accounts.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">.decorators</span> <span class="kn">import</span> <span class="n">role_required</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">management.forms</span> <span class="kn">import</span> <span class="n">UserForm</span> 
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Permission</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">permission_required</span>
 
 <div class="viewcode-block" id="Login">
 <a class="viewcode-back" href="../../accounts_views.html#accounts.views.Login">[documentos]</a>
@@ -233,14 +240,14 @@
             <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Las contraseñas no coinciden&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;accounts:register&quot;</span><span class="p">)</span>
         
-        <span class="n">email</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">firstname</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;firstname&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">email</span> <span class="ow">and</span> <span class="n">username</span> <span class="ow">and</span> <span class="n">firstname</span><span class="p">):</span>
-            <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Se requiere correo electrónico, nombre de usuario y nombre&quot;</span><span class="p">)</span>
+        <span class="n">email</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">firstname</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;firstname&quot;</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;gender&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">email</span> <span class="ow">and</span> <span class="n">username</span> <span class="ow">and</span> <span class="n">firstname</span> <span class="ow">and</span> <span class="n">gender</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Se requiere correo electrónico, nombre de usuario, género y nombre&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;accounts:register&quot;</span><span class="p">)</span>
         
         <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="n">firstname</span><span class="p">)</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="n">firstname</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="n">gender</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;suscriptor&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">lastname</span> <span class="o">:=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lastname&quot;</span><span class="p">):</span>
                 <span class="n">user</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="n">lastname</span>
             <span class="n">user</span><span class="o">.</span><span class="n">set_password</span><span class="p">(</span><span class="n">passwd1</span><span class="p">)</span>
@@ -254,6 +261,140 @@
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;accounts:register&quot;</span><span class="p">)</span></div>
 </div>
 
+    
+<div class="viewcode-block" id="profile">
+<a class="viewcode-back" href="../../accounts_views.html#accounts.views.profile">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar el perfil del usuario.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;accounts/profile.html&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="UserListView">
+<a class="viewcode-back" href="../../accounts_views.html#accounts.views.UserListView">[documentos]</a>
+<span class="nd">@method_decorator</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;accounts.can_view_user&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dispatch&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">UserListView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para listar todos los usuarios.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UserListView.get">
+<a class="viewcode-back" href="../../accounts_views.html#accounts.views.UserListView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Renderiza la página con la lista de usuarios.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request: El objeto de solicitud HTTP.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: La respuesta HTTP con la página de lista de usuarios.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;accounts/user_list.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;users&#39;</span><span class="p">:</span> <span class="n">users</span><span class="p">})</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="EditUserView">
+<a class="viewcode-back" href="../../accounts_views.html#accounts.views.EditUserView">[documentos]</a>
+<span class="nd">@method_decorator</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;accounts.can_edit_user&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dispatch&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">EditUserView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para editar un usuario.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="EditUserView.get">
+<a class="viewcode-back" href="../../accounts_views.html#accounts.views.EditUserView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Renderiza la página de edición de usuario.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request: El objeto de solicitud HTTP.</span>
+<span class="sd">            user_id: El ID del usuario a editar.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: La respuesta HTTP con la página de edición de usuario.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">UserForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="c1"># Obtener los permisos asignados al usuario</span>
+        <span class="n">assigned_permissions</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">user_permissions</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="c1"># Obtener todos los permisos creados</span>
+        <span class="n">all_permissions</span> <span class="o">=</span> <span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">codename__in</span><span class="o">=</span><span class="n">UserForm</span><span class="o">.</span><span class="n">specific_permissions</span><span class="p">)</span>
+        <span class="c1"># Filtrar los permisos que el usuario no tiene</span>
+        <span class="n">available_permissions</span> <span class="o">=</span> <span class="n">all_permissions</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">assigned_permissions</span><span class="p">)</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;permissions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span> <span class="o">=</span> <span class="n">available_permissions</span>
+
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;management/edit_user.html&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> 
+            <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span> 
+            <span class="s1">&#39;assigned_permissions&#39;</span><span class="p">:</span> <span class="n">assigned_permissions</span>
+            <span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="EditUserView.post">
+<a class="viewcode-back" href="../../accounts_views.html#accounts.views.EditUserView.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud POST para editar un usuario.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request: El objeto de solicitud HTTP.</span>
+<span class="sd">            user_id: El ID del usuario a editar.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponseRedirect: Redirige a la página de lista de usuarios después de editar.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">UserForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_permissions</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># No actualizar permisos automáticamente</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save_m2m</span><span class="p">()</span> <span class="c1"># Guardar los permisos seleccionados</span>
+            <span class="n">selected_permissions</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Permisos seleccionados:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">perm</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">selected_permissions</span><span class="p">])</span>
+
+            <span class="c1"># Asignar los permisos seleccionados al usuario</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">user_permissions</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">selected_permissions</span><span class="p">)</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="c1"># Obtener los permisos asignados al usuario después de guardar</span>
+            <span class="n">assigned_permissions</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">user_permissions</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Permisos asignados después de guardar:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">perm</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">assigned_permissions</span><span class="p">])</span>
+
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Cambios guardados con éxito&#39;</span><span class="p">)</span>  
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;management:users&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Errores del formulario:&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Datos del formulario:&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">)</span>
+
+        <span class="c1"># Obtener los permisos asignados al usuario en caso de error en el formulario</span>
+        <span class="n">assigned_permissions</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">user_permissions</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="c1"># Obtener todos los permisos creados</span>
+        <span class="n">specific_permissions</span> <span class="o">=</span> <span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="c1"># Filtrar los permisos que el usuario no tiene</span>
+        <span class="n">available_permissions</span> <span class="o">=</span> <span class="n">specific_permissions</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">assigned_permissions</span><span class="p">)</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;permissions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span> <span class="o">=</span> <span class="n">available_permissions</span>
+
+
+
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;management/edit_user.html&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+            <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span>
+            <span class="s1">&#39;assigned_permissions&#39;</span><span class="p">:</span> <span class="n">assigned_permissions</span><span class="p">,</span>
+        <span class="p">})</span></div>
+</div>
+
+        
+
+
+    
 </pre></div>
 
            </div>
