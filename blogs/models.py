@@ -19,10 +19,26 @@ class Category(models.Model):
     """
     Modelo para representar una categoría de blog.
     """
+
+    CATEGORY_TYPE_CHOICES = [
+        ('moderada', 'Moderada'),
+        ('no_moderada', 'No Moderada'),
+    ]
+
+    SUBCATEGORY_TYPE_CHOICES = [
+        ('publica', 'Pública'),
+        ('suscriptores', 'Para Suscriptores'),
+        ('paga', 'De Paga'),
+    ]
+
+
     category = models.CharField(max_length=30, unique=True)
     slug = models.SlugField(default="", max_length=30)
     desc = models.TextField()
     is_active = models.BooleanField(default=True)
+    category_type = models.CharField(max_length=20, choices=CATEGORY_TYPE_CHOICES, default='moderada')
+    subcategory_type = models.CharField(max_length=20, choices=SUBCATEGORY_TYPE_CHOICES, default='publica')
+    costo_membresia = models.IntegerField(default=0)  # Nuevo campo agregado
 
     def save(self, *args, **kwargs):
         """
@@ -42,17 +58,31 @@ class Blog(models.Model):
     """
     Modelo para representar una entrada de blog.
     """
+    STATUS_CHOICES = [
+        (0, 'Borrador'),
+        (1, 'En edición'),
+        (2, 'En espera'),
+        (3, 'Publicado'),
+    ]
+
     slug = models.SlugField(unique=True, null=False, blank=False, max_length=100)
     title = models.CharField(max_length=100)
     desc = models.TextField()
     content = RichTextField()
     thumbnail = models.ImageField(upload_to="thumbnails/%Y/%m/%d/")
     views = models.IntegerField(default=0)
-    categories = models.ManyToManyField(Category, related_name="blogs")
+    category = models.ForeignKey(Category, related_name="blogs", on_delete=models.CASCADE, null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    is_published = models.BooleanField(default=True)
+    is_published = models.BooleanField(default=False)
     published_on = models.DateTimeField(auto_now_add=True)
     creator = models.ForeignKey(to=User, on_delete=models.SET_NULL, related_name="blogs", null=True)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+    status_comments = models.TextField(blank=True, null=True)
+    last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='modified_blogs')
+    last_modified_by_role = models.CharField(max_length=50, blank=True, null=True)
+    scheduled_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha programada
+
+    
 
     def __str__(self):
         """
@@ -62,11 +92,32 @@ class Blog(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Sobrescribe el método save para generar automáticamente el slug a partir del título si no se proporciona.
+         Sobrescribe el método save para asignar el slug como el id del blog después de guardarlo.
         """
-        if not self.slug:
-            self.slug = slugify(self.title)
         super(Blog, self).save(*args, **kwargs)
+        if not self.slug:
+            self.slug = str(self.id)
+        super(Blog, self).save(*args, **kwargs)
+
+    def can_edit_or_verify(self, user):
+        """
+        Determina si el usuario puede editar o verificar el blog.
+        """
+        return (
+            (user.has_perm('accounts.can_edit_blog') and self.status == 1) or
+            (user.has_perm('accounts.can_publish_blog') and self.status == 2) or
+            (user.has_perm('accounts.can_create_blog') and user.has_perm('accounts.can_edit_blog') and self.status in [0, 1])
+        )
+
+    def get_button_text(self, user):
+        """
+        Devuelve el texto del botón basado en los permisos del usuario.
+        """
+        if user.has_perm('accounts.can_publish_blog'):
+            return "Verificar"
+        return "Editar"
+
+    
 
 class Comment(models.Model):
     """

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="es" data-content_root="./">
 <head>
@@ -6,23 +8,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Modelo de Usuario &mdash; documentación de CloudCMS - 1.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=7ab3649f" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=4936afed"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="_static/translations.js?v=d190bf04"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4936afed"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=d190bf04"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Búsqueda" href="search.html" />
-    <link rel="next" title="URLs del módulo accounts" href="accounts_urls.html" />
+    <link rel="next" title="Pruebas para la Aplicación de Cuentas" href="accounts_tests.html" />
     <link rel="prev" title="Administrador de Usuarios" href="accounts_managers.html" /> 
 </head>
 
@@ -50,12 +48,16 @@
 <li class="toctree-l1"><a class="reference internal" href="accounts_migration_0001_initial.html">Migración inicial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_templates_login.html">Plantilla de Login</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_templates_register.html">Plantilla de Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_admin.html">Administración para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_apps.html">Aplicaciones para la Aplicación de Cuentas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_managers.html">Administrador de Usuarios</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modelo de Usuario</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#accounts.models.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">User.DoesNotExist</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.GENDER_CHOICES"><code class="docutils literal notranslate"><span class="pre">User.GENDER_CHOICES</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">User.MultipleObjectsReturned</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.REQUIRED_FIELDS"><code class="docutils literal notranslate"><span class="pre">User.REQUIRED_FIELDS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.ROLE_CHOICES"><code class="docutils literal notranslate"><span class="pre">User.ROLE_CHOICES</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.USERNAME_FIELD"><code class="docutils literal notranslate"><span class="pre">User.USERNAME_FIELD</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.avatar"><code class="docutils literal notranslate"><span class="pre">User.avatar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.blogs"><code class="docutils literal notranslate"><span class="pre">User.blogs</span></code></a></li>
@@ -64,8 +66,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.date_joined"><code class="docutils literal notranslate"><span class="pre">User.date_joined</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.email"><code class="docutils literal notranslate"><span class="pre">User.email</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.first_name"><code class="docutils literal notranslate"><span class="pre">User.first_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.gender"><code class="docutils literal notranslate"><span class="pre">User.gender</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.get_gender_display"><code class="docutils literal notranslate"><span class="pre">User.get_gender_display()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.get_next_by_date_joined"><code class="docutils literal notranslate"><span class="pre">User.get_next_by_date_joined()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.get_previous_by_date_joined"><code class="docutils literal notranslate"><span class="pre">User.get_previous_by_date_joined()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.get_role_display"><code class="docutils literal notranslate"><span class="pre">User.get_role_display()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.groups"><code class="docutils literal notranslate"><span class="pre">User.groups</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.id"><code class="docutils literal notranslate"><span class="pre">User.id</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.is_active"><code class="docutils literal notranslate"><span class="pre">User.is_active</span></code></a></li>
@@ -76,17 +81,41 @@
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.last_name"><code class="docutils literal notranslate"><span class="pre">User.last_name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.likes"><code class="docutils literal notranslate"><span class="pre">User.likes</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.logentry_set"><code class="docutils literal notranslate"><span class="pre">User.logentry_set</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.modified_blogs"><code class="docutils literal notranslate"><span class="pre">User.modified_blogs</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.objects"><code class="docutils literal notranslate"><span class="pre">User.objects</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.password"><code class="docutils literal notranslate"><span class="pre">User.password</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.replies"><code class="docutils literal notranslate"><span class="pre">User.replies</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.role"><code class="docutils literal notranslate"><span class="pre">User.role</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.save"><code class="docutils literal notranslate"><span class="pre">User.save()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.user_permissions"><code class="docutils literal notranslate"><span class="pre">User.user_permissions</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.username"><code class="docutils literal notranslate"><span class="pre">User.username</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_tests.html">Pruebas para la Aplicación de Cuentas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_urls.html">URLs del módulo accounts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_views.html">Vistas de Autenticación y Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_admin.html">Administración para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_apps.html">Aplicaciones para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_models.html">Artículo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_tests.html">Pruebas para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_urls.html">URLs del módulo blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_views.html">Vistas para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_asgi.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_context_processors.html">Context Processors para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_settings.html">Configuraciones para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_urls.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_views.html">Vistas para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_wsgi.html">WSGI para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_admin.html">Admin para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_apps.html">Configuración de la Aplicación Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_forms.html">Formularios para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_middleware.html">Middleware para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_models.html">Modelos para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_tests.html">Pruebas para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_urls.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_views.html">Vistas para la Aplicación CloudCMS</a></li>
 </ul>
 
         </div>
@@ -120,16 +149,22 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">accounts.models.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/models.html#User"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.models.User" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractUser</span></code></p>
 <p>Modelo de usuario personalizado que extiende el modelo de usuario abstracto de Django.</p>
-<dl class="simple">
-<dt>Atributos:</dt><dd><p>is_author (bool): Indica si el usuario es un autor.
-avatar (ImageField): Imagen de avatar del usuario.</p>
-</dd>
-</dl>
+<p>Atributos:</p>
+<blockquote>
+<div><p>is_author (bool): Indica si el usuario es un autor.</p>
+<p>avatar (ImageField): Imagen de avatar del usuario.
+gender (str): Género del usuario.</p>
+</div></blockquote>
 <dl class="py exception">
 <dt class="sig sig-object py" id="accounts.models.User.DoesNotExist">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#accounts.models.User.DoesNotExist" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="accounts.models.User.GENDER_CHOICES">
+<span class="sig-name descname"><span class="pre">GENDER_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('M',</span> <span class="pre">'Varón'),</span> <span class="pre">('F',</span> <span class="pre">'Mujer'),</span> <span class="pre">('O',</span> <span class="pre">'Otro')]</span></em><a class="headerlink" href="#accounts.models.User.GENDER_CHOICES" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="accounts.models.User.MultipleObjectsReturned">
@@ -140,6 +175,11 @@ avatar (ImageField): Imagen de avatar del usuario.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="accounts.models.User.REQUIRED_FIELDS">
 <span class="sig-name descname"><span class="pre">REQUIRED_FIELDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#accounts.models.User.REQUIRED_FIELDS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="accounts.models.User.ROLE_CHOICES">
+<span class="sig-name descname"><span class="pre">ROLE_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('suscriptor',</span> <span class="pre">'suscriptor'),</span> <span class="pre">('admin',</span> <span class="pre">'Administrador'),</span> <span class="pre">('author',</span> <span class="pre">'Autor'),</span> <span class="pre">('editor',</span> <span class="pre">'Editor'),</span> <span class="pre">('publisher',</span> <span class="pre">'Publicador')]</span></em><a class="headerlink" href="#accounts.models.User.ROLE_CHOICES" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -220,6 +260,17 @@ object the first time, the query is executed.</p>
 object the first time, the query is executed.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="accounts.models.User.gender">
+<span class="sig-name descname"><span class="pre">gender</span></span><a class="headerlink" href="#accounts.models.User.gender" title="Link to this definition"></a></dt>
+<dd><p>Aqui se crean los roles que se asignarán a los usuarios.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.models.User.get_gender_display">
+<span class="sig-name descname"><span class="pre">get_gender_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">gender&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#accounts.models.User.get_gender_display" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="accounts.models.User.get_next_by_date_joined">
 <span class="sig-name descname"><span class="pre">get_next_by_date_joined</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">date_joined&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#accounts.models.User.get_next_by_date_joined" title="Link to this definition"></a></dt>
@@ -228,6 +279,11 @@ object the first time, the query is executed.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="accounts.models.User.get_previous_by_date_joined">
 <span class="sig-name descname"><span class="pre">get_previous_by_date_joined</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">date_joined&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#accounts.models.User.get_previous_by_date_joined" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.models.User.get_role_display">
+<span class="sig-name descname"><span class="pre">get_role_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">role&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#accounts.models.User.get_role_display" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -326,6 +382,21 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="accounts.models.User.modified_blogs">
+<span class="sig-name descname"><span class="pre">modified_blogs</span></span><a class="headerlink" href="#accounts.models.User.modified_blogs" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="accounts.models.User.objects">
 <span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;accounts.managers.UserManager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#accounts.models.User.objects" title="Link to this definition"></a></dt>
 <dd></dd></dl>
@@ -350,6 +421,27 @@ many-to-one relation.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
 <p>Most of the implementation is delegated to a dynamically defined manager
 class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="accounts.models.User.role">
+<span class="sig-name descname"><span class="pre">role</span></span><a class="headerlink" href="#accounts.models.User.role" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.models.User.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/models.html#User.save"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.models.User.save" title="Link to this definition"></a></dt>
+<dd><p>Sobrescribe el método save para asignar permisos basados en el rol del usuario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> – Argumentos posicionales.</p></li>
+<li><p><strong>**kwargs</strong> – Argumentos de palabras clave.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -384,7 +476,7 @@ object the first time, the query is executed.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
         <a href="accounts_managers.html" class="btn btn-neutral float-left" title="Administrador de Usuarios" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="accounts_urls.html" class="btn btn-neutral float-right" title="URLs del módulo accounts" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="accounts_tests.html" class="btn btn-neutral float-right" title="Pruebas para la Aplicación de Cuentas" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>management.forms &mdash; documentación de CloudCMS - 1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4936afed"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/translations.js?v=d190bf04"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CloudCMS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_migration_0001_initial.html">Migración inicial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_templates_login.html">Plantilla de Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_templates_register.html">Plantilla de Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_admin.html">Administración para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_apps.html">Aplicaciones para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_managers.html">Administrador de Usuarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_models.html">Modelo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_tests.html">Pruebas para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_urls.html">URLs del módulo accounts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../accounts_views.html">Vistas de Autenticación y Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_admin.html">Administración para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_apps.html">Aplicaciones para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_models.html">Artículo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_tests.html">Pruebas para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_urls.html">URLs del módulo blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../blogs_views.html">Vistas para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_asgi.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_context_processors.html">Context Processors para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_settings.html">Configuraciones para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_urls.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_views.html">Vistas para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cloudcms_wsgi.html">WSGI para la Aplicación CloudCMS</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CloudCMS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Código de módulo</a></li>
+      <li class="breadcrumb-item active">management.forms</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Código fuente para management.forms</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Permission</span>
+<span class="kn">from</span> <span class="nn">ckeditor.widgets</span> <span class="kn">import</span> <span class="n">CKEditorWidget</span>
+<span class="kn">from</span> <span class="nn">accounts.models</span> <span class="kn">import</span> <span class="n">User</span> 
+
+<div class="viewcode-block" id="CKEditorForm">
+<a class="viewcode-back" href="../../management_forms.html#management.forms.CKEditorForm">[documentos]</a>
+<span class="k">class</span> <span class="nc">CKEditorForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">widget</span> <span class="o">=</span> <span class="n">CKEditorWidget</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="UserForm">
+<a class="viewcode-back" href="../../management_forms.html#management.forms.UserForm">[documentos]</a>
+<span class="k">class</span> <span class="nc">UserForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+    
+    <span class="c1"># Definir los permisos específicos que deseas mostrar</span>
+    <span class="n">specific_permissions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;can_assign_permissions&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_create_category&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_edit_category&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_delete_category&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_create_blog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_view_blog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_publish_blog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_edit_blog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_delete_blog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_create_comment&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_edit_comment&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_delete_comment&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_view_user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_edit_user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can_delete_user&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">permissions</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelMultipleChoiceField</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">codename__in</span><span class="o">=</span><span class="n">specific_permissions</span><span class="p">),</span> <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">SelectMultiple</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Permisos&quot;</span><span class="p">)</span>
+    
+    
+    
+<div class="viewcode-block" id="UserForm.Meta">
+<a class="viewcode-back" href="../../management_forms.html#management.forms.UserForm.Meta">[documentos]</a>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">User</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;role&quot;</span><span class="p">,</span> <span class="s2">&quot;permissions&quot;</span><span class="p">]</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;Nombre de usuario&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;Correo electrónico&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;first_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Nombre&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;last_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Apellido&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Género&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;Rol&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;permissions&quot;</span><span class="p">:</span> <span class="s2">&quot;Permisos&quot;</span>
+        <span class="p">}</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">ROLE_CHOICES</span><span class="p">)</span>
+        <span class="p">}</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2024, Adrián.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

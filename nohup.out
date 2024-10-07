@@ -1,0 +1,1547 @@
+[2024-10-04 15:46:16,623: INFO/MainProcess] beat: Starting...
+[2024-10-04 15:46:16,635: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+ 
+ -------------- celery@Carlos v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35 2024-10-04 15:46:16
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f7af43c6200
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 16 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-04 15:46:17,427: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:46:17,499: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-04 15:46:17,499: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:46:17,501: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-04 15:46:18,517: INFO/MainProcess] mingle: all alone
+[2024-10-04 15:46:18,525: INFO/MainProcess] celery@Carlos ready.
+[2024-10-04 15:46:18,527: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[f00d9095-b604-4e75-9c99-f994d8f71ca1] received
+[2024-10-04 15:46:18,545: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[f00d9095-b604-4e75-9c99-f994d8f71ca1] succeeded in 0.017198781999468338s: None
+[2024-10-04 15:46:25,839: INFO/MainProcess] beat: Starting...
+[2024-10-04 15:46:25,843: ERROR/MainProcess] Removing corrupted schedule file 'celerybeat-schedule': error(11, 'Resource temporarily unavailable')
+Traceback (most recent call last):
+  File "/home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/beat.py", line 531, in setup_schedule
+    self._store = self._open_schedule()
+  File "/home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/beat.py", line 521, in _open_schedule
+    return self.persistence.open(self.schedule_filename, writeback=True)
+  File "/usr/lib/python3.10/shelve.py", line 243, in open
+    return DbfilenameShelf(filename, flag, protocol, writeback)
+  File "/usr/lib/python3.10/shelve.py", line 227, in __init__
+    Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback)
+  File "/usr/lib/python3.10/dbm/__init__.py", line 95, in open
+    return mod.open(file, flag, mode)
+_gdbm.error: [Errno 11] Resource temporarily unavailable: 'celerybeat-schedule'
+ 
+ -------------- celery@Carlos v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35 2024-10-04 15:46:25
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f96f0546200
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 16 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-04 15:46:26,735: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:46:26,746: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-04 15:46:26,747: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:46:26,749: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-04 15:46:27,784: INFO/MainProcess] mingle: all alone
+[2024-10-04 15:46:27,792: INFO/MainProcess] celery@Carlos ready.
+[2024-10-04 15:47:00,058: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-04 15:47:00,066: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[92b57813-3676-49cd-beef-31237ed4e688] received
+[2024-10-04 15:47:00,085: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[92b57813-3676-49cd-beef-31237ed4e688] succeeded in 0.017580460997123737s: None
+
+Restarting celery worker (/home/carlitos/CloudCMS/entorno1/bin/celery -A cloudcms worker --loglevel=info)
+
+Restarting celery worker (/home/carlitos/CloudCMS/entorno1/bin/celery -A cloudcms worker --loglevel=info)
+
+worker: Warm shutdown (MainProcess)
+celery beat v5.4.0 (opalescent) is starting.
+__    -    ... __   -        _
+LocalTime -> 2024-10-04 15:46:25
+Configuration ->
+    . broker -> redis://localhost:6379/0
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> 5.00 minutes (300s)
+ 
+ -------------- celery@Carlos v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35 2024-10-04 15:47:56
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7fd6ebc1d360
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 16 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+ 
+ -------------- celery@Carlos v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35 2024-10-04 15:47:56
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f0850c71360
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 16 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-04 15:47:57,891: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:47:57,921: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-04 15:47:57,921: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:47:57,929: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-04 15:47:57,974: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:47:57,985: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-04 15:47:57,985: WARNING/MainProcess] /home/carlitos/CloudCMS/entorno1/lib/python3.10/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-04 15:47:57,986: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-04 15:47:58,977: INFO/MainProcess] mingle: all alone
+[2024-10-04 15:47:58,990: INFO/MainProcess] celery@Carlos ready.
+[2024-10-04 15:47:59,025: INFO/MainProcess] mingle: all alone
+[2024-10-04 15:47:59,038: INFO/MainProcess] celery@Carlos ready.
+[2024-10-04 15:48:32,128: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-04 15:48:32,135: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ac65e200-e051-4396-b1d0-f06ee52953b4] received
+[2024-10-04 15:48:32,183: INFO/ForkPoolWorker-16] Task blogs.tasks.publish_scheduled_blogs[ac65e200-e051-4396-b1d0-f06ee52953b4] succeeded in 0.04421488200023305s: None
+[2024-10-04 15:49:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-04 15:49:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[d410d86a-2432-424c-8dc5-f317b69fd49c] received
+[2024-10-04 15:49:00,039: INFO/ForkPoolWorker-16] Task blogs.tasks.publish_scheduled_blogs[d410d86a-2432-424c-8dc5-f317b69fd49c] succeeded in 0.032176238993997686s: None
+[2024-10-04 15:50:00,009: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-04 15:50:00,014: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[2833bd1c-b7e2-4920-81f6-d58176cae801] received
+[2024-10-04 15:50:00,026: INFO/ForkPoolWorker-16] Task blogs.tasks.publish_scheduled_blogs[2833bd1c-b7e2-4920-81f6-d58176cae801] succeeded in 0.011070660002587829s: None
+[2024-10-07 08:56:58,307: INFO/MainProcess] beat: Starting...
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 08:56:58
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7fbd74ae7b30
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-07 08:56:58,336: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 08:56:58,711: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 08:56:58,729: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 08:56:58,730: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 08:56:58,734: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 08:56:59,742: INFO/MainProcess] mingle: all alone
+[2024-10-07 08:56:59,756: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 08:56:59,758: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[d84b82a9-d9c1-4bcf-a8df-f4877715e4d7] received
+[2024-10-07 08:56:59,787: ERROR/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[d84b82a9-d9c1-4bcf-a8df-f4877715e4d7] raised unexpected: ProgrammingError('column blogs_blog.scheduled_date does not exist\nLINE 1: ...ied_by_id", "blogs_blog"."last_modified_by_role", "blogs_blo...\n                                                             ^\n')
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column blogs_blog.scheduled_date does not exist
+LINE 1: ...ied_by_id", "blogs_blog"."last_modified_by_role", "blogs_blo...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/trace.py", line 453, in trace_task
+    R = retval = fun(*args, **kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/trace.py", line 736, in __protected_call__
+    return self.run(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/blogs/tasks.py", line 9, in publish_scheduled_blogs
+    for blog in blogs_to_publish:
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column blogs_blog.scheduled_date does not exist
+LINE 1: ...ied_by_id", "blogs_blog"."last_modified_by_role", "blogs_blo...
+                                                             ^
+
+[2024-10-07 08:57:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 08:57:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[64c54d17-4119-4529-ad77-e132cd12093b] received
+[2024-10-07 08:57:00,017: ERROR/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[64c54d17-4119-4529-ad77-e132cd12093b] raised unexpected: ProgrammingError('column blogs_blog.scheduled_date does not exist\nLINE 1: ...ied_by_id", "blogs_blog"."last_modified_by_role", "blogs_blo...\n                                                             ^\n')
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column blogs_blog.scheduled_date does not exist
+LINE 1: ...ied_by_id", "blogs_blog"."last_modified_by_role", "blogs_blo...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/trace.py", line 453, in trace_task
+    R = retval = fun(*args, **kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/trace.py", line 736, in __protected_call__
+    return self.run(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/blogs/tasks.py", line 9, in publish_scheduled_blogs
+    for blog in blogs_to_publish:
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column blogs_blog.scheduled_date does not exist
+LINE 1: ...ied_by_id", "blogs_blog"."last_modified_by_role", "blogs_blo...
+                                                             ^
+
+[2024-10-07 08:58:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 08:58:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[494fe8ea-5e1b-41a2-86f3-0dfbc3186ea9] received
+[2024-10-07 08:58:00,020: ERROR/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[494fe8ea-5e1b-41a2-86f3-0dfbc3186ea9] raised unexpected: ProgrammingError('column blogs_blog.scheduled_date does not exist\nLINE 1: ...ied_by_id", "blogs_blog"."last_modified_by_role", "blogs_blo...\n                                                             ^\n')
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column blogs_blog.scheduled_date does not exist
+LINE 1: ...ied_by_id", "blogs_blog"."last_modified_by_role", "blogs_blo...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/trace.py", line 453, in trace_task
+    R = retval = fun(*args, **kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/trace.py", line 736, in __protected_call__
+    return self.run(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/blogs/tasks.py", line 9, in publish_scheduled_blogs
+    for blog in blogs_to_publish:
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column blogs_blog.scheduled_date does not exist
+LINE 1: ...ied_by_id", "blogs_blog"."last_modified_by_role", "blogs_blo...
+                                                             ^
+
+[2024-10-07 08:58:14,457: INFO/MainProcess] beat: Starting...
+[2024-10-07 08:58:14,463: ERROR/MainProcess] Removing corrupted schedule file 'celerybeat-schedule': error(11, 'Resource temporarily unavailable')
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/beat.py", line 531, in setup_schedule
+    self._store = self._open_schedule()
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/beat.py", line 521, in _open_schedule
+    return self.persistence.open(self.schedule_filename, writeback=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shelve.py", line 243, in open
+    return DbfilenameShelf(filename, flag, protocol, writeback)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shelve.py", line 227, in __init__
+    Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/dbm/__init__.py", line 95, in open
+    return mod.open(file, flag, mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_gdbm.error: [Errno 11] Resource temporarily unavailable: 'celerybeat-schedule'
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 08:58:14
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f3c57c73dd0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-07 08:58:14,877: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 08:58:14,886: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 08:58:14,887: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 08:58:14,891: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 08:58:15,899: INFO/MainProcess] mingle: all alone
+[2024-10-07 08:58:15,910: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 08:59:00,003: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 08:59:00,011: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[8fea01d2-82b2-4b3a-b690-ba68952c0489] received
+[2024-10-07 08:59:00,040: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[8fea01d2-82b2-4b3a-b690-ba68952c0489] succeeded in 0.02772757200000342s: None
+[2024-10-07 09:00:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:00:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[9cd83360-6794-4376-b825-ee13996a016c] received
+[2024-10-07 09:00:00,016: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[9cd83360-6794-4376-b825-ee13996a016c] succeeded in 0.012700388999974166s: None
+
+Restarting celery worker (/home/asus/CloudCMS/entorno1/bin/celery -A cloudcms worker --loglevel=info)
+
+worker: Warm shutdown (MainProcess)
+
+Restarting celery worker (/home/asus/CloudCMS/entorno1/bin/celery -A cloudcms worker --loglevel=info)
+
+worker: Warm shutdown (MainProcess)
+celery beat v5.4.0 (opalescent) is starting.
+__    -    ... __   -        _
+LocalTime -> 2024-10-07 08:56:58
+Configuration ->
+    . broker -> redis://localhost:6379/0
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> 5.00 minutes (300s)
+celery beat v5.4.0 (opalescent) is starting.
+__    -    ... __   -        _
+LocalTime -> 2024-10-07 08:58:14
+Configuration ->
+    . broker -> redis://localhost:6379/0
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> 5.00 minutes (300s)
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:01:31
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f4492d9bdd0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:01:31
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f3b18f4bdd0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-07 09:01:31,881: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:01:31,892: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:01:31,893: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:01:31,898: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:01:31,939: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:01:31,948: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:01:31,949: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:01:31,951: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:01:32,915: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:01:32,925: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:01:32,966: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:01:32,978: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:02:55,410: INFO/MainProcess] beat: Starting...
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:02:55
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f9c9a58fb30
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-07 09:02:55,433: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:02:55,446: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[31854b0e-c753-40db-9596-4d3c9c071bff] received
+[2024-10-07 09:02:55,475: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[31854b0e-c753-40db-9596-4d3c9c071bff] succeeded in 0.02778618699994695s: None
+[2024-10-07 09:02:55,975: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:02:55,999: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:02:56,000: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:02:56,011: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:02:57,029: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@DESKTOP-T0VQIR0.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2024-10-07 09:02:57,029: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:02:57,039: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:03:00,008: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:03:00,012: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[06729949-2c62-4d5b-8556-d0cd2692a1e1] received
+[2024-10-07 09:03:00,054: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[06729949-2c62-4d5b-8556-d0cd2692a1e1] succeeded in 0.04078068900003018s: None
+[2024-10-07 09:04:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:04:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[a42784b4-24da-4746-bda4-8933c2be4a5d] received
+[2024-10-07 09:04:00,017: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[a42784b4-24da-4746-bda4-8933c2be4a5d] succeeded in 0.014280045000077735s: None
+[2024-10-07 09:05:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:05:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[aac5e135-863c-49ee-ba67-57421195ebec] received
+[2024-10-07 09:05:00,028: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[aac5e135-863c-49ee-ba67-57421195ebec] succeeded in 0.023343181999962326s: None
+[2024-10-07 09:06:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:06:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[6ab96e25-f7f3-42a4-bf78-04ec1413f4c3] received
+[2024-10-07 09:06:00,014: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[6ab96e25-f7f3-42a4-bf78-04ec1413f4c3] succeeded in 0.011040447000141285s: None
+[2024-10-07 09:07:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:07:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[01812737-8d1a-4d16-8a8e-e522ca5dcb8a] received
+[2024-10-07 09:07:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[01812737-8d1a-4d16-8a8e-e522ca5dcb8a] succeeded in 0.011549541999784196s: None
+[2024-10-07 09:08:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:08:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[a50a8be6-709b-42a8-aeb0-2a2a118f0890] received
+[2024-10-07 09:08:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[a50a8be6-709b-42a8-aeb0-2a2a118f0890] succeeded in 0.012166294000053313s: None
+[2024-10-07 09:09:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:09:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[61448f2f-f1b2-4367-8c0d-5cf371f972ef] received
+[2024-10-07 09:09:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[61448f2f-f1b2-4367-8c0d-5cf371f972ef] succeeded in 0.015460695000001579s: None
+[2024-10-07 09:10:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:10:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[7d6f5fee-911b-4651-967f-c8d4d738a9bc] received
+[2024-10-07 09:10:00,017: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[7d6f5fee-911b-4651-967f-c8d4d738a9bc] succeeded in 0.013688302999980806s: None
+[2024-10-07 09:11:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:11:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[df157c2c-4bb8-498d-ad69-6853f407b439] received
+[2024-10-07 09:11:00,014: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[df157c2c-4bb8-498d-ad69-6853f407b439] succeeded in 0.011537577999888526s: None
+[2024-10-07 09:12:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:12:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ca911329-dcbd-4c7b-b8ed-c7d50af44072] received
+[2024-10-07 09:12:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ca911329-dcbd-4c7b-b8ed-c7d50af44072] succeeded in 0.012272821000124168s: None
+[2024-10-07 09:13:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:13:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[0167d36d-eb2a-4c21-9e8d-698c1f7a45e2] received
+[2024-10-07 09:13:00,013: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[0167d36d-eb2a-4c21-9e8d-698c1f7a45e2] succeeded in 0.011114502000054927s: None
+[2024-10-07 09:14:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:14:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[d60cea1b-1dad-4614-8f8f-1d2d27a31b80] received
+[2024-10-07 09:14:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[d60cea1b-1dad-4614-8f8f-1d2d27a31b80] succeeded in 0.012442943999758427s: None
+[2024-10-07 09:15:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:15:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[51f5c646-7274-47d5-89cc-0aef0e34e754] received
+[2024-10-07 09:15:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[51f5c646-7274-47d5-89cc-0aef0e34e754] succeeded in 0.012485843999911594s: None
+[2024-10-07 09:16:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:16:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[2ec0d356-1f9c-46c3-8f10-90702d64db53] received
+[2024-10-07 09:16:00,018: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[2ec0d356-1f9c-46c3-8f10-90702d64db53] succeeded in 0.013979747000121279s: None
+[2024-10-07 09:17:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:17:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[f7cc0a23-c314-4421-8c8e-09efa634f3a3] received
+[2024-10-07 09:17:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[f7cc0a23-c314-4421-8c8e-09efa634f3a3] succeeded in 0.011488548999750492s: None
+[2024-10-07 09:17:58,226: INFO/MainProcess] beat: Starting...
+[2024-10-07 09:17:58,236: ERROR/MainProcess] Removing corrupted schedule file 'celerybeat-schedule': error(11, 'Resource temporarily unavailable')
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/beat.py", line 531, in setup_schedule
+    self._store = self._open_schedule()
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/beat.py", line 521, in _open_schedule
+    return self.persistence.open(self.schedule_filename, writeback=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shelve.py", line 243, in open
+    return DbfilenameShelf(filename, flag, protocol, writeback)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shelve.py", line 227, in __init__
+    Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/dbm/__init__.py", line 95, in open
+    return mod.open(file, flag, mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_gdbm.error: [Errno 11] Resource temporarily unavailable: 'celerybeat-schedule'
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:17:58
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7feb70ae5b20
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-07 09:17:58,772: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:17:58,784: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:17:58,785: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:17:58,790: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:17:59,808: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@DESKTOP-T0VQIR0.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2024-10-07 09:17:59,808: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:17:59,818: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:18:00,003: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:18:00,013: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[237bbc24-34f6-48eb-a771-a2500e62aaa6] received
+[2024-10-07 09:18:00,026: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[237bbc24-34f6-48eb-a771-a2500e62aaa6] succeeded in 0.011667774000216014s: None
+[2024-10-07 09:19:00,002: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:19:00,010: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[c14aaee8-5985-4924-9299-48ed611cf215] received
+[2024-10-07 09:19:00,030: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[c14aaee8-5985-4924-9299-48ed611cf215] succeeded in 0.01803494600017075s: None
+[2024-10-07 09:20:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:20:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ef8989fb-0f67-48aa-96ff-5df020fe4d89] received
+[2024-10-07 09:20:00,034: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ef8989fb-0f67-48aa-96ff-5df020fe4d89] succeeded in 0.029838657999789575s: None
+[2024-10-07 09:21:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:21:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[668e9151-93d0-4743-84e1-e2579a0510ed] received
+[2024-10-07 09:21:00,023: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[668e9151-93d0-4743-84e1-e2579a0510ed] succeeded in 0.01971218399967256s: None
+[2024-10-07 09:22:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:22:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[c18c28aa-896d-4582-80e0-9413510237d7] received
+[2024-10-07 09:22:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[c18c28aa-896d-4582-80e0-9413510237d7] succeeded in 0.011306479999802832s: None
+[2024-10-07 09:23:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:23:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[682eb2f5-4457-422b-888b-b83a500095b2] received
+[2024-10-07 09:23:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[682eb2f5-4457-422b-888b-b83a500095b2] succeeded in 0.01149061200021606s: None
+[2024-10-07 09:24:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:24:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[0d52473d-ca71-40a0-9a8f-6150b9328d42] received
+[2024-10-07 09:24:00,015: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[0d52473d-ca71-40a0-9a8f-6150b9328d42] succeeded in 0.012056471000050806s: None
+[2024-10-07 09:25:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:25:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[f05fa77b-e783-49e5-9c28-a39cedd91739] received
+[2024-10-07 09:25:00,014: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[f05fa77b-e783-49e5-9c28-a39cedd91739] succeeded in 0.011503701000037836s: None
+[2024-10-07 09:26:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:26:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[d414c66a-92a3-4b49-96bc-3a523b5cd8b8] received
+[2024-10-07 09:26:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[d414c66a-92a3-4b49-96bc-3a523b5cd8b8] succeeded in 0.011956504999943718s: None
+[2024-10-07 09:27:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:27:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[0974950c-3ac8-4bd4-86a9-ae87c1ad3e25] received
+[2024-10-07 09:27:00,022: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[0974950c-3ac8-4bd4-86a9-ae87c1ad3e25] succeeded in 0.016967626999758068s: None
+[2024-10-07 09:28:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:28:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ad913ff0-907b-43f5-a18b-d8c4ceafcf02] received
+[2024-10-07 09:28:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ad913ff0-907b-43f5-a18b-d8c4ceafcf02] succeeded in 0.012632602999929077s: None
+[2024-10-07 09:28:28,171: INFO/MainProcess] beat: Starting...
+[2024-10-07 09:28:28,182: ERROR/MainProcess] Removing corrupted schedule file 'celerybeat-schedule': error(11, 'Resource temporarily unavailable')
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/beat.py", line 531, in setup_schedule
+    self._store = self._open_schedule()
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/beat.py", line 521, in _open_schedule
+    return self.persistence.open(self.schedule_filename, writeback=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shelve.py", line 243, in open
+    return DbfilenameShelf(filename, flag, protocol, writeback)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shelve.py", line 227, in __init__
+    Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/dbm/__init__.py", line 95, in open
+    return mod.open(file, flag, mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_gdbm.error: [Errno 11] Resource temporarily unavailable: 'celerybeat-schedule'
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:28:28
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f96ebbd1eb0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-07 09:28:28,723: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:28:28,735: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:28:28,736: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:28:28,738: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:28:29,750: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@DESKTOP-T0VQIR0.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2024-10-07 09:28:29,751: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:28:29,762: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:29:00,003: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:29:00,012: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[04b12c0c-8608-4ea5-abd2-985ec3b3d039] received
+[2024-10-07 09:29:00,024: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[04b12c0c-8608-4ea5-abd2-985ec3b3d039] succeeded in 0.010931812999842805s: None
+[2024-10-07 09:29:56,482: INFO/MainProcess] beat: Starting...
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:29:56
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f422038db20
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-07 09:29:56,492: ERROR/MainProcess] Removing corrupted schedule file 'celerybeat-schedule': error(11, 'Resource temporarily unavailable')
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/beat.py", line 531, in setup_schedule
+    self._store = self._open_schedule()
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/beat.py", line 521, in _open_schedule
+    return self.persistence.open(self.schedule_filename, writeback=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shelve.py", line 243, in open
+    return DbfilenameShelf(filename, flag, protocol, writeback)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shelve.py", line 227, in __init__
+    Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/dbm/__init__.py", line 95, in open
+    return mod.open(file, flag, mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_gdbm.error: [Errno 11] Resource temporarily unavailable: 'celerybeat-schedule'
+[2024-10-07 09:29:56,934: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:29:56,944: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:29:56,945: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:29:56,948: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:29:57,958: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@DESKTOP-T0VQIR0.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2024-10-07 09:29:57,958: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:29:57,970: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:30:00,003: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:30:00,012: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[73c20824-e36d-4361-b4dd-d3f75d9d79f0] received
+[2024-10-07 09:30:00,025: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[73c20824-e36d-4361-b4dd-d3f75d9d79f0] succeeded in 0.011996408000413794s: None
+[2024-10-07 09:31:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:31:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[714004af-cf01-49fa-9862-972bd5a56a0f] received
+[2024-10-07 09:31:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[714004af-cf01-49fa-9862-972bd5a56a0f] succeeded in 0.013405377000253793s: None
+[2024-10-07 09:32:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:32:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[b58be286-99f9-4c35-9f71-d988c57e290e] received
+[2024-10-07 09:32:00,014: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[b58be286-99f9-4c35-9f71-d988c57e290e] succeeded in 0.011168522000389203s: None
+[2024-10-07 09:33:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:33:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[a6b69e43-0ca2-46f5-b138-8ee99098ded3] received
+[2024-10-07 09:33:00,025: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[a6b69e43-0ca2-46f5-b138-8ee99098ded3] succeeded in 0.020830398999805766s: None
+[2024-10-07 09:34:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:34:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[6661d4a0-3a75-4382-b156-33474ef80aa3] received
+[2024-10-07 09:34:00,022: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[6661d4a0-3a75-4382-b156-33474ef80aa3] succeeded in 0.018669048999981896s: None
+[2024-10-07 09:35:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:35:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[169d2323-a623-4c7a-86de-8b2de960346b] received
+[2024-10-07 09:35:00,022: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[169d2323-a623-4c7a-86de-8b2de960346b] succeeded in 0.01660864399991624s: None
+[2024-10-07 09:36:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:36:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[09628d94-e32f-4d79-b609-a534aac5e159] received
+[2024-10-07 09:36:00,014: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[09628d94-e32f-4d79-b609-a534aac5e159] succeeded in 0.01174812799990832s: None
+[2024-10-07 09:37:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:37:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[43eb1e51-0d4a-443c-a7c7-1d0dd05181f3] received
+[2024-10-07 09:37:00,023: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[43eb1e51-0d4a-443c-a7c7-1d0dd05181f3] succeeded in 0.01805590999993001s: None
+[2024-10-07 09:38:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:38:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[1e095f4e-ebe5-40e4-9564-ac5c45382d7e] received
+[2024-10-07 09:38:00,013: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[1e095f4e-ebe5-40e4-9564-ac5c45382d7e] succeeded in 0.010750636000011582s: None
+[2024-10-07 09:39:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:39:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[b2027386-1339-40d9-8e98-f356ccb4024c] received
+[2024-10-07 09:39:00,015: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[b2027386-1339-40d9-8e98-f356ccb4024c] succeeded in 0.01236184899971704s: None
+[2024-10-07 09:40:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:40:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ba4cbb33-9121-41e3-9148-b631ff0fbfc2] received
+[2024-10-07 09:40:00,037: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[ba4cbb33-9121-41e3-9148-b631ff0fbfc2] succeeded in 0.03224796599988622s: None
+[2024-10-07 09:41:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:41:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[f6b20851-f77f-4cc4-ae37-311d34ab1285] received
+[2024-10-07 09:41:00,019: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[f6b20851-f77f-4cc4-ae37-311d34ab1285] succeeded in 0.016850871999849915s: None
+
+Restarting celery worker (/home/asus/CloudCMS/entorno1/bin/celery -A cloudcms worker --loglevel=info)
+
+worker: Warm shutdown (MainProcess)
+
+Restarting celery worker (/home/asus/CloudCMS/entorno1/bin/celery -A cloudcms worker --loglevel=info)
+
+worker: Warm shutdown (MainProcess)
+
+Restarting celery worker (/home/asus/CloudCMS/entorno1/bin/celery -A cloudcms worker --loglevel=info)
+
+worker: Warm shutdown (MainProcess)
+
+Restarting celery worker (/home/asus/CloudCMS/entorno1/bin/celery -A cloudcms worker --loglevel=info)
+
+worker: Warm shutdown (MainProcess)
+celery beat v5.4.0 (opalescent) is starting.
+__    -    ... __   -        _
+LocalTime -> 2024-10-07 09:29:56
+Configuration ->
+    . broker -> redis://localhost:6379/0
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> 5.00 minutes (300s)
+celery beat v5.4.0 (opalescent) is starting.
+__    -    ... __   -        _
+LocalTime -> 2024-10-07 09:28:28
+Configuration ->
+    . broker -> redis://localhost:6379/0
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> 5.00 minutes (300s)
+celery beat v5.4.0 (opalescent) is starting.
+__    -    ... __   -        _
+LocalTime -> 2024-10-07 09:17:58
+Configuration ->
+    . broker -> redis://localhost:6379/0
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> 5.00 minutes (300s)
+celery beat v5.4.0 (opalescent) is starting.
+__    -    ... __   -        _
+LocalTime -> 2024-10-07 09:02:55
+Configuration ->
+    . broker -> redis://localhost:6379/0
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> 5.00 minutes (300s)
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:42:57
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f0dbe4b8ad0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:42:57
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f324a6e18e0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:42:57
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f063ccbdfa0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:42:57
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f08ec538e30
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-07 09:42:58,520: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:42:58,552: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:42:58,576: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:42:58,576: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:42:58,579: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:42:58,578: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:42:58,579: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:42:58,580: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:42:58,589: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:42:58,590: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:42:58,597: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:42:58,599: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:42:58,600: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:42:58,603: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:42:58,610: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:42:58,613: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:42:59,618: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@DESKTOP-T0VQIR0.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2024-10-07 09:42:59,618: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:42:59,623: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@DESKTOP-T0VQIR0.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2024-10-07 09:42:59,623: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:42:59,630: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@DESKTOP-T0VQIR0.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2024-10-07 09:42:59,630: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:42:59,630: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:42:59,635: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@DESKTOP-T0VQIR0.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2024-10-07 09:42:59,635: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:42:59,637: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:42:59,643: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:42:59,647: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:57:11,268: INFO/MainProcess] beat: Starting...
+[2024-10-07 09:57:11,330: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 09:57:11
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7fe17c4ede50
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-07 09:57:11,372: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[e3e993cb-9c72-4eb3-9c36-124320a586d0] received
+[2024-10-07 09:57:11,417: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[e3e993cb-9c72-4eb3-9c36-124320a586d0] succeeded in 0.04348526600006153s: None
+[2024-10-07 09:57:12,197: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:57:12,208: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 09:57:12,209: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 09:57:12,212: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 09:57:13,234: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@DESKTOP-T0VQIR0.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2024-10-07 09:57:13,234: INFO/MainProcess] mingle: all alone
+[2024-10-07 09:57:13,257: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 09:58:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:58:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[11d7fd01-3d98-47e8-9c6e-6163c8db3f1d] received
+[2024-10-07 09:58:00,025: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[11d7fd01-3d98-47e8-9c6e-6163c8db3f1d] succeeded in 0.021313260999704653s: None
+[2024-10-07 09:59:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 09:59:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[86c40992-3429-4348-b6cf-4637f9d2bd6b] received
+[2024-10-07 09:59:00,020: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[86c40992-3429-4348-b6cf-4637f9d2bd6b] succeeded in 0.015295812999283953s: None
+[2024-10-07 10:00:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:00:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[b6eb2ade-05e3-4d2d-b4d5-e6e345dba5e1] received
+[2024-10-07 10:00:00,022: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[b6eb2ade-05e3-4d2d-b4d5-e6e345dba5e1] succeeded in 0.017411855999853287s: None
+[2024-10-07 10:01:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:01:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[d7d29de4-4913-4f34-8595-105c8bf89887] received
+[2024-10-07 10:01:00,029: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[d7d29de4-4913-4f34-8595-105c8bf89887] succeeded in 0.02478426000016043s: None
+[2024-10-07 10:02:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:02:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[c11becd6-59c1-47a6-81dc-9b7347c4b25c] received
+[2024-10-07 10:02:00,033: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[c11becd6-59c1-47a6-81dc-9b7347c4b25c] succeeded in 0.02775326099981612s: None
+[2024-10-07 10:03:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:03:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[e171cb3d-c220-43ec-8c2a-b8cfacf0a37e] received
+[2024-10-07 10:03:00,025: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[e171cb3d-c220-43ec-8c2a-b8cfacf0a37e] succeeded in 0.02011573199979466s: None
+[2024-10-07 10:04:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:04:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[de8fe3d5-c062-47eb-b920-bbb804d8b8a9] received
+[2024-10-07 10:04:00,024: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[de8fe3d5-c062-47eb-b920-bbb804d8b8a9] succeeded in 0.020240951999767276s: None
+[2024-10-07 10:05:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:05:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ade2dc7f-6163-40a0-8c82-572b30c2b767] received
+[2024-10-07 10:05:00,029: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ade2dc7f-6163-40a0-8c82-572b30c2b767] succeeded in 0.025254555999708828s: None
+[2024-10-07 10:06:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:06:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[93d856c8-a82e-4038-aece-c80b079f968e] received
+[2024-10-07 10:06:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[93d856c8-a82e-4038-aece-c80b079f968e] succeeded in 0.013401856999735173s: None
+[2024-10-07 10:07:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:07:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[dd149451-5301-42a5-b865-270968eba758] received
+[2024-10-07 10:07:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[dd149451-5301-42a5-b865-270968eba758] succeeded in 0.014218432999768993s: None
+[2024-10-07 10:08:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:08:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[f71eea32-4ab7-4dfe-9c9e-1b2aa14b3ba8] received
+[2024-10-07 10:08:00,017: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[f71eea32-4ab7-4dfe-9c9e-1b2aa14b3ba8] succeeded in 0.013520789000722289s: None
+[2024-10-07 10:09:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:09:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[1495896c-5c0f-4fc2-b098-eb1642b07332] received
+[2024-10-07 10:09:00,021: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[1495896c-5c0f-4fc2-b098-eb1642b07332] succeeded in 0.016664099000081478s: None
+[2024-10-07 10:10:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:10:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[079bfd75-241b-4be2-98ec-9c2f3db6ca6b] received
+[2024-10-07 10:10:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[079bfd75-241b-4be2-98ec-9c2f3db6ca6b] succeeded in 0.014415564000046288s: None
+[2024-10-07 10:11:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:11:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[496de1a4-be6b-4357-b9df-7de3aa00da63] received
+[2024-10-07 10:11:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[496de1a4-be6b-4357-b9df-7de3aa00da63] succeeded in 0.013270476999423408s: None
+[2024-10-07 10:12:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:12:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[c11c1ac9-78ba-4490-a1df-06f5bceb8f55] received
+[2024-10-07 10:12:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[c11c1ac9-78ba-4490-a1df-06f5bceb8f55] succeeded in 0.013141293999979098s: None
+[2024-10-07 10:13:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:13:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[2c1138be-6a74-4c82-84ff-33d2e7a543b7] received
+[2024-10-07 10:13:00,028: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[2c1138be-6a74-4c82-84ff-33d2e7a543b7] succeeded in 0.024049244999332586s: None
+[2024-10-07 10:14:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:14:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[c33add16-5b31-4358-9d58-cf1403991762] received
+[2024-10-07 10:14:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[c33add16-5b31-4358-9d58-cf1403991762] succeeded in 0.014671807999548037s: None
+[2024-10-07 10:15:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:15:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ae378167-1cf9-498c-81b4-56d29646946f] received
+[2024-10-07 10:15:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ae378167-1cf9-498c-81b4-56d29646946f] succeeded in 0.012413192000167328s: None
+[2024-10-07 10:16:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:16:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[79de25b4-9b2c-4a40-bc02-917f38c36cc3] received
+[2024-10-07 10:16:00,014: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[79de25b4-9b2c-4a40-bc02-917f38c36cc3] succeeded in 0.011314217000290228s: None
+[2024-10-07 10:17:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:17:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[2b7f2444-476e-4ef7-b108-c9679817410f] received
+[2024-10-07 10:17:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[2b7f2444-476e-4ef7-b108-c9679817410f] succeeded in 0.0117198810003174s: None
+[2024-10-07 10:18:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:18:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[e3e7f345-035e-4b4b-a2ec-44a61f3a3b56] received
+[2024-10-07 10:18:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[e3e7f345-035e-4b4b-a2ec-44a61f3a3b56] succeeded in 0.012438138000106846s: None
+[2024-10-07 10:19:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:19:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[dc704321-48ca-4b37-93a9-f917e69d1739] received
+[2024-10-07 10:19:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[dc704321-48ca-4b37-93a9-f917e69d1739] succeeded in 0.012086195999472693s: None
+[2024-10-07 10:20:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:20:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[89c7591c-d31f-40fb-b6cc-e4dac5afdc09] received
+[2024-10-07 10:20:00,016: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[89c7591c-d31f-40fb-b6cc-e4dac5afdc09] succeeded in 0.012932243999784987s: None
+[2024-10-07 10:21:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:21:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ced0b1d0-5558-462e-8518-bcc4ea0bd008] received
+[2024-10-07 10:21:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ced0b1d0-5558-462e-8518-bcc4ea0bd008] succeeded in 0.013113447000250744s: None
+[2024-10-07 10:22:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:22:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[0aaf388b-ca7e-4f81-9138-c69185f49bef] received
+[2024-10-07 10:22:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[0aaf388b-ca7e-4f81-9138-c69185f49bef] succeeded in 0.012232351999955426s: None
+[2024-10-07 10:23:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:23:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[b97c7bb9-a9c4-4971-8441-6e6edb285240] received
+[2024-10-07 10:23:00,019: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[b97c7bb9-a9c4-4971-8441-6e6edb285240] succeeded in 0.014311534000626125s: None
+[2024-10-07 10:24:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:24:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[9f30a667-f654-471f-8dd0-a6622ca49986] received
+[2024-10-07 10:24:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[9f30a667-f654-471f-8dd0-a6622ca49986] succeeded in 0.013208639000367839s: None
+[2024-10-07 10:25:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:25:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ae3e8fd0-ad6a-4f33-bbb3-d3196b818ebb] received
+[2024-10-07 10:25:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ae3e8fd0-ad6a-4f33-bbb3-d3196b818ebb] succeeded in 0.01200384200001281s: None
+[2024-10-07 10:26:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:26:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[28feeee0-53ff-49bf-8d47-022f0f65b1ed] received
+[2024-10-07 10:26:00,016: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[28feeee0-53ff-49bf-8d47-022f0f65b1ed] succeeded in 0.012167249000412994s: None
+[2024-10-07 10:27:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:27:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[a8259df7-36cd-497f-b26c-7b3690673907] received
+[2024-10-07 10:27:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[a8259df7-36cd-497f-b26c-7b3690673907] succeeded in 0.011743717000172182s: None
+[2024-10-07 10:28:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:28:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[582ea0fe-cd83-4e41-a7c3-0cc08b823f76] received
+[2024-10-07 10:28:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[582ea0fe-cd83-4e41-a7c3-0cc08b823f76] succeeded in 0.01230613500047184s: None
+[2024-10-07 10:29:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:29:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[d7804c34-d79a-429c-9ee4-ff15bf3d4415] received
+[2024-10-07 10:29:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[d7804c34-d79a-429c-9ee4-ff15bf3d4415] succeeded in 0.013586233999376418s: None
+[2024-10-07 10:30:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:30:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[cee8f142-65e7-4aba-bcf6-9e49bc477492] received
+[2024-10-07 10:30:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[cee8f142-65e7-4aba-bcf6-9e49bc477492] succeeded in 0.013054232000285992s: None
+[2024-10-07 10:31:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:31:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[14b7d87f-95f2-4f6b-841b-05707d2e1790] received
+[2024-10-07 10:31:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[14b7d87f-95f2-4f6b-841b-05707d2e1790] succeeded in 0.012141375999817683s: None
+[2024-10-07 10:32:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:32:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[eddcc2bb-f154-4a41-bd98-fe312ef08693] received
+[2024-10-07 10:32:00,027: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[eddcc2bb-f154-4a41-bd98-fe312ef08693] succeeded in 0.023801422999895294s: None
+[2024-10-07 10:33:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:33:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[3b72e9c6-249b-469e-a1a7-5546ebbc734a] received
+[2024-10-07 10:33:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[3b72e9c6-249b-469e-a1a7-5546ebbc734a] succeeded in 0.013633859000037774s: None
+[2024-10-07 10:34:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:34:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[556914ed-cc63-46a2-8e3f-8f2194d717d8] received
+[2024-10-07 10:34:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[556914ed-cc63-46a2-8e3f-8f2194d717d8] succeeded in 0.011678432000735484s: None
+[2024-10-07 10:35:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:35:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[3e2bfe41-ed02-488f-b6c5-9816e49a68c0] received
+[2024-10-07 10:35:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[3e2bfe41-ed02-488f-b6c5-9816e49a68c0] succeeded in 0.012968609000381548s: None
+[2024-10-07 10:36:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:36:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[99191c92-cdd1-4c74-8976-c688a870f368] received
+[2024-10-07 10:36:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[99191c92-cdd1-4c74-8976-c688a870f368] succeeded in 0.014786943999752111s: None
+[2024-10-07 10:37:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:37:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[92643a5a-630c-4569-bb0a-f864b1a8b963] received
+[2024-10-07 10:37:00,019: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[92643a5a-630c-4569-bb0a-f864b1a8b963] succeeded in 0.01477666099981434s: None
+[2024-10-07 10:38:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:38:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[5e2ee75e-fae2-4692-8729-e2e921110199] received
+[2024-10-07 10:38:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[5e2ee75e-fae2-4692-8729-e2e921110199] succeeded in 0.013932990000284917s: None
+[2024-10-07 10:39:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:39:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[7714be35-3271-4419-947a-ea8532361a53] received
+[2024-10-07 10:39:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[7714be35-3271-4419-947a-ea8532361a53] succeeded in 0.013947716000075161s: None
+[2024-10-07 10:40:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:40:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[0053d448-cffa-418b-822f-9d3fa8badec6] received
+[2024-10-07 10:40:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[0053d448-cffa-418b-822f-9d3fa8badec6] succeeded in 0.013226731000031577s: None
+[2024-10-07 10:41:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:41:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ab29f8db-c3b0-46b9-99d9-172e624110d7] received
+[2024-10-07 10:41:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ab29f8db-c3b0-46b9-99d9-172e624110d7] succeeded in 0.013638743999763392s: None
+[2024-10-07 10:42:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 10:42:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[d29a8646-d5b7-4eea-bce1-0c1b0ad50e68] received
+[2024-10-07 10:42:00,021: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[d29a8646-d5b7-4eea-bce1-0c1b0ad50e68] succeeded in 0.01521441800014145s: None
+[2024-10-07 11:40:08,750: INFO/MainProcess] beat: Starting...
+[2024-10-07 11:40:08,770: ERROR/MainProcess] Removing corrupted schedule file 'celerybeat-schedule': error(11, 'Resource temporarily unavailable')
+Traceback (most recent call last):
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/beat.py", line 531, in setup_schedule
+    self._store = self._open_schedule()
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/beat.py", line 521, in _open_schedule
+    return self.persistence.open(self.schedule_filename, writeback=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shelve.py", line 243, in open
+    return DbfilenameShelf(filename, flag, protocol, writeback)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/shelve.py", line 227, in __init__
+    Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/dbm/__init__.py", line 95, in open
+    return mod.open(file, flag, mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_gdbm.error: [Errno 11] Resource temporarily unavailable: 'celerybeat-schedule'
+ 
+ -------------- celery@DESKTOP-T0VQIR0 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.39 2024-10-07 11:40:08
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7f0e08aa8590
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 8 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-07 11:40:10,107: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 11:40:10,183: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-07 11:40:10,185: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2024-10-07 11:40:10,198: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-07 11:40:11,258: WARNING/MainProcess] /home/asus/CloudCMS/entorno1/lib/python3.12/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@DESKTOP-T0VQIR0.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2024-10-07 11:40:11,258: INFO/MainProcess] mingle: all alone
+[2024-10-07 11:40:11,282: INFO/MainProcess] celery@DESKTOP-T0VQIR0 ready.
+[2024-10-07 11:41:00,004: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:41:00,022: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[b84195ff-f284-41f8-8a96-e6676ae43120] received
+[2024-10-07 11:41:00,131: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[b84195ff-f284-41f8-8a96-e6676ae43120] succeeded in 0.08415650700044353s: None
+[2024-10-07 11:42:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:42:00,008: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ab577502-155a-4261-9fe9-2a422053f438] received
+[2024-10-07 11:42:00,123: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ab577502-155a-4261-9fe9-2a422053f438] succeeded in 0.08877153300090868s: None
+[2024-10-07 11:43:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:43:00,008: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[00d881c3-74e1-402b-be9d-05544a3ce9b2] received
+[2024-10-07 11:43:00,195: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[00d881c3-74e1-402b-be9d-05544a3ce9b2] succeeded in 0.08532685200043488s: None
+[2024-10-07 11:44:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:44:00,011: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[63779135-b8a9-4201-b8ee-c2a4e023c0e3] received
+[2024-10-07 11:44:00,141: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[63779135-b8a9-4201-b8ee-c2a4e023c0e3] succeeded in 0.09157132700056536s: None
+[2024-10-07 11:45:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:45:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[77f8025b-91be-479c-8745-30a9aee4d8eb] received
+[2024-10-07 11:45:00,025: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[77f8025b-91be-479c-8745-30a9aee4d8eb] succeeded in 0.021580278998953872s: None
+[2024-10-07 11:46:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:46:00,006: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[4795205e-d984-4625-94f8-50c02adc0560] received
+[2024-10-07 11:46:00,098: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[4795205e-d984-4625-94f8-50c02adc0560] succeeded in 0.0709889520003344s: None
+[2024-10-07 11:47:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:47:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[888d28c6-8bc5-4dd7-8717-0457bdedc1e3] received
+[2024-10-07 11:47:00,019: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[888d28c6-8bc5-4dd7-8717-0457bdedc1e3] succeeded in 0.0156005520002509s: None
+[2024-10-07 11:48:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:48:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[7a9b02c8-f439-4492-b49e-31b48b0a9496] received
+[2024-10-07 11:48:00,020: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[7a9b02c8-f439-4492-b49e-31b48b0a9496] succeeded in 0.01465967600051954s: None
+[2024-10-07 11:49:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:49:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[62dfb34d-1f02-4ac5-acc1-2bb82d48f9c0] received
+[2024-10-07 11:49:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[62dfb34d-1f02-4ac5-acc1-2bb82d48f9c0] succeeded in 0.013837741000315873s: None
+[2024-10-07 11:50:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:50:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[bbfa41f7-9b2b-44cb-b372-f29408aad523] received
+[2024-10-07 11:50:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[bbfa41f7-9b2b-44cb-b372-f29408aad523] succeeded in 0.012840741999752936s: None
+[2024-10-07 11:51:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:51:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[5f1d491a-b6b5-4d86-8330-d8f6cc79c550] received
+[2024-10-07 11:51:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[5f1d491a-b6b5-4d86-8330-d8f6cc79c550] succeeded in 0.01328181200005929s: None
+[2024-10-07 11:52:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:52:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[a8baaf3c-b480-4901-9744-9759b2b9128c] received
+[2024-10-07 11:52:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[a8baaf3c-b480-4901-9744-9759b2b9128c] succeeded in 0.014083449999816366s: None
+[2024-10-07 11:53:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:53:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[8b557b94-a60c-4276-b259-0656dce8aeef] received
+[2024-10-07 11:53:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[8b557b94-a60c-4276-b259-0656dce8aeef] succeeded in 0.01422908099993947s: None
+[2024-10-07 11:54:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:54:00,009: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[6664a015-f0ec-4288-bba6-06bcdad1ddb6] received
+[2024-10-07 11:54:00,094: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[6664a015-f0ec-4288-bba6-06bcdad1ddb6] succeeded in 0.06296455199844786s: None
+[2024-10-07 11:55:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:55:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[05b6735d-fbd5-48ac-a386-d22c34595572] received
+[2024-10-07 11:55:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[05b6735d-fbd5-48ac-a386-d22c34595572] succeeded in 0.013765656000032322s: None
+[2024-10-07 11:56:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:56:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[34c325e6-dd38-4876-ad1b-9b78c5a0f04e] received
+[2024-10-07 11:56:00,019: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[34c325e6-dd38-4876-ad1b-9b78c5a0f04e] succeeded in 0.014663662001112243s: None
+[2024-10-07 11:57:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:57:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[8dc88fe9-53b2-4948-a8a2-ca180716f610] received
+[2024-10-07 11:57:00,020: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[8dc88fe9-53b2-4948-a8a2-ca180716f610] succeeded in 0.01702610899883439s: None
+[2024-10-07 11:58:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:58:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[16566057-836f-4566-974b-058acff08a2b] received
+[2024-10-07 11:58:00,017: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[16566057-836f-4566-974b-058acff08a2b] succeeded in 0.01333622399943124s: None
+[2024-10-07 11:59:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 11:59:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ee40ac54-9293-4d89-aa4c-3391de2750fd] received
+[2024-10-07 11:59:00,025: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ee40ac54-9293-4d89-aa4c-3391de2750fd] succeeded in 0.021756996000476647s: None
+[2024-10-07 12:00:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:00:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[67015f22-5475-435f-8b55-ae6cd00d5866] received
+[2024-10-07 12:00:00,024: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[67015f22-5475-435f-8b55-ae6cd00d5866] succeeded in 0.019751500998609117s: None
+[2024-10-07 12:01:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:01:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[8e047efd-2086-4cc6-8a7c-667504e212e4] received
+[2024-10-07 12:01:00,024: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[8e047efd-2086-4cc6-8a7c-667504e212e4] succeeded in 0.018280352000147104s: None
+[2024-10-07 12:02:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:02:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[8c01a7a5-ae1f-4030-b821-125090988f69] received
+[2024-10-07 12:02:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[8c01a7a5-ae1f-4030-b821-125090988f69] succeeded in 0.014542549999532639s: None
+[2024-10-07 12:03:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:03:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[89004ef7-2aad-4536-8845-92c0460e5eb2] received
+[2024-10-07 12:03:00,022: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[89004ef7-2aad-4536-8845-92c0460e5eb2] succeeded in 0.018210719999842695s: None
+[2024-10-07 12:04:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:04:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[e6379d0c-cca8-4a59-8023-be273d91b20a] received
+[2024-10-07 12:04:00,037: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[e6379d0c-cca8-4a59-8023-be273d91b20a] succeeded in 0.026756072000353015s: None
+[2024-10-07 12:05:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:05:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[8882c332-e7d3-44a6-bea7-8dba5e3246fa] received
+[2024-10-07 12:05:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[8882c332-e7d3-44a6-bea7-8dba5e3246fa] succeeded in 0.014254084999265615s: None
+[2024-10-07 12:06:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:06:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[63745939-af56-4a55-b345-615256f823ce] received
+[2024-10-07 12:06:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[63745939-af56-4a55-b345-615256f823ce] succeeded in 0.014295169999968493s: None
+[2024-10-07 12:07:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:07:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[dae5cc6b-23b0-43b2-86e1-054f1173898f] received
+[2024-10-07 12:07:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[dae5cc6b-23b0-43b2-86e1-054f1173898f] succeeded in 0.01305384000079357s: None
+[2024-10-07 12:08:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:08:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[7a1d84ef-f5a4-411d-a8a4-96f41a2939c0] received
+[2024-10-07 12:08:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[7a1d84ef-f5a4-411d-a8a4-96f41a2939c0] succeeded in 0.015114019999600714s: None
+[2024-10-07 12:09:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:09:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[255126f2-dfa3-4fe6-9134-66e2fb531944] received
+[2024-10-07 12:09:00,029: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[255126f2-dfa3-4fe6-9134-66e2fb531944] succeeded in 0.02072050899914757s: None
+[2024-10-07 12:10:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:10:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[cda31c7e-4174-403a-a3b0-953b05f7dc8c] received
+[2024-10-07 12:10:00,033: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[cda31c7e-4174-403a-a3b0-953b05f7dc8c] succeeded in 0.026764883999931044s: None
+[2024-10-07 12:11:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:11:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[6f2c5697-f951-4aff-b421-c10cedcd2350] received
+[2024-10-07 12:11:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[6f2c5697-f951-4aff-b421-c10cedcd2350] succeeded in 0.012598010000147042s: None
+[2024-10-07 12:12:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:12:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[3e5f51ca-7bd3-48e2-b390-4aeada44d4cc] received
+[2024-10-07 12:12:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[3e5f51ca-7bd3-48e2-b390-4aeada44d4cc] succeeded in 0.014173543999277172s: None
+[2024-10-07 12:13:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:13:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[2d284574-f159-4dc3-96ec-b4c17c6b9a0b] received
+[2024-10-07 12:13:00,047: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[2d284574-f159-4dc3-96ec-b4c17c6b9a0b] succeeded in 0.039458567000110634s: None
+[2024-10-07 12:14:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:14:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[98665c15-33c8-4f52-89e1-f9d84454981b] received
+[2024-10-07 12:14:00,017: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[98665c15-33c8-4f52-89e1-f9d84454981b] succeeded in 0.013602683000499383s: None
+[2024-10-07 12:15:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:15:00,007: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[e0bf3003-9485-4c4d-9ea2-44a3af3464b9] received
+[2024-10-07 12:15:00,045: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[e0bf3003-9485-4c4d-9ea2-44a3af3464b9] succeeded in 0.030079087999183685s: None
+[2024-10-07 12:16:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:16:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[2db61b48-ea80-4514-8a0c-57cca6f9198b] received
+[2024-10-07 12:16:00,025: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[2db61b48-ea80-4514-8a0c-57cca6f9198b] succeeded in 0.021304170000803424s: None
+[2024-10-07 12:17:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:17:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[3426a11a-1c01-4f3c-8d8c-62e049cadbac] received
+[2024-10-07 12:17:00,026: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[3426a11a-1c01-4f3c-8d8c-62e049cadbac] succeeded in 0.019989467999039334s: None
+[2024-10-07 12:18:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:18:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[eb039fd1-992c-4fc5-85f8-5a7bb0f902b6] received
+[2024-10-07 12:18:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[eb039fd1-992c-4fc5-85f8-5a7bb0f902b6] succeeded in 0.012034877998303273s: None
+[2024-10-07 12:19:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:19:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[f515dd3c-e615-4c59-b1d4-5d6f56d196ca] received
+[2024-10-07 12:19:00,019: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[f515dd3c-e615-4c59-b1d4-5d6f56d196ca] succeeded in 0.014667715000541648s: None
+[2024-10-07 12:20:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:20:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[c5d9e87c-afac-403c-b582-a234d91817dc] received
+[2024-10-07 12:20:00,029: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[c5d9e87c-afac-403c-b582-a234d91817dc] succeeded in 0.021823281998877064s: None
+[2024-10-07 12:21:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:21:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[a2e6caad-bf42-4bd3-bc11-6eb79ba7dedc] received
+[2024-10-07 12:21:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[a2e6caad-bf42-4bd3-bc11-6eb79ba7dedc] succeeded in 0.01378836099866021s: None
+[2024-10-07 12:22:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:22:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[3441cd38-99c4-4671-82c4-620a685f13b3] received
+[2024-10-07 12:22:00,031: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[3441cd38-99c4-4671-82c4-620a685f13b3] succeeded in 0.02693006399931619s: None
+[2024-10-07 12:23:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:23:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[9275a5ad-c005-407f-adf9-751d9c44726c] received
+[2024-10-07 12:23:00,018: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[9275a5ad-c005-407f-adf9-751d9c44726c] succeeded in 0.01411226100026397s: None
+[2024-10-07 12:24:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:24:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[14b6fb08-4ed2-4227-a5ba-adbe066bd653] received
+[2024-10-07 12:24:00,017: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[14b6fb08-4ed2-4227-a5ba-adbe066bd653] succeeded in 0.014450303999183234s: None
+[2024-10-07 12:25:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:25:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[75b0c9a2-a887-45f7-8c03-b4015b1f1db8] received
+[2024-10-07 12:25:00,019: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[75b0c9a2-a887-45f7-8c03-b4015b1f1db8] succeeded in 0.01602283499960322s: None
+[2024-10-07 12:26:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:26:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[07cbd1b2-9c29-4378-82ce-465a8f41c3ec] received
+[2024-10-07 12:26:00,025: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[07cbd1b2-9c29-4378-82ce-465a8f41c3ec] succeeded in 0.021759252998890588s: None
+[2024-10-07 12:27:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:27:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[0a13bd72-09fc-40ee-823a-5af6f75534c9] received
+[2024-10-07 12:27:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[0a13bd72-09fc-40ee-823a-5af6f75534c9] succeeded in 0.014391163000254892s: None
+[2024-10-07 12:28:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:28:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[2a759588-b683-4a02-8261-2d9ed927646e] received
+[2024-10-07 12:28:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[2a759588-b683-4a02-8261-2d9ed927646e] succeeded in 0.013469108000208507s: None
+[2024-10-07 12:29:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:29:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[c3712355-e511-4c30-9b15-b3af97d772d1] received
+[2024-10-07 12:29:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[c3712355-e511-4c30-9b15-b3af97d772d1] succeeded in 0.01481336899996677s: None
+[2024-10-07 12:30:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:30:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[f57a543f-c048-4b49-aec8-c4b4694527b8] received
+[2024-10-07 12:30:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[f57a543f-c048-4b49-aec8-c4b4694527b8] succeeded in 0.013562133999585058s: None
+[2024-10-07 12:31:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:31:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[247c485f-95c0-408f-9f3c-9250db52aa40] received
+[2024-10-07 12:31:00,016: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[247c485f-95c0-408f-9f3c-9250db52aa40] succeeded in 0.012442143999578548s: None
+[2024-10-07 12:32:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:32:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[20efcff2-544a-4425-9b4e-c49591497b0d] received
+[2024-10-07 12:32:00,016: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[20efcff2-544a-4425-9b4e-c49591497b0d] succeeded in 0.013003172000026098s: None
+[2024-10-07 12:33:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:33:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[55201f4c-e4b5-4268-814b-787a3532e876] received
+[2024-10-07 12:33:00,020: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[55201f4c-e4b5-4268-814b-787a3532e876] succeeded in 0.01647942000090552s: None
+[2024-10-07 12:34:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:34:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[3cf2fa17-583f-41b3-a8e7-ea7f7feb44f5] received
+[2024-10-07 12:34:00,025: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[3cf2fa17-583f-41b3-a8e7-ea7f7feb44f5] succeeded in 0.020062941001015133s: None
+[2024-10-07 12:35:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:35:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[52682770-cfb6-406c-b409-8fd68d8d1723] received
+[2024-10-07 12:35:00,018: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[52682770-cfb6-406c-b409-8fd68d8d1723] succeeded in 0.014471230999333784s: None
+[2024-10-07 12:36:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:36:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[4c7e9399-7360-41bd-8b12-634d084aedb3] received
+[2024-10-07 12:36:00,019: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[4c7e9399-7360-41bd-8b12-634d084aedb3] succeeded in 0.014688760000353795s: None
+[2024-10-07 12:37:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:37:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[5e3fd01c-6c50-4e36-b4a2-fe5b2abd9b91] received
+[2024-10-07 12:37:00,019: INFO/ForkPoolWorker-7] Task blogs.tasks.publish_scheduled_blogs[5e3fd01c-6c50-4e36-b4a2-fe5b2abd9b91] succeeded in 0.015221394000036526s: None
+[2024-10-07 12:38:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:38:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[3bc69a08-7e5b-4a95-ba91-f3a6d50c264f] received
+[2024-10-07 12:38:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[3bc69a08-7e5b-4a95-ba91-f3a6d50c264f] succeeded in 0.014085213000726071s: None
+[2024-10-07 12:39:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:39:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[3255c5a6-9eeb-45ea-a355-d725959558c9] received
+[2024-10-07 12:39:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[3255c5a6-9eeb-45ea-a355-d725959558c9] succeeded in 0.014946534000046086s: None
+[2024-10-07 12:40:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:40:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[98911f1c-f221-4994-8a8e-87dc8c5bf084] received
+[2024-10-07 12:40:00,021: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[98911f1c-f221-4994-8a8e-87dc8c5bf084] succeeded in 0.015515244000198436s: None
+[2024-10-07 12:41:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:41:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[76bce758-be47-4558-9a2e-9c9753c37a2d] received
+[2024-10-07 12:41:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[76bce758-be47-4558-9a2e-9c9753c37a2d] succeeded in 0.013500363998900866s: None
+[2024-10-07 12:42:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:42:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[d19153d8-3ef6-419e-a377-769af501042d] received
+[2024-10-07 12:42:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[d19153d8-3ef6-419e-a377-769af501042d] succeeded in 0.013626875999761978s: None
+[2024-10-07 12:43:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:43:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[fbf54516-be67-43c3-9ea1-017c606c9fc0] received
+[2024-10-07 12:43:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[fbf54516-be67-43c3-9ea1-017c606c9fc0] succeeded in 0.012729706000754959s: None
+[2024-10-07 12:44:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:44:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[5c18a33f-8fe3-48a2-8378-ad32616ea6f3] received
+[2024-10-07 12:44:00,022: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[5c18a33f-8fe3-48a2-8378-ad32616ea6f3] succeeded in 0.01729625600091822s: None
+[2024-10-07 12:45:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:45:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[6a5df233-5b42-48f4-bb4c-2b81d3031852] received
+[2024-10-07 12:45:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[6a5df233-5b42-48f4-bb4c-2b81d3031852] succeeded in 0.013846286999978474s: None
+[2024-10-07 12:46:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:46:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[e93966c1-e1fd-4e07-b197-0df77b716410] received
+[2024-10-07 12:46:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[e93966c1-e1fd-4e07-b197-0df77b716410] succeeded in 0.014967799999794806s: None
+[2024-10-07 12:47:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:47:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[a7af5b09-9d32-46d0-9dd7-573abd609565] received
+[2024-10-07 12:47:00,016: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[a7af5b09-9d32-46d0-9dd7-573abd609565] succeeded in 0.013477803999194293s: None
+[2024-10-07 12:48:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:48:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[e5f2aaf2-f560-411c-b595-46be4c12b865] received
+[2024-10-07 12:48:00,019: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[e5f2aaf2-f560-411c-b595-46be4c12b865] succeeded in 0.014924642000551103s: None
+[2024-10-07 12:49:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:49:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[74055100-cc5f-4ab3-8e18-d825ab7de2f6] received
+[2024-10-07 12:49:00,023: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[74055100-cc5f-4ab3-8e18-d825ab7de2f6] succeeded in 0.019080976999248378s: None
+[2024-10-07 12:50:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:50:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[9f4285b3-3a4f-4f3a-962a-8974f1729b07] received
+[2024-10-07 12:50:00,036: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[9f4285b3-3a4f-4f3a-962a-8974f1729b07] succeeded in 0.02671077500053798s: None
+[2024-10-07 12:51:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:51:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[31972fca-2c1a-469d-adb4-1619cc701b59] received
+[2024-10-07 12:51:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[31972fca-2c1a-469d-adb4-1619cc701b59] succeeded in 0.014062616999581223s: None
+[2024-10-07 12:52:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:52:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[9abb921b-2d91-4a1e-84f9-dd3421b8a76f] received
+[2024-10-07 12:52:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[9abb921b-2d91-4a1e-84f9-dd3421b8a76f] succeeded in 0.012050471999828005s: None
+[2024-10-07 12:53:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:53:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[8b4517be-5cde-4a79-9f2d-8dd348f8d3aa] received
+[2024-10-07 12:53:00,017: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[8b4517be-5cde-4a79-9f2d-8dd348f8d3aa] succeeded in 0.01403844900050899s: None
+[2024-10-07 12:54:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:54:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[4f5b8db4-019c-47f1-ad57-cb34f213625f] received
+[2024-10-07 12:54:00,015: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[4f5b8db4-019c-47f1-ad57-cb34f213625f] succeeded in 0.011769011998694623s: None
+[2024-10-07 12:55:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-07 12:55:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ab2ad12f-d286-4e3a-a60d-9a365f3a6d59] received
+[2024-10-07 12:55:00,018: INFO/ForkPoolWorker-8] Task blogs.tasks.publish_scheduled_blogs[ab2ad12f-d286-4e3a-a60d-9a365f3a6d59] succeeded in 0.015256254000632907s: None

@@ -13,8 +13,9 @@ grep -qxF 'DEBUG=True' .env || echo 'DEBUG=True' >> .env
 export $(cat .env | xargs)
 
 # Migrar la base de datos
-#python manage.py makemigrations
-#python manage.py migrate
+python manage.py makemigrations
+python manage.py migrate
+
 
 # Ejecutar el servidor en modo desarrollo
 python manage.py runserver
