@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vistas para la Aplicación CloudCMS &mdash; documentación de CloudCMS - 1.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=7ab3649f" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4936afed"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=d190bf04"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="prev" title="URLs para la Aplicación CloudCMS" href="management_urls.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CloudCMS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="accounts_migration_0001_initial.html">Migración inicial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_templates_login.html">Plantilla de Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_templates_register.html">Plantilla de Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_admin.html">Administración para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_apps.html">Aplicaciones para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_managers.html">Administrador de Usuarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_models.html">Modelo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_tests.html">Pruebas para la Aplicación de Cuentas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_urls.html">URLs del módulo accounts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accounts_views.html">Vistas de Autenticación y Registro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_admin.html">Administración para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_apps.html">Aplicaciones para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_models.html">Artículo de Usuario</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_tests.html">Pruebas para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_urls.html">URLs del módulo blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blogs_views.html">Vistas para la Aplicación de Blogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_asgi.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_context_processors.html">Context Processors para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_settings.html">Configuraciones para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_urls.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_views.html">Vistas para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cloudcms_wsgi.html">WSGI para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_admin.html">Admin para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_apps.html">Configuración de la Aplicación Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_forms.html">Formularios para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_middleware.html">Middleware para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_models.html">Modelos para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_tests.html">Pruebas para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_urls.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Vistas para la Aplicación CloudCMS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.CreateBlog"><code class="docutils literal notranslate"><span class="pre">CreateBlog</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.CreateBlog.dispatch"><code class="docutils literal notranslate"><span class="pre">CreateBlog.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.CreateBlog.get"><code class="docutils literal notranslate"><span class="pre">CreateBlog.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.CreateBlog.post"><code class="docutils literal notranslate"><span class="pre">CreateBlog.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.CreateCategory"><code class="docutils literal notranslate"><span class="pre">CreateCategory</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.CreateCategory.dispatch"><code class="docutils literal notranslate"><span class="pre">CreateCategory.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.CreateCategory.get"><code class="docutils literal notranslate"><span class="pre">CreateCategory.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.CreateCategory.post"><code class="docutils literal notranslate"><span class="pre">CreateCategory.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.DeleteBlog"><code class="docutils literal notranslate"><span class="pre">DeleteBlog</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.DeleteBlog.dispatch"><code class="docutils literal notranslate"><span class="pre">DeleteBlog.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.DeleteBlog.get"><code class="docutils literal notranslate"><span class="pre">DeleteBlog.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.DeleteCategory"><code class="docutils literal notranslate"><span class="pre">DeleteCategory</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.DeleteCategory.get"><code class="docutils literal notranslate"><span class="pre">DeleteCategory.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.DeleteComment"><code class="docutils literal notranslate"><span class="pre">DeleteComment</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.DeleteComment.get"><code class="docutils literal notranslate"><span class="pre">DeleteComment.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.EditBlog"><code class="docutils literal notranslate"><span class="pre">EditBlog</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.EditBlog.dispatch"><code class="docutils literal notranslate"><span class="pre">EditBlog.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.EditBlog.get"><code class="docutils literal notranslate"><span class="pre">EditBlog.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.EditBlog.post"><code class="docutils literal notranslate"><span class="pre">EditBlog.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.EditCategory"><code class="docutils literal notranslate"><span class="pre">EditCategory</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.EditCategory.get"><code class="docutils literal notranslate"><span class="pre">EditCategory.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.EditCategory.post"><code class="docutils literal notranslate"><span class="pre">EditCategory.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.KanbanView"><code class="docutils literal notranslate"><span class="pre">KanbanView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.KanbanView.get"><code class="docutils literal notranslate"><span class="pre">KanbanView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.ManageBlog"><code class="docutils literal notranslate"><span class="pre">ManageBlog</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.ManageBlog.get"><code class="docutils literal notranslate"><span class="pre">ManageBlog.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.ManageCategory"><code class="docutils literal notranslate"><span class="pre">ManageCategory</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.ManageCategory.dispatch"><code class="docutils literal notranslate"><span class="pre">ManageCategory.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.ManageCategory.get"><code class="docutils literal notranslate"><span class="pre">ManageCategory.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.ManageComment"><code class="docutils literal notranslate"><span class="pre">ManageComment</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.ManageComment.get"><code class="docutils literal notranslate"><span class="pre">ManageComment.get()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CloudCMS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Vistas para la Aplicación CloudCMS</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/management_views.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-management.views">
+<span id="vistas-para-la-aplicacion-cloudcms"></span><h1>Vistas para la Aplicación CloudCMS<a class="headerlink" href="#module-management.views" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.CreateBlog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">CreateBlog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#CreateBlog"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.CreateBlog" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.CreateBlog.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#management.views.CreateBlog.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.CreateBlog.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#CreateBlog.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.CreateBlog.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.CreateBlog.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#CreateBlog.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.CreateBlog.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.CreateCategory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">CreateCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#CreateCategory"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.CreateCategory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.CreateCategory.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#management.views.CreateCategory.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.CreateCategory.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#CreateCategory.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.CreateCategory.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.CreateCategory.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#CreateCategory.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.CreateCategory.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.DeleteBlog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">DeleteBlog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#DeleteBlog"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.DeleteBlog" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.DeleteBlog.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#management.views.DeleteBlog.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.DeleteBlog.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#DeleteBlog.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.DeleteBlog.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.DeleteCategory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">DeleteCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#DeleteCategory"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.DeleteCategory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.DeleteCategory.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#DeleteCategory.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.DeleteCategory.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.DeleteComment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">DeleteComment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#DeleteComment"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.DeleteComment" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.DeleteComment.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#DeleteComment.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.DeleteComment.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.EditBlog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">EditBlog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#EditBlog"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.EditBlog" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.EditBlog.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#management.views.EditBlog.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.EditBlog.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#EditBlog.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.EditBlog.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.EditBlog.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#EditBlog.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.EditBlog.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.EditCategory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">EditCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#EditCategory"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.EditCategory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.EditCategory.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#EditCategory.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.EditCategory.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.EditCategory.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#EditCategory.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.EditCategory.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.KanbanView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">KanbanView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#KanbanView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.KanbanView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.KanbanView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#KanbanView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.KanbanView.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.ManageBlog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">ManageBlog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#ManageBlog"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.ManageBlog" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.ManageBlog.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#ManageBlog.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.ManageBlog.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.ManageCategory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">ManageCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#ManageCategory"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.ManageCategory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.ManageCategory.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#management.views.ManageCategory.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.ManageCategory.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#ManageCategory.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.ManageCategory.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.ManageComment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">ManageComment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#ManageComment"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.ManageComment" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.ManageComment.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#ManageComment.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.ManageComment.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
+        <a href="management_urls.html" class="btn btn-neutral float-left" title="URLs para la Aplicación CloudCMS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2024, Adrián.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

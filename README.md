@@ -79,6 +79,11 @@
         CREATE DATABASE dbcloudcms_prod OWNER admin_cms;
         ```
 
+    - Otorgar permisos de creación de bases de datos al usuario:
+        ```sql
+        ALTER USER admin_cms CREATEDB;
+        ```
+
     - Salir de [`psql`]:
         ```sh
         \q
@@ -137,8 +142,11 @@
 
 1. Ejecutar las pruebas:
     ```sh
-    python manage.py test accounts.tests
+    python manage.py test accounts.tests.LoginViewTests
+    python manage.py test accounts.tests.UserListViewTests
+    python manage.py test accounts.tests.EditUserViewTests
     python manage.py test blogs.tests
+    python manage.py test management.tests.KanbanViewTest
     ```
 
 ## API

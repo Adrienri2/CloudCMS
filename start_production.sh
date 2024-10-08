@@ -21,7 +21,11 @@ server {
     server_name 127.0.0.1;
     client_max_body_size 100M;
     location /static/ {
-        alias $(pwd)/static_prod/;
+    alias $(pwd)/static_prod/;
+    }
+
+    location /uploads/ {
+        alias $(pwd)/uploads/;
     }
 
     location / {
@@ -56,6 +60,7 @@ export $(cat .env | xargs)
 python manage.py collectstatic --noinput
 
 # Aplicar migraciones de la base de datos
+python manage.py makemigrations
 python manage.py migrate
 
 # Ejecutar el worker de Celery en segundo plano
