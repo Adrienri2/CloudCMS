@@ -1,0 +1,10 @@
+
+<!-- This is a simple template that will display a list of notifications. -->
+<ul>
+    {% for notification in notifications %}
+        <li>
+            {{ notification.message }}
+            <a href="{% url 'mark_as_read' notification.id %}">Marcar como leído</a>
+        </li>
+    {% endfor %}
+</ul>

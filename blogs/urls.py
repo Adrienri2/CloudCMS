@@ -13,6 +13,7 @@ Rutas:
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from . import views
+from .views import notifications, mark_as_read
 
 
 app_name = "blogs"
@@ -23,4 +24,7 @@ urlpatterns = [
     path("create/bookmark/", login_required(views.CreateBookmark.as_view()), name="create_bookmark"),
     path("create/like/", login_required(views.CreateLike.as_view()), name="create_like"),
     path("<slug:slug>/", views.BlogView.as_view(), name="blog"),
+    path('notifications/', notifications, name='notifications'),
+    path('notifications/mark_as_read/<int:notification_id>/', mark_as_read, name='mark_as_read'),
+
 ]

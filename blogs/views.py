@@ -1,9 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views import View
 from django.db.models import F
 from django.urls import reverse
 from .models import *
+from .models import Notification
 
 """
 Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.
@@ -135,3 +137,20 @@ class CreateReply(View):
 
         messages.success(request, "Respuesta creada")
         return redirect(get_blog_url(comment.blog.slug)+"#comments")
+    
+
+
+
+@login_required
+def notifications(request):
+    notifications = Notification.objects.filter(user=request.user, is_read=False)
+    notifications_count = notifications.count()
+    return render(request, 'notifications.html', {'notifications': notifications, 'notifications_count': notifications_count})
+
+@login_required
+def mark_as_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id, user=request.user)
+    notification.is_read = True
+    notification.save()
+    return redirect('manage:blog')
+

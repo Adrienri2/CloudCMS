@@ -90,6 +90,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'blogs.context_processors.categories_processor',
+                'blogs.context_processors.notification_processor', 
             
             ],
         },
