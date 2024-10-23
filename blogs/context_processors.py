@@ -1,5 +1,6 @@
 
 from .models import Category
+from .models import Notification
 
 def categories_processor(request):
     """
@@ -22,3 +23,11 @@ def categories_processor(request):
     """
     categories = Category.objects.filter(is_active=True)
     return {'categories': categories}
+
+
+def notification_processor(request):
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(user=request.user, is_read=False)
+        notifications_count = notifications.count()
+        return {'notifications': notifications, 'notifications_count': notifications_count}
+    return {}

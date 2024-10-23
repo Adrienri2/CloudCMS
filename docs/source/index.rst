@@ -37,6 +37,14 @@ documentation for details.
    cloudcms_urls
    cloudcms_views
    cloudcms_wsgi
+   management_admin
+   management_apps
+   management_forms
+   management_middleware
+   management_models
+   management_tests
+   management_urls
+   management_views
 
 
 Indices and tables

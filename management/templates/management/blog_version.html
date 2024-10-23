@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block ogtitle %}{{ version.title }}{% endblock %}
+{% block ogdescription %}{{ version.desc }}{% endblock %}
+{% block ogimage %}{{ version.thumbnail.url }}{% endblock %}
+
+{% block title %}Vista Previa de la Versión del Blog{% endblock %}
+
+{% block body %}
+{% load static %}
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <h2>
+      {{ version.title }}
+    </h2>
+  </div>
+  <div class="row">
+    <p>Modificado: {{ version.created_at }} | Modificado por: {{ version.modified_by.username }} ({{ version.modified_by_role }})</p>
+  </div>
+  <div class="row mb-3">
+      {% if version.category.is_active %}
+      <div class="col">
+        <p>Categoria: <span style="font-weight: bold; color: #007bff;">{{ version.category.category }}</span></p>
+      </div>
+      {% endif %}
+  </div>
+  <div class="row">
+    <div class="ratio ratio-16x9">
+      <img src="{{ version.thumbnail.url }}" class="img-fluid rounded mx-auto d-block" alt="miniatura del blog">
+    </div>
+    <p>
+      {{ version.content|safe }}
+    </p>
+  </div>
+</div>
+{% endblock %}

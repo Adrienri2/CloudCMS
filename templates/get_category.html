@@ -10,7 +10,7 @@
     </div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       {% for blog in category.blogs.all %}
-        {% if blog.is_active %}
+        {% if blog.is_active and blog.is_published %}
           {% include "card.html" with blog=blog %}
         {% endif %}
       {% empty %}

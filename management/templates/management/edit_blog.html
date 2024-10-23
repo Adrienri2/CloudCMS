@@ -8,7 +8,7 @@
     {% csrf_token %}
     <input type="hidden" name="id" value="{{ blog.id }}">
     <h1 class="text-center mb-3">
-      Editar Artículo
+      {% if perms.accounts.can_create_blog %}Editar Borrador{% else %}Editar Artículo{% endif %}
     </h1>
     <div class="mb-3">
       <label for="title" class="form-label">Título:</label>
@@ -16,7 +16,7 @@
     </div>
     <div class="mb-3">
       <label for="desc" class="form-label">Descripción:</label>
-      <textarea class="form-control" placeholder="Escribe la descripción aquí" id="desc" style="height: 100px" name="desc">{{ blog.desc }}</textarea>
+      <textarea class="form-control" placeholder="Escribe la descripción aquí" id="desc" style="height: 100px" name="desc" >{{ blog.desc }}</textarea>
     </div>
     <br>
     {{ form.media }}
@@ -32,47 +32,39 @@
           <small>Actual: <a class="text-decoration-none" href="{{ blog.thumbnail.url }}">{{ blog.thumbnail.url }}</a></small>
         {% endif %}
       </div>
-    <div class="mb-3">
-      <label for="current_category_type" class="form-label">Tipo de categoría actual:</label>
-      <input type="text" class="form-control" id="current_category_type" value="{{ blog.category.category_type }}" disabled>
-    </div>
-    <div class="mb-3">
-      <label for="current_category" class="form-label">Categoría actual:</label>
-      <input type="text" class="form-control" id="current_category" value="{{ blog.category.category }}" disabled>
-    </div>
-    <div class="mb-3">
-      <label for="current_subcategory" class="form-label">Subcategoría actual:</label>
-      <input type="text" class="form-control" id="current_subcategory" value="{{ blog.category.subcategory_type }}" disabled>
-    </div>
-    <div class="mb-3">
-      <label for="category_type" class="form-label">Seleccione el tipo de categoría:</label>
-      <select id="category_type" class="form-select" aria-label="select example" required>
-        <option disabled selected value=''>Seleccionar tipo de categoría</option>
-        <option value="moderada">Moderada</option>
-        <option value="no_moderada">No Moderada</option>
-      </select>
-    </div>
-    <div class="mb-3">
-      <label for="subcategory_type" class="form-label">Seleccione el tipo de subcategoría:</label>
-      <select id="subcategory_type" class="form-select" aria-label="select example" name="subcategory_type" required>
-        <option disabled selected value=''>Seleccionar tipo de subcategoría</option>
-        <option value="publica">Pública</option>
-        <option value="suscriptores">Para Suscriptores</option>
-        <option value="paga">De Paga</option>
-      </select>
-    </div>
-    <div class="mb-3">
-      <label for="category" class="form-label">Categoría:</label>
-      <select id="category" class="form-select" multiple aria-label="select example" name="category" required>
-        <option disabled value=''>Seleccionar categoría</option>
-        {% for category in categories %}
-        <option value="{{ category.id }}" data-type="{{ category.category_type }}" data-subtype="{{ category.subcategory_type }}" {% if category.id == blog.category.id %}selected{% endif %}>{{ category.category }}</option>
-        {% endfor %}
-      </select>
-      {% if perms.accounts.can_create_category %}
-      <small>¿No tienes categoría? <a class="text-decoration-none" href="{% url 'manage:create_category' %}">Crear</a></small>
-      {% endif %}
-    </div>
+      <div class="mb-3">
+        <label for="current_category" class="form-label">Categoría actual:</label>
+        <input type="text" class="form-control" id="current_category" value="{{ blog.category.category }}" disabled>
+      </div>
+      <div class="mb-3">
+        <div class="mb-3">
+          <label for="category_type" class="form-label">Tipo de categoría:</label>
+          <select id="category_type" class="form-select" aria-label="select example" disabled required>
+            <option disabled selected value=''>tipo de categoría</option>
+            <option value="moderada" {% if blog.category.category_type == "moderada" %}selected{% endif %}>Moderada</option>
+            <option value="no_moderada" {% if blog.category.category_type == "no_moderada" %}selected{% endif %}>No Moderada</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="subcategory_type" class="form-label">Tipo de subcategoría:</label>
+          <select id="subcategory_type" class="form-select" aria-label="select example" name="subcategory_type" disabled  required>
+            <option disabled selected value=''>Tipo de subcategoría</option>
+            <option value="publica" {% if blog.category.subcategory_type == "publica" %}selected{% endif %}>Pública</option>
+            <option value="suscriptores" {% if blog.category.subcategory_type == "suscriptores" %}selected{% endif %}>Para Suscriptores</option>
+            <option value="paga" {% if blog.category.subcategory_type == "paga" %}selected{% endif %}>De Paga</option>
+          </select>
+        </div>
+        <div class="mb-3" style="display: none;">
+          <label for="category" class="form-label">Categoría:</label>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="category_display" value="{{ blog.category.category }}" disabled>
+            <input type="hidden" name="category" value="{{ blog.category.id }}">
+          </div>
+          {% if perms.accounts.can_create_category %}
+          <small>¿No tienes categoría? <a class="text-decoration-none" href="{% url 'manage:create_category' %}">Crear</a></small>
+          {% endif %}
+        </div>
+      </div>
     <br>
     <div class="mb-3">
       <label for="current_status" class="form-label">Estado actual:</label>
@@ -87,6 +79,11 @@
           <!-- Opciones de estado se llenarán dinámicamente con JavaScript -->
         </div>
       </div>
+    </div>
+    <!-- Agregar campo para programar la publicación -->
+    <div class="mb-3" id="schedule-publication" style="display: none;">
+      <label for="scheduled_date" class="form-label">Programar publicación:</label>
+      <input type="datetime-local" class="form-control" id="scheduled_date" name="scheduled_date">
     </div>
     <div class="row mb-3">
       <label for="status_comments" class="form-label">Comentarios:</label>
@@ -112,11 +109,26 @@ document.addEventListener('DOMContentLoaded', function() {
   const subcategoryTypeSelect = document.getElementById('subcategory_type'); // Añadido: Selección de subcategoría
   const categoriesSelect = document.getElementById('category');
   const statusOptionsDiv = document.getElementById('status-options');
+  const schedulePublicationDiv = document.getElementById('schedule-publication'); //Referencia al div de programación
+  const scheduledDateInput = document.getElementById('scheduled_date'); //Referencia al input de fecha programada
+
 
   // Opciones de estado según el tipo de categoría
   const statusOptions = {
     moderada: `
-      {% if perms.accounts.can_edit_blog %}
+      
+      {% if perms.accounts.can_create_blog %}
+        <section style="display: flex; justify-content: space-between;">
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="0" id="draft">
+            <label class="form-check-label" for="draft">Mantener en borrador</label>
+          </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="1" id="editing">
+            <label class="form-check-label" for="editing">Para edición</label>
+          </div>
+        </section>
+      {% elif perms.accounts.can_edit_blog %}
         <section style="display: flex; justify-content: space-between;"> 
           <div class="form-check col-3">
             <input class="form-check-input" type="radio" name="status" value="0" id="draft">
@@ -125,11 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="form-check col-3">
             <input class="form-check-input" type="radio" name="status" value="1" id="editing">
             <label class="form-check-label" for="editing">
-              {% if perms.accounts.can_create_blog %}
-                Para Edición
-              {% else %}
                 Mantener en edición
-              {% endif %}
             </label>
           </div>
           <div class="form-check col-3">
@@ -151,6 +159,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <input class="form-check-input" type="radio" name="status" value="3" id="publish">
             <label class="form-check-label" for="publish">Publicar</label>
           </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="2" id="schedule"> <!--Opción para programar publicación -->
+            <label class="form-check-label" for="schedule">Programar Publicación</label>
+          </div>
         </section>
       {% endif %}
     `,
@@ -165,6 +177,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <input class="form-check-input" type="radio" name="status" value="3" id="publish" {% if blog.status == 3 %}checked{% endif %}>
             <label class="form-check-label" for="publish">Publicar</label>
           </div>
+          <div class="form-check col-3">
+            <input class="form-check-input" type="radio" name="status" value="2" id="schedule"> <!--Opción para programar publicación -->
+            <label class="form-check-label" for="schedule">Programar Publicación</label>
         </section>
       {% elif perms.accounts.can_publish_blog %}
         <section style="display: flex; justify-content: space-between;">
@@ -182,12 +197,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedCategoryType = categoryTypeSelect.value;
     const options = statusOptions[selectedCategoryType] || '';
     statusOptionsDiv.innerHTML = options;
+
+    // Mostrar u ocultar el campo de programación según la opción seleccionada
+    const scheduleRadio = document.getElementById('schedule'); //Referencia al radio button de programación
+    if (scheduleRadio) {
+      scheduleRadio.addEventListener('change', function() {
+        if (this.checked) {
+          schedulePublicationDiv.style.display = 'block'; // Mostrar el div de programación
+        } else {
+          schedulePublicationDiv.style.display = 'none'; // Ocultar el div de programación
+        }
+      });
+    }
+
   }
 
   // Función para filtrar las categorías según el tipo de categoría y subcategoría seleccionados
   function filterCategories() {
     const selectedCategoryType = categoryTypeSelect.value;
-    const selectedSubcategoryType = subcategoryTypeSelect.value; // Añadido: Obtener el valor de la subcategoría seleccionada
+    const selectedSubcategoryType = subcategoryTypeSelect.value; // Obtener el valor de la subcategoría seleccionada
     for (let option of categoriesSelect.options) {
       if (option.getAttribute('data-type') === selectedCategoryType && option.getAttribute('data-subtype') === selectedSubcategoryType) {
         option.style.display = 'block';

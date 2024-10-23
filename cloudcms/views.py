@@ -134,9 +134,11 @@ class GetCategory(View):
             HttpResponse: La respuesta HTTP con la página de la categoría renderizada.
         """
         category = get_object_or_404(Category, slug=slug)
+        blogs = category.blogs.filter(is_active=True, is_published=True).order_by("-published_on")
         costo_membresia = category.costo_membresia if category else None
         return render(request, 'get_category.html', {
             'category': category,  # Pasar la categoría al contexto
+            'blogs': blogs,  # Pasar los blogs al contexto
             'costo_membresia': costo_membresia,  # Pasar el costo de la membresía al contexto
         })
 

@@ -1,5 +1,3 @@
-# CloudCMS
-
 ## Instalación
 
 1. Actualizar y corregir paquetes faltantes:
@@ -27,22 +25,27 @@
     sudo apt install python3-virtualenv
     ```
 
-6. Crear un entorno virtual:
+6. Instalar `redis-server`:
+    ```sh
+    sudo apt-get install redis-server
+    ```
+
+7. Crear un entorno virtual:
     ```sh
     virtualenv entorno1
     ```
 
-7. Activar el entorno virtual:
+8. Activar el entorno virtual:
     ```sh
     source entorno1/bin/activate
     ```
 
-8. Instalar las dependencias en el entorno virtual:
+9. Instalar las dependencias en el entorno virtual:
     ```sh
     pip install -r requirements.txt
     ```
 
-9. Otorgar permisos a los scripts:
+10. Otorgar permisos a los scripts:
     ```sh
     chmod +x start_production.sh start_development.sh
     ```
@@ -74,6 +77,11 @@
     - Crear la base de datos para producción:
         ```sql
         CREATE DATABASE dbcloudcms_prod OWNER admin_cms;
+        ```
+
+    - Otorgar permisos de creación de bases de datos al usuario:
+        ```sql
+        ALTER USER admin_cms CREATEDB;
         ```
 
     - Salir de [`psql`]:
@@ -134,8 +142,11 @@
 
 1. Ejecutar las pruebas:
     ```sh
-    python manage.py test accounts.tests
+    python manage.py test accounts.tests.LoginViewTests
+    python manage.py test accounts.tests.UserListViewTests
+    python manage.py test accounts.tests.EditUserViewTests
     python manage.py test blogs.tests
+    python manage.py test management.tests.KanbanViewTest
     ```
 
 ## API
