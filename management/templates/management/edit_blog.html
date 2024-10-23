@@ -85,10 +85,7 @@
       <label for="scheduled_date" class="form-label">Programar publicación:</label>
       <input type="datetime-local" class="form-control" id="scheduled_date" name="scheduled_date">
     </div>
-    <div class="row mb-3">
-      <label for="status_comments" class="form-label">Comentarios:</label>
-      <textarea class="form-control" placeholder="Retroalimentación:" id="status_comments" style="height: 100px" name="status_comments">{{ blog.status_comments|default_if_none:"" }}</textarea>
-    </div>
+    
     {% if blog.last_modified_by %}
     <div class="row mb-3">
       <p style="margin-top: 20px; margin-left: 100px;">Última modificación por: {{ blog.last_modified_by.username }} ({{ blog.last_modified_by_role }})</p>

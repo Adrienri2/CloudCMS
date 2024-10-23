@@ -53,6 +53,15 @@ def blog_version_preview(request, version_id):
     return render(request, 'management/blog_version.html', {'version': version})
 
 
+class GetBlogStatusView(View):
+    def get(self, request, blog_id):
+        try:
+            blog = Blog.objects.get(id=blog_id)
+            return JsonResponse({'previous_status': blog.previous_status, 'return_comment': blog.status_comments})
+        except Blog.DoesNotExist:
+            return JsonResponse({'previous_status': None, 'return_comment': ''})
+
+
 class ManageBlog(View):
     def get(self, request):
 
@@ -118,9 +127,6 @@ class CreateBlog(View):
         # Asignar el slug como el id del blog
         blog.slug = blog.id
         blog.save()
-
-        # Crear una versión del blog
-        create_blog_version(blog, request.user)
 
         messages.success(request, "Artículo creado")
         return redirect("manage:blog")
@@ -196,7 +202,6 @@ class EditBlog(View):
         status = data.get("status")
         thumbnail = request.FILES.get("thumbnail")
         category_id = data.get("category")
-        status_comments = data.get("status_comments")
         scheduled_date = data.get("scheduled_date")  # Obtener la fecha programada
 
 
@@ -248,8 +253,7 @@ class EditBlog(View):
             messages.info(request, "Error al actualizar el estado")
             return redirect("manage:edit_blog", id=blog.id)
 
-        # Actualiza los comentarios del blog
-        blog.status_comments = status_comments if status_comments else ""
+        # Actualiza el ultimo usuario que modificó el blog
         blog.last_modified_by = request.user
         blog.last_modified_by_role = request.user.role
 
@@ -270,8 +274,6 @@ class EditBlog(View):
         # Guarda el blog con los cambios realizados
         blog.save()
 
-        # Crear una versión del blog antes de guardar los cambios
-        create_blog_version(blog, request.user)
 
         # Muestra un mensaje de éxito indicando que los cambios se han guardado
         messages.success(request, "Cambios guardados")
@@ -425,11 +427,10 @@ class ChangeBlogStatusView(View):
     def post(self, request, blog_id):
         try:
             blog = Blog.objects.get(id=blog_id)
-            data = json.loads(request.body)  #Cargar el cuerpo de la solicitud como JSON
+            data = json.loads(request.body)  # Cargar el cuerpo de la solicitud como JSON
             new_status = data.get('new_status')  # Obtener new_status del JSON
-            comment = data.get('comment') # Obtener el comentario del JSON
+            comment = data.get('comment')  # Obtener el comentario del JSON
             previous_status = data.get('previous_status')  # Obtener estado previo del JSON
-
 
             if new_status is None:
                 print("new_status es None")
@@ -438,21 +439,88 @@ class ChangeBlogStatusView(View):
             new_status = int(new_status)
 
             if new_status in [0, 1, 2, 3]:
+                blog.previous_status = blog.status  # Guardar el estado anterior
                 blog.status = new_status
                 blog.is_published = new_status == 3  # Actualizar is_published
                 if blog.is_published:
                     blog.published_on = timezone.now()  # Actualizar la fecha de publicación
 
-                if comment:  #Guardar comentario de justificación
-                   formatted_date = timezone.now().strftime('%Y-%m-%d %H:%M')  # Formatear la fecha
-                   blog.status_comments = f"{comment}\n\nDevolución realizada por: {request.user.username}, Rol: {request.user.role}, Fecha: {formatted_date}"
-                
-    
-                
-                if previous_status is not None:  #Guardar estado previo
-                    blog.previous_status = previous_status
+                if comment:  # Guardar comentario de justificación
+                    formatted_date = timezone.now().strftime('%Y-%m-%d %H:%M')  # Formatear la fecha
+                    blog.status_comments = f"{comment}\n\t | Devolución realizada por: {request.user.username}, Rol: {request.user.role}, Fecha: {formatted_date}"
                 
                 blog.save()
+
+                # Verificar si el blog está avanzando en el flujo de aprobación
+                if blog.previous_status is not None and blog.previous_status < blog.status:
+                    # Obtener la última versión del blog
+                    last_version = BlogVersion.objects.filter(blog=blog).order_by('-created_at').first()
+
+                    # Comparar el contenido del blog actual con la última versión
+                    if not last_version or (
+                        blog.title != last_version.title or
+                        blog.desc != last_version.desc or
+                        blog.content != last_version.content or
+                        blog.thumbnail != last_version.thumbnail or
+                        blog.category != last_version.category
+                    ):
+                        # Si hay cambios, crear una nueva versión del blog
+                        # Crear una versión del blog
+                        BlogVersion.objects.create(
+                            blog=blog,
+                            title=blog.title,
+                            desc=blog.desc,
+                            content=blog.content,
+                            thumbnail=blog.thumbnail,
+                            category=blog.category,
+                            modified_by=request.user,
+                            modified_by_role=request.user.role
+                        )
+                    else:
+                        # Si no hay cambios, eliminar el comentario return_comment
+                        new_version = BlogVersion.objects.create(
+                            blog=blog,
+                            title=blog.title,
+                            desc=blog.desc,
+                            content=blog.content,
+                            thumbnail=blog.thumbnail,
+                            category=blog.category,
+                            modified_by=request.user,
+                            modified_by_role=request.user.role,
+                            return_comment= None
+                        )
+
+                        # Comparar la nueva versión con la versión anterior
+                        if last_version and (
+                            new_version.title == last_version.title and
+                            new_version.desc == last_version.desc and
+                            new_version.content == last_version.content and
+                            new_version.thumbnail == last_version.thumbnail and
+                            new_version.category == last_version.category and
+                            new_version.return_comment == last_version.return_comment
+                        ):
+                            # Si son idénticas, eliminar la nueva versión
+                            new_version.delete()
+                            print("Nueva versión eliminada")  # Mensaje de depuración
+                
+
+
+
+                else:
+                        # Crear una versión del blog al retroceder en el flujo
+                        BlogVersion.objects.create(
+                            blog=blog,
+                            title=blog.title,
+                            desc=blog.desc,
+                            content=blog.content,
+                            thumbnail=blog.thumbnail,
+                            category=blog.category,
+                            modified_by=request.user,
+                            modified_by_role=request.user.role,
+                            return_comment=blog.status_comments if blog.previous_status > blog.status else None  # Guardar el comentario de devolución
+                        )
+
+
                 return JsonResponse({'success': True})
             else:
                 print(f"Estado no válido: {new_status}")
@@ -463,15 +531,7 @@ class ChangeBlogStatusView(View):
         except Exception as e:
             print(f"Error al cambiar el estado del blog: {str(e)}")
             return JsonResponse({'success': False, 'error': str(e)})
-        
-class GetBlogStatusView(View):  # obtener el estado previo del blog
-    def get(self, request, blog_id):
-        try:
-            blog = Blog.objects.get(id=blog_id)
-            return JsonResponse({'previous_status': blog.previous_status, 'return_comment': blog.status_comments})
-        except Blog.DoesNotExist:
-            return JsonResponse({'previous_status': None, 'return_comment': ''})
-        
+                
 
 
 class BlogPreviewView(View):

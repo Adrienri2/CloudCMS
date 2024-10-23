@@ -23,7 +23,7 @@
   </div>
   {% endif %}
 
-  {% if blog.status_comments %} <!--Mostrar comentario de devolución si existe -->
+  {% if blog.status_comments and blog.previous_status > blog.status %} <!--Mostrar comentario de devolución si existe -->
   <div class="row mt-3">
     <div class="col">
       <div class="card border-warning">

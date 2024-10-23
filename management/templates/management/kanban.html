@@ -175,6 +175,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('JavaScript cargado correctamente'); // Mensaje de depuración
   const categoryTypeSelect = document.getElementById('category_type');
   const changeStatusModal = new bootstrap.Modal(document.getElementById('changeStatusModal'));
   const confirmStatusChangeModal = new bootstrap.Modal(document.getElementById('confirmStatusChangeModal'));
@@ -215,19 +216,22 @@ document.addEventListener('DOMContentLoaded', function() {
       fetch(`/manage/get_blog_status/${selectedBlogId}/`)
         .then(response => response.json())
         .then(data => {
+          console.log(`Datos recibidos para el blog ${selectedBlogId}:`, data);
           if (data.previous_status > blogStatus) {
+            console.log(`Comentario de devolución para el blog ${selectedBlogId}: ${data.return_comment}`);
             returnCommentText.textContent = data.return_comment;
-            // AMORRRR, AQUI: Verificar permisos y estado del blog antes de mostrar el cuarto modal
+            //Verificar permisos y estado del blog antes de mostrar el cuarto modal
             if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true')) {
+              console.log('Mostrando el cuarto modal con el comentario de devolución.');
               returnedBlogModal.show();
             } else {
               console.log('No tiene permisos para ver el comentario de devolución.');
             }
           } else {
-            // AMORRRR, AQUI: Verificar permisos y estado del blog antes de mostrar el primer modal
+            // Verificar permisos y estado del blog antes de mostrar el primer modal
             if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
@@ -314,6 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   submitReturnComment.addEventListener('click', function() {
     const comment = returnComment.value.trim();
+    console.log(`Comentario de devolución generado: ${comment}`);
     if (selectedBlogId && comment) {
       let returnStatus = null;
       if (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') {

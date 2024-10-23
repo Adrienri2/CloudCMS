@@ -183,6 +183,7 @@ class BlogVersion(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     modified_by_role = models.CharField(max_length=50)
+    return_comment = models.TextField(null=True, blank=True)  # Añadido campo para comentario de devolución
 
     def __str__(self):
         return f"Versión de {self.blog.title} creada el {self.created_at}"
