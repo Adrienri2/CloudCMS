@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+
+{% block title %}Versiones del Blog{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-3" style="margin-top: 50px;">Versiones del Blog</h1>
+
+<div class="kanban-board">
+    <div class="kanban-column">
+        <h2>Versiones</h2>
+        <ul>
+            {% for version in versions %}
+            <li onclick="window.location.href='{% url 'manage:blog_version_preview' version.id %}'">
+                <h3>ID del Blog: {{ version.blog.id }}</h3>
+                <p><strong>Nombre:</strong> {{ version.title }}</p>
+                <p><strong>Modificado por:</strong> {{ version.modified_by.username }}</p>
+                <p><strong>Fecha de modificación:</strong> {{ version.created_at }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<style>
+.kanban-board {
+    display: flex;
+    margin-left: 50px;
+    margin-top: 50px;
+    gap: 20px;
+}
+
+.kanban-column {
+    flex: 1;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 300px;
+}
+
+.kanban-column h2 {
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #343a40;
+    padding-bottom: 10px;
+}
+
+.kanban-column ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.kanban-column li {
+    background-color: #ffffff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.kanban-column li:hover {
+    transform: scale(1.05);
+}
+
+.kanban-column li h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #007bff;
+}
+
+.kanban-column li p {
+    margin: 5px 0 0;
+    color: #6c757d;
+}
+</style>
+
+{% endblock %}

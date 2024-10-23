@@ -78,9 +78,11 @@ class Blog(models.Model):
     creator = models.ForeignKey(to=User, on_delete=models.SET_NULL, related_name="blogs", null=True)
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
     status_comments = models.TextField(blank=True, null=True)
+    previous_status = models.IntegerField(null=True, blank=True)  # Añadido para almacenar el estado previo
     last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='modified_blogs')
     last_modified_by_role = models.CharField(max_length=50, blank=True, null=True)
     scheduled_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha programada
+    
 
     
 
@@ -156,7 +158,7 @@ class Blog(models.Model):
         return (
             (user.has_perm('accounts.can_edit_blog') and self.status == 1) or
             (user.has_perm('accounts.can_publish_blog') and self.status == 2) or
-            (user.has_perm('accounts.can_create_blog') and user.has_perm('accounts.can_edit_blog') and self.status in [0, 1])
+            (user.has_perm('accounts.can_create_blog') and self.status == 0)
         )
 
     def get_button_text(self, user):
@@ -168,6 +170,27 @@ class Blog(models.Model):
         return "Editar"
 
     
+class BlogVersion(models.Model):
+    """
+    Modelo para representar una versión de un blog.
+    """
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='versions')
+    title = models.CharField(max_length=255)
+    desc = models.TextField()
+    content = models.TextField()
+    thumbnail = models.ImageField(upload_to='thumbnails/')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    modified_by_role = models.CharField(max_length=50)
+    return_comment = models.TextField(null=True, blank=True)  # Añadido campo para comentario de devolución
+
+    def __str__(self):
+        return f"Versión de {self.blog.title} creada el {self.created_at}"
+
+
+
+
 
 class Comment(models.Model):
     """

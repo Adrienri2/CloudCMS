@@ -7,16 +7,15 @@
 <h1 class="text-center mb-3" style="margin-top: 50px;">Tabla Kanban</h1>
 
 <div class="mb-3">
-    <label for="category_type" class="form-label">Seleccione el tipo de categoría:</label>
-    <select id="category_type" class="form-select" aria-label="select example" required>
-      <option disabled selected value=''>Seleccionar tipo de categoría</option>
-      <option value="moderada" {% if category_type == 'moderada' %}selected{% endif %}>Moderada</option>
-      {% if request.user.role == 'admin' or perms.accounts.can_create_blog  or perms.accounts.can_publish_blog%}
-        <option value="no_moderada" {% if category_type == 'no_moderada' %}selected{% endif %}>No Moderada</option>
-      {% endif %}
-    </select>
-  </div>
-
+  <label for="category_type" class="form-label">Seleccione el tipo de categoría:</label>
+  <select id="category_type" class="form-select" aria-label="select example" required>
+    <option disabled value=''>Seleccionar tipo de categoría</option>
+    <option value="moderada" {% if category_type == 'moderada' or not category_type %}selected{% endif %}>Moderada</option>
+    {% if request.user.role == 'admin' or perms.accounts.can_create_blog or perms.accounts.can_publish_blog %}
+      <option value="no_moderada" {% if category_type == 'no_moderada' %}selected{% endif %}>No Moderada</option>
+    {% endif %}
+  </select>
+</div>
 
 <style>
 .kanban-board {
@@ -56,6 +55,7 @@
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
+    cursor: pointer;
 }
 
 .kanban-column li:hover {
@@ -80,7 +80,7 @@
             <h2>{{ status }}</h2>
             <ul>
                 {% for blog in blogs %}
-                    <li>
+                <li data-blog-id="{{ blog.id }}" data-blog-status="{{ blog.status }}">
                         <h3>{{ blog.title }}</h3>
                         <p>{{ blog.desc|truncatewords:15 }}</p>
                         <p><strong>Autor:</strong> {{ blog.creator }}</p>
@@ -91,10 +91,111 @@
     {% endfor %}
 </div>
 
+<!-- Primer Modal -->
+<div class="modal fade" id="changeStatusModal" tabindex="-1" aria-labelledby="changeStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changeStatusModalLabel">¿Qué desea hacer?</h5> <!-- Cambiado -->
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="modalMessage">Seleccione una acción:</p> <!-- Cambiado -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" id="openBlog">Abrir</button> 
+          <button type="button" class="btn btn-info" id="viewVersions">Versiones</button>
+          <button type="button" class="btn btn-primary" id="confirmChangeStatus">Cambiar estado</button> 
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Segundo Modal -->
+<div class="modal fade" id="confirmStatusChangeModal" tabindex="-1" aria-labelledby="confirmStatusChangeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmStatusChangeModalLabel">Cambiar Estado</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="confirmModalMessage"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" id="finalReturnStatus">Devolver</button> 
+          <button type="button" class="btn btn-primary" id="finalConfirmChangeStatus" style="display: none;">Avanzar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Tercer Modal -->
+<div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="commentModalLabel">Justificar la Devolución</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="returnComment" class="form-label">Por favor, explique el motivo de la devolución:</label>
+          <textarea class="form-control" id="returnComment" rows="3" required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="submitReturnComment">Aceptar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cuarto Modal -->
+<div class="modal fade" id="returnedBlogModal" tabindex="-1" aria-labelledby="returnedBlogModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="returnedBlogModalLabel">Blog devuelto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="returnCommentMessage">Se muestra el comentario justificando la devolución:</p>
+        <p id="returnCommentText"></p> <!-- Aquí se mostrará el comentario -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="acceptReturnComment">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('JavaScript cargado correctamente'); // Mensaje de depuración
   const categoryTypeSelect = document.getElementById('category_type');
- 
+  const changeStatusModal = new bootstrap.Modal(document.getElementById('changeStatusModal'));
+  const confirmStatusChangeModal = new bootstrap.Modal(document.getElementById('confirmStatusChangeModal'));
+  const commentModal = new bootstrap.Modal(document.getElementById('commentModal'));
+  const returnedBlogModal = new bootstrap.Modal(document.getElementById('returnedBlogModal'));
+  const modalMessage = document.getElementById('modalMessage');
+  const confirmModalMessage = document.getElementById('confirmModalMessage');
+  const confirmChangeStatus = document.getElementById('confirmChangeStatus');
+  const finalConfirmChangeStatus = document.getElementById('finalConfirmChangeStatus');
+  const finalReturnStatus = document.getElementById('finalReturnStatus'); // Añadido
+  const submitReturnComment = document.getElementById('submitReturnComment');
+  const returnComment = document.getElementById('returnComment');
+  const returnCommentText = document.getElementById('returnCommentText');
+  const acceptReturnComment = document.getElementById('acceptReturnComment');
+  const viewVersions = document.getElementById('viewVersions'); // Añadido
+  const openBlog = document.getElementById('openBlog'); // Añadido referencia al botón "Abrir"
+  let selectedBlogId = null;
+  let newStatus = null;
+  let blogStatus = null; // Añadido para mantener el estado del blog
+  let previousStatus = null;
 
   categoryTypeSelect.addEventListener('change', function() {
     const selectedCategoryType = categoryTypeSelect.value;
@@ -102,6 +203,175 @@ document.addEventListener('DOMContentLoaded', function() {
     url.searchParams.set('category_type', selectedCategoryType);
     window.location.href = url.toString();
   });
+
+  document.querySelectorAll('.kanban-column li').forEach(function(blogItem) {
+    blogItem.addEventListener('click', function() {
+      const blogId = this.getAttribute('data-blog-id');
+      blogStatus = parseInt(this.getAttribute('data-blog-status')); // Actualizado para mantener el estado del blog
+      selectedBlogId = blogId;
+    
+      console.log(`Blog seleccionado: ${selectedBlogId}, Estado actual: ${blogStatus}`);
+
+      // Verificar si el blog fue devuelto
+      fetch(`/manage/get_blog_status/${selectedBlogId}/`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(`Datos recibidos para el blog ${selectedBlogId}:`, data);
+          if (data.previous_status > blogStatus) {
+            console.log(`Comentario de devolución para el blog ${selectedBlogId}: ${data.return_comment}`);
+            returnCommentText.textContent = data.return_comment;
+            //Verificar permisos y estado del blog antes de mostrar el cuarto modal
+            if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
+                (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
+                (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
+                (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true')) {
+              console.log('Mostrando el cuarto modal con el comentario de devolución.');
+              returnedBlogModal.show();
+            } else {
+              console.log('No tiene permisos para ver el comentario de devolución.');
+            }
+          } else {
+            // Verificar permisos y estado del blog antes de mostrar el primer modal
+            if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
+                (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
+                (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
+                (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true')) { 
+              modalMessage.textContent = 'Seleccione una acción:'; 
+              changeStatusModal.show();
+            } else {
+              console.log('No tiene permisos para cambiar el estado de este blog.');
+            }
+          }
+        });
+    });
+  });
+
+  acceptReturnComment.addEventListener('click', function() {
+    returnedBlogModal.hide();
+    changeStatusModal.show();
+  });
+
+  confirmChangeStatus.addEventListener('click', function() {
+    if (selectedBlogId) {
+      changeStatusModal.hide();
+      let message = '';
+      if (blogStatus === 0 && '{{ category_type }}' === 'no_moderada' && {{ perms.accounts.can_create_blog|yesno:"true,false" }}) {
+        message = '¿Desea publicar el blog?';
+        newStatus = 3;
+      } else if (blogStatus === 0 && {{ perms.accounts.can_create_blog|yesno:"true,false" }}) {
+        message = '¿Desea cambiar al estado En Edición?';
+        newStatus = 1;
+      } else if (blogStatus === 1 && {{ perms.accounts.can_edit_blog|yesno:"true,false" }}) {
+        message = '¿Desea cambiar al estado En Espera o devolverlo a Borrador?';
+        newStatus = 2;
+      } else if (blogStatus === 2 && {{ perms.accounts.can_publish_blog|yesno:"true,false" }}) {
+        message = '¿Desea publicar el blog o devolverlo a edición?';
+        newStatus = 3;
+      } else if (blogStatus === 3 && {{ perms.accounts.can_publish_blog|yesno:"true,false" }}) { 
+        message = '¿Desea devolver el blog a edición?';
+        newStatus = null; 
+      } else {
+        return;
+      }
+      confirmModalMessage.textContent = message;
+      confirmStatusChangeModal.show();
+
+      if (blogStatus === 3) {
+        finalConfirmChangeStatus.style.display = 'none';
+      } else {
+        finalConfirmChangeStatus.style.display = 'inline-block';
+      }
+    } else {
+      console.log('selectedBlogId es nulo');
+    }
+  });
+
+  finalConfirmChangeStatus.addEventListener('click', function() {
+    if (selectedBlogId && newStatus !== null) {
+      console.log(`Enviando solicitud para cambiar el estado del blog ${selectedBlogId} a ${newStatus}`);
+      fetch(`/manage/change_blog_status/${selectedBlogId}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ new_status: newStatus })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.reload();
+        } else {
+          alert('Error al cambiar el estado del blog.');
+        }
+      });
+    } else {
+      console.log('selectedBlogId o newStatus es nulo');
+    }
+  });
+
+  finalReturnStatus.addEventListener('click', function() { 
+    previousStatus = blogStatus; 
+    confirmStatusChangeModal.hide();
+    commentModal.show();
+  });
+
+  submitReturnComment.addEventListener('click', function() {
+    const comment = returnComment.value.trim();
+    console.log(`Comentario de devolución generado: ${comment}`);
+    if (selectedBlogId && comment) {
+      let returnStatus = null;
+      if (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') {
+        returnStatus = 0; // Devolver a Borrador
+      } else if (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') {
+        returnStatus = 1; // Devolver a En Edición
+      } else if (blogStatus === 3 && '{{ category_type }}' === 'no_moderada' && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') {
+        returnStatus = 0; // Devolver a Borrador en categorías no moderadas
+      } else if (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') { 
+        returnStatus = 2; // Devolver a En Espera en categorías moderadas
+      } else {
+        return;
+      }
+
+      if (returnStatus !== null) {
+        console.log(`Enviando solicitud para devolver el estado del blog ${selectedBlogId} a ${returnStatus} con comentario: ${comment}`);
+        fetch(`/manage/change_blog_status/${selectedBlogId}/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: JSON.stringify({ new_status: returnStatus, comment: comment, previous_status: previousStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            window.location.reload();
+          } else {
+            alert('Error al cambiar el estado del blog.');
+          }
+        });
+      }
+    } else {
+      alert('Por favor, deje un comentario justificando el motivo de la devolución.');
+    }
+  });
+
+  viewVersions.addEventListener('click', function() { // Añadido
+    if (selectedBlogId) {
+      window.location.href = `/manage/blog_versions/${selectedBlogId}/`;
+    } else {
+      console.log('selectedBlogId es nulo');
+    }
+  });
+
+  openBlog.addEventListener('click', function() { // Añadido evento para el botón "Abrir"
+  if (selectedBlogId) {
+    window.location.href = `/manage/blog_preview/${selectedBlogId}/`;
+  } else {
+    console.log('selectedBlogId es nulo');
+  }
+});
 
 });
 </script>

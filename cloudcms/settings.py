@@ -206,3 +206,32 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+
+# Resto de la configuración...
+
+# Configuración de logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',  # Cambiar a INFO para reducir la salida de depuración de Django
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'INFO',  # Cambiar a INFO para reducir la salida de depuración de la base de datos
+            'propagate': False,
+        },
+        'management': {  # Ajusta 'myapp' al nombre de tu aplicación
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
