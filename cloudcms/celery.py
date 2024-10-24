@@ -21,3 +21,5 @@ app.conf.beat_schedule = {
         'schedule': crontab(minute='*/1'),  # Ejecutar cada minuto
     },
 }
+
+app.conf.broker_connection_retry_on_startup = True
