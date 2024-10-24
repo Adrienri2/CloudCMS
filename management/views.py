@@ -207,7 +207,7 @@ class EditBlog(View):
 
 
         # Verifica que el estado no sea None
-        if not status:
+        if request.user.has_perm('accounts.can_publish_blog')  and not status:
             messages.warning(request, "Debe asignarle un estado")
             return redirect("manage:edit_blog", id=blog.id)
         
@@ -222,32 +222,38 @@ class EditBlog(View):
             blog.thumbnail = thumbnail
 
         try:
-            # Intenta convertir el estado a un entero y luego a un booleano
-            status = int(status)
-            blog.status = status
-            # Publicado solo si el estado es 3
-            blog.is_published = status == 3
-            
-            if blog.is_published:
-                blog.published_on = timezone.now()
-            elif status == 2 and scheduled_date:  # Manejar la programación de la publicación
+             # Ajustar el estado del blog según los permisos del usuario
+            if request.user.has_perm('accounts.can_create_blog'):
+                blog.status = 0  # Borrador
+            elif request.user.has_perm('accounts.can_edit_blog'):
+                blog.status = 1  # En edición
+            elif request.user.has_perm('accounts.can_publish_blog'):
+                # Intenta convertir el estado a un entero y luego a un booleano
+                status = int(status)
+                blog.status = status
+                # Publicado solo si el estado es 3
+                blog.is_published = status == 3
                 
-                # Convertir la fecha y hora ingresada a un objeto datetime
-                local_scheduled_date = timezone.datetime.strptime(scheduled_date, '%Y-%m-%dT%H:%M')
+                if blog.is_published:
+                    blog.published_on = timezone.now()
+                elif status == 2 and scheduled_date:  # Manejar la programación de la publicación
                 
-                # Asegurarse de que el objeto datetime tenga información de zona horaria
-                local_scheduled_date = timezone.make_aware(local_scheduled_date, timezone.get_current_timezone())
-                
-                # Convertir la fecha y hora local a UTC
-                utc_scheduled_date = local_scheduled_date.astimezone(pytz.UTC)
-                
-                if utc_scheduled_date > timezone.now():
-                    blog.scheduled_date = utc_scheduled_date
+                    # Convertir la fecha y hora ingresada a un objeto datetime
+                    local_scheduled_date = timezone.datetime.strptime(scheduled_date, '%Y-%m-%dT%H:%M')
+                    
+                    # Asegurarse de que el objeto datetime tenga información de zona horaria
+                    local_scheduled_date = timezone.make_aware(local_scheduled_date, timezone.get_current_timezone())
+                    
+                    # Convertir la fecha y hora local a UTC
+                    utc_scheduled_date = local_scheduled_date.astimezone(pytz.UTC)
+                    
+                    if utc_scheduled_date > timezone.now():
+                        blog.scheduled_date = utc_scheduled_date
+                    else:
+                        messages.warning(request, "La fecha y hora programadas deben estar en el futuro.")
+                        return redirect("manage:edit_blog", id=blog.id)
                 else:
-                    messages.warning(request, "La fecha y hora programadas deben estar en el futuro.")
-                    return redirect("manage:edit_blog", id=blog.id)
-            else:
-                blog.scheduled_date = None
+                    blog.scheduled_date = None
         except ValueError:
             # Si hay un error al convertir el estado, muestra un mensaje de información
             messages.info(request, "Error al actualizar el estado")
@@ -534,7 +540,13 @@ class ChangeBlogStatusView(View):
                 
 
 
+##class BlogPreviewView(View):
+ ##   def get(self, request, blog_id):
+  ##      blog = get_object_or_404(Blog, id=blog_id)
+   ##     return render(request, 'management/blog_preview.html', {'blog': blog})
+
 class BlogPreviewView(View):
     def get(self, request, blog_id):
         blog = get_object_or_404(Blog, id=blog_id)
-        return render(request, 'management/blog_preview.html', {'blog': blog})
+        last_version = BlogVersion.objects.filter(blog=blog).order_by('-created_at').first()
+        return render(request, 'management/blog_preview.html', {'blog': blog, 'last_version': last_version})

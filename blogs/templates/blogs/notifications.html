@@ -1,10 +1,29 @@
 
-<!-- This is a simple template that will display a list of notifications. -->
-<ul>
-    {% for notification in notifications %}
-        <li>
-            {{ notification.message }}
-            <a href="{% url 'mark_as_read' notification.id %}">Marcar como leído</a>
-        </li>
-    {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificaciones</title>
+    <style>
+        .notifications-container {
+            max-height: 400px; /* Ajusta la altura máxima según tus necesidades */
+            overflow-y: auto; /* Añade una barra de desplazamiento vertical */
+            border: 1px solid #ccc; /* Añade un borde para distinguir el contenedor */
+            padding: 10px; /* Añade un poco de espacio alrededor del contenido */
+        }
+    </style>
+</head>
+<body>
+    <div class="notifications-container">
+        <ul>
+            {% for notification in notifications %}
+                <li>
+                    {{ notification.message }}
+                    <a href="{% url 'mark_as_read' notification.id %}">Marcar como leído</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

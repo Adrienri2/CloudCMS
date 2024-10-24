@@ -107,6 +107,10 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end notifications-menu" aria-labelledby="notificationsDropdown">
                     {% if notifications_count > 0 %}
+                          <li class="dropdown-item text-center">
+                            <a href="{% url 'blogs:mark_all_as_read' %}" class="btn btn-sm btn-outline-primary">Marcar todo como leído</a>
+                        </li>
+                        <hr>
                         {% for notification in notifications %}
                             <li class="dropdown-item notification-item">
                                 <div class="d-flex align-items-center">
