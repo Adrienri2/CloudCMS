@@ -5,8 +5,8 @@ from django.views import View
 from django.db.models import F
 from django.urls import reverse
 from .models import *
-from .models import Notification
-from django.http import HttpResponseRedirect
+from .models import Notification, Category, FavoriteCategory
+from django.http import HttpResponseRedirect, JsonResponse
 
 """
 Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.
@@ -163,3 +163,18 @@ def mark_all_as_read(request):
     # Redirigir a la página anterior usando HTTP_REFERER
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
+
+@login_required
+def toggle_favorite_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    favorite, created = FavoriteCategory.objects.get_or_create(user=request.user, category=category)
+    if not created:
+        favorite.delete()
+        return JsonResponse({'status': 'removed'})
+    return JsonResponse({'status': 'added'})
+
+@login_required
+def favorite_categories(request):
+    favorites = FavoriteCategory.objects.filter(user=request.user)
+    return render(request, 'blogs/favorite_categories.html', {'favorites': favorites})

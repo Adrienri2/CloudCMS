@@ -13,7 +13,7 @@ Rutas:
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from . import views
-from .views import notifications, mark_as_read, mark_all_as_read
+from .views import notifications, mark_as_read, mark_all_as_read, toggle_favorite_category, favorite_categories
 
 
 app_name = "blogs"
@@ -27,6 +27,9 @@ urlpatterns = [
     path('notifications/', notifications, name='notifications'),
     path('notifications/mark_as_read/<int:notification_id>/', mark_as_read, name='mark_as_read'),
     path('notifications/mark_all_as_read/', mark_all_as_read, name='mark_all_as_read'),
+    path('toggle_favorite_category/<int:category_id>/', toggle_favorite_category, name='toggle_favorite_category'),
+    path('favorite_categories/', favorite_categories, name='favorite_categories'),
+
 
 
 ]
