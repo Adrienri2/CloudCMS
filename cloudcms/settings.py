@@ -36,6 +36,7 @@ if not SECRET_KEY:
 # Ya definimos DEBUG anteriormente
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+CSRF_TRUSTED_ORIGINS = ['https://cloudcms.up.railway.app']
 
 # Definición de aplicaciones
 INSTALLED_APPS = [
