@@ -6,6 +6,7 @@ from django.db.models import F
 from django.urls import reverse
 from .models import *
 from .models import Notification
+from django.http import HttpResponseRedirect
 
 """
 Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.
@@ -152,5 +153,13 @@ def mark_as_read(request, notification_id):
     notification = get_object_or_404(Notification, id=notification_id, user=request.user)
     notification.is_read = True
     notification.save()
-    return redirect('manage:blog')
+    return redirect('manage:kanban')
+
+
+@login_required
+def mark_all_as_read(request):
+    notifications = Notification.objects.filter(user=request.user, is_read=False)
+    notifications.update(is_read=True)
+    # Redirigir a la página anterior usando HTTP_REFERER
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 

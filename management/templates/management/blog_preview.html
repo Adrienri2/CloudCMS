@@ -24,18 +24,20 @@
   {% endif %}
 
   {% if blog.status_comments and blog.previous_status > blog.status %} <!--Mostrar comentario de devolución si existe -->
-  <div class="row mt-3">
-    <div class="col">
-      <div class="card border-warning">
-        <div class="card-header bg-warning text-dark">
-          <strong>Comentario de devolución</strong>
-        </div>
-        <div class="card-body">
-          <p class="card-text">{{ blog.status_comments|linebreaksbr }}</p>
+    {% if last_version and blog.title == last_version.title and blog.desc == last_version.desc and blog.content == last_version.content and blog.thumbnail.url == last_version.thumbnail.url and blog.category == last_version.category %}
+      <div class="row mt-3">
+        <div class="col">
+          <div class="card border-warning">
+            <div class="card-header bg-warning text-dark">
+              <strong>Comentario de devolución</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{ blog.status_comments|linebreaksbr }}</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    {% endif %}
   {% endif %}
 
   <div class="row mb-3">
@@ -45,6 +47,17 @@
       </div>
       {% endif %}
   </div>
+
+  <!-- Botón para editar el blog, visible solo para usuarios con permisos -->
+  {% if perms.accounts.can_create_blog or perms.accounts.can_edit_blog %}
+  <div class="row mb-3">
+    <div class="col">
+      <a href="{% url 'manage:edit_blog' blog.id %}" class="btn btn-primary">Modificar</a>
+    </div>
+  </div>
+  {% endif %}
+
+
   <div class="row">
     <div class="ratio ratio-16x9">
       <img src="{{ blog.thumbnail.url }}" class="img-fluid rounded mx-auto d-block" alt="miniatura del blog">

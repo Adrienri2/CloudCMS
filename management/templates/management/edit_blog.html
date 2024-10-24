@@ -70,6 +70,7 @@
       <label for="current_status" class="form-label">Estado actual:</label>
       <input type="text" class="form-control" id="current_status" value="{% if blog.status == 0 %}Borrador{% elif blog.status == 1 %}En edición{% elif blog.status == 2 %}En espera{% elif blog.status == 3 %}Publicado{% endif %}" disabled>
     </div>
+    {% if perms.accounts.can_publish_blog %} 
     <div class="row">
       <div class="col-4">
         <p>Cambiar de estado:</p>
@@ -85,6 +86,7 @@
       <label for="scheduled_date" class="form-label">Programar publicación:</label>
       <input type="datetime-local" class="form-control" id="scheduled_date" name="scheduled_date">
     </div>
+    {% endif %}
     
     {% if blog.last_modified_by %}
     <div class="row mb-3">
@@ -114,40 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const statusOptions = {
     moderada: `
       
-      {% if perms.accounts.can_create_blog %}
         <section style="display: flex; justify-content: space-between;">
-          <div class="form-check col-3">
-            <input class="form-check-input" type="radio" name="status" value="0" id="draft">
-            <label class="form-check-label" for="draft">Mantener en borrador</label>
-          </div>
-          <div class="form-check col-3">
-            <input class="form-check-input" type="radio" name="status" value="1" id="editing">
-            <label class="form-check-label" for="editing">Para edición</label>
-          </div>
-        </section>
-      {% elif perms.accounts.can_edit_blog %}
-        <section style="display: flex; justify-content: space-between;"> 
-          <div class="form-check col-3">
-            <input class="form-check-input" type="radio" name="status" value="0" id="draft">
-            <label class="form-check-label" for="draft">Borrador</label>
-          </div>
-          <div class="form-check col-3">
-            <input class="form-check-input" type="radio" name="status" value="1" id="editing">
-            <label class="form-check-label" for="editing">
-                Mantener en edición
-            </label>
-          </div>
-          <div class="form-check col-3">
-            <input class="form-check-input" type="radio" name="status" value="2" id="waiting">
-            <label class="form-check-label" for="waiting">Aprobar</label>
-          </div>
-        </section>
-      {% elif perms.accounts.can_publish_blog %}
-        <section style="display: flex; justify-content: space-between;">
-          <div class="form-check col-3">
-            <input class="form-check-input" type="radio" name="status" value="1" id="editing">
-            <label class="form-check-label" for="editing">Devolver</label>
-          </div>
           <div class="form-check col-3">
             <input class="form-check-input" type="radio" name="status" value="2" id="waiting">
             <label class="form-check-label" for="waiting">En espera</label>
@@ -161,31 +130,16 @@ document.addEventListener('DOMContentLoaded', function() {
             <label class="form-check-label" for="schedule">Programar Publicación</label>
           </div>
         </section>
-      {% endif %}
     `,
     no_moderada: `
-      {% if perms.accounts.can_create_blog %}
-        <section style="display: flex; justify-content: space-between;">
-          <div class="form-check col-3">
-            <input class="form-check-input" type="radio" name="status" value="0" id="draft" {% if blog.status == 0 %}checked{% endif %}>
-            <label class="form-check-label" for="draft">Borrador</label>
-          </div>
-          <div class="form-check col-3">
-            <input class="form-check-input" type="radio" name="status" value="3" id="publish" {% if blog.status == 3 %}checked{% endif %}>
-            <label class="form-check-label" for="publish">Publicar</label>
-          </div>
-          <div class="form-check col-3">
-            <input class="form-check-input" type="radio" name="status" value="2" id="schedule"> <!--Opción para programar publicación -->
-            <label class="form-check-label" for="schedule">Programar Publicación</label>
-        </section>
-      {% elif perms.accounts.can_publish_blog %}
+  
         <section style="display: flex; justify-content: space-between;">
           <div class="form-check col-3">
             <input class="form-check-input" type="radio" name="status" value="0" id="draft">
             <label class="form-check-label" for="draft">Devolver</label>
           </div>
         </section>
-      {% endif %}
+  
     `
   };
 
