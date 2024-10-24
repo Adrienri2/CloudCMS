@@ -12,3 +12,12 @@ def publish_scheduled_blogs():
         blog.published_on = now
         blog.scheduled_date = None
         blog.save()
+
+@shared_task
+def expire_scheduled_blogs():
+    now = timezone.now()
+    blogs_to_expire = Blog.objects.filter(is_published=True, expiry_date__lte=now)
+    for blog in blogs_to_expire:
+        blog.is_active = False # Establecer is_active en False
+        blog.is_published = False  # Establecer is_published en False
+        blog.save()
