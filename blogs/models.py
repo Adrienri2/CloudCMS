@@ -269,3 +269,19 @@ class Notification(models.Model):
 
     def __str__(self):
             return f"Notification for {self.user.username} - {self.message}"
+
+
+
+class FavoriteCategory(models.Model):
+    """
+    Modelo para representar una categoría favorita de un usuario.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite_categories')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='favorited_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'category')  # Asegura que un usuario no pueda marcar la misma categoría como favorita más de una vez
+
+    def __str__(self):
+        return f"{self.user.username} - {self.category.category}"
