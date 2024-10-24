@@ -16,6 +16,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
+from blogs.tasks import publish_scheduled_blogs, expire_scheduled_blogs  #Importar las tareas de Celery
+
 
 # Importa el decorador desde accounts
 
@@ -203,6 +205,7 @@ class EditBlog(View):
         thumbnail = request.FILES.get("thumbnail")
         category_id = data.get("category")
         scheduled_date = data.get("scheduled_date")  # Obtener la fecha programada
+        expiry_date = data.get("expiry_date")  # Obtener la fecha de caducidad
 
 
 
@@ -254,6 +257,23 @@ class EditBlog(View):
                         return redirect("manage:edit_blog", id=blog.id)
                 else:
                     blog.scheduled_date = None
+
+                # Manejar la fecha de caducidad
+                if expiry_date:
+                    local_expiry_date = timezone.datetime.strptime(expiry_date, '%Y-%m-%dT%H:%M')
+                    local_expiry_date = timezone.make_aware(local_expiry_date, timezone.get_current_timezone())
+                    utc_expiry_date = local_expiry_date.astimezone(pytz.UTC)
+                    
+                    if utc_expiry_date > timezone.now():
+
+                        blog.expiry_date = utc_expiry_date
+                    else:
+                        messages.warning(request, "La fecha y hora de caducidad deben estar en el futuro.")
+                        return redirect("manage:edit_blog", id=blog.id)
+                else:
+                    blog.expiry_date = None
+
+
         except ValueError:
             # Si hay un error al convertir el estado, muestra un mensaje de información
             messages.info(request, "Error al actualizar el estado")
@@ -287,6 +307,42 @@ class EditBlog(View):
         # Redirige al usuario a la página de gestión de blogs
         return redirect("manage:blog")
 
+
+
+@permission_required('accounts.can_publish_blog', raise_exception=True)
+def schedule_publication(request, blog_id):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        scheduled_date = data.get('scheduled_date') # Obtener la fecha programada
+        expiry_date = data.get('expiry_date')  # Obtener la fecha de caducidad
+        
+        blog = get_object_or_404(Blog, id=blog_id)
+
+        try:
+            # Convertir la fecha y hora ingresada a un objeto datetime
+            local_scheduled_date = timezone.datetime.strptime(scheduled_date, '%Y-%m-%dT%H:%M')
+            # Asegurarse de que el objeto datetime tenga información de zona horaria
+            local_scheduled_date = timezone.make_aware(local_scheduled_date, timezone.get_current_timezone())
+            # Convertir la fecha y hora local a UTC
+            utc_scheduled_date = local_scheduled_date.astimezone(pytz.UTC)
+            
+            # Convertir la fecha de caducidad a un objeto datetime
+            local_expiry_date = timezone.datetime.strptime(expiry_date, '%Y-%m-%dT%H:%M')
+            local_expiry_date = timezone.make_aware(local_expiry_date, timezone.get_current_timezone())
+            utc_expiry_date = local_expiry_date.astimezone(pytz.UTC)
+            
+
+            if utc_scheduled_date > timezone.now() and utc_expiry_date > utc_scheduled_date:
+                blog.scheduled_date = utc_scheduled_date # Guardar la fecha programada
+                blog.expiry_date = utc_expiry_date  # Guardar la fecha de caducidad
+                blog.status = 2  # En espera
+                blog.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'error': 'La fecha y hora programadas deben estar en el futuro y la fecha de caducidad debe ser posterior a la fecha de publicación.'})
+        except ValueError:
+            return JsonResponse({'success': False, 'error': 'Error al procesar las fecha y horas ingresadas.'})
+    return JsonResponse({'success': False, 'error': 'Método no permitido.'})
 
 
 #solo el admin y el autor pueden eliminar un blog
@@ -540,10 +596,6 @@ class ChangeBlogStatusView(View):
                 
 
 
-##class BlogPreviewView(View):
- ##   def get(self, request, blog_id):
-  ##      blog = get_object_or_404(Blog, id=blog_id)
-   ##     return render(request, 'management/blog_preview.html', {'blog': blog})
 
 class BlogPreviewView(View):
     def get(self, request, blog_id):

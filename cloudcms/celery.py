@@ -20,4 +20,8 @@ app.conf.beat_schedule = {
         'task': 'blogs.tasks.publish_scheduled_blogs',
         'schedule': crontab(minute='*/1'),  # Ejecutar cada minuto
     },
+     'expire-scheduled-blogs-every-minute': {
+        'task': 'blogs.tasks.expire_scheduled_blogs',
+        'schedule': crontab(minute='*/1'),  # Ejecutar cada minuto
+    },
 }

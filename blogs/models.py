@@ -82,6 +82,9 @@ class Blog(models.Model):
     last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='modified_blogs')
     last_modified_by_role = models.CharField(max_length=50, blank=True, null=True)
     scheduled_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha programada
+    expiry_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha de caducidad
+    
+    
     
 
     
