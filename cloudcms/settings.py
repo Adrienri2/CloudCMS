@@ -158,14 +158,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-if DEBUG:
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static_dev'),
-    ]
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static_prod')
-    # Configuración de Whitenoise
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static_dev'),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Configuración de Whitenoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
