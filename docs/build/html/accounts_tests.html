@@ -53,12 +53,28 @@
 <li class="toctree-l1"><a class="reference internal" href="accounts_managers.html">Administrador de Usuarios</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_models.html">Modelo de Usuario</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Pruebas para la Aplicación de Cuentas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#accounts.tests.EditUserViewTests"><code class="docutils literal notranslate"><span class="pre">EditUserViewTests</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.tests.EditUserViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">EditUserViewTests.setUp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.tests.EditUserViewTests.test_edit_user_with_invalid_data"><code class="docutils literal notranslate"><span class="pre">EditUserViewTests.test_edit_user_with_invalid_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.tests.EditUserViewTests.test_unauthenticated_user_redirected_to_login"><code class="docutils literal notranslate"><span class="pre">EditUserViewTests.test_unauthenticated_user_redirected_to_login()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.tests.EditUserViewTests.test_user_with_permission_can_access_edit_user_page"><code class="docutils literal notranslate"><span class="pre">EditUserViewTests.test_user_with_permission_can_access_edit_user_page()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.tests.EditUserViewTests.test_user_with_permission_cannot_edit_user"><code class="docutils literal notranslate"><span class="pre">EditUserViewTests.test_user_with_permission_cannot_edit_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.tests.EditUserViewTests.test_user_without_permission_cannot_access_edit_user_page"><code class="docutils literal notranslate"><span class="pre">EditUserViewTests.test_user_without_permission_cannot_access_edit_user_page()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#accounts.tests.LoginViewTests"><code class="docutils literal notranslate"><span class="pre">LoginViewTests</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.tests.LoginViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.setUp()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.tests.LoginViewTests.test_login_failure_with_incorrect_credentials"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.test_login_failure_with_incorrect_credentials()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.tests.LoginViewTests.test_login_success_with_correct_credentials"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.test_login_success_with_correct_credentials()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.tests.LoginViewTests.test_login_view_redirects_authenticated_user"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.test_login_view_redirects_authenticated_user()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.tests.LoginViewTests.test_login_view_renders_for_unauthenticated_user"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.test_login_view_renders_for_unauthenticated_user()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#accounts.tests.UserListViewTests"><code class="docutils literal notranslate"><span class="pre">UserListViewTests</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.tests.UserListViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">UserListViewTests.setUp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.tests.UserListViewTests.test_unauthenticated_user_redirected_to_login"><code class="docutils literal notranslate"><span class="pre">UserListViewTests.test_unauthenticated_user_redirected_to_login()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.tests.UserListViewTests.test_user_with_permission_is_redirected_from_user_list"><code class="docutils literal notranslate"><span class="pre">UserListViewTests.test_user_with_permission_is_redirected_from_user_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.tests.UserListViewTests.test_user_without_permission_cannot_access_user_list"><code class="docutils literal notranslate"><span class="pre">UserListViewTests.test_user_without_permission_cannot_access_user_list()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -114,6 +130,43 @@
   <section id="module-accounts.tests">
 <span id="pruebas-para-la-aplicacion-de-cuentas"></span><h1>Pruebas para la Aplicación de Cuentas<a class="headerlink" href="#module-accounts.tests" title="Link to this heading"></a></h1>
 <dl class="py class">
+<dt class="sig sig-object py" id="accounts.tests.EditUserViewTests">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">accounts.tests.</span></span><span class="sig-name descname"><span class="pre">EditUserViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#EditUserViewTests"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.EditUserViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.tests.EditUserViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#EditUserViewTests.setUp"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.EditUserViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.tests.EditUserViewTests.test_edit_user_with_invalid_data">
+<span class="sig-name descname"><span class="pre">test_edit_user_with_invalid_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#EditUserViewTests.test_edit_user_with_invalid_data"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.EditUserViewTests.test_edit_user_with_invalid_data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.tests.EditUserViewTests.test_unauthenticated_user_redirected_to_login">
+<span class="sig-name descname"><span class="pre">test_unauthenticated_user_redirected_to_login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#EditUserViewTests.test_unauthenticated_user_redirected_to_login"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.EditUserViewTests.test_unauthenticated_user_redirected_to_login" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.tests.EditUserViewTests.test_user_with_permission_can_access_edit_user_page">
+<span class="sig-name descname"><span class="pre">test_user_with_permission_can_access_edit_user_page</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#EditUserViewTests.test_user_with_permission_can_access_edit_user_page"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.EditUserViewTests.test_user_with_permission_can_access_edit_user_page" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.tests.EditUserViewTests.test_user_with_permission_cannot_edit_user">
+<span class="sig-name descname"><span class="pre">test_user_with_permission_cannot_edit_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#EditUserViewTests.test_user_with_permission_cannot_edit_user"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.EditUserViewTests.test_user_with_permission_cannot_edit_user" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.tests.EditUserViewTests.test_user_without_permission_cannot_access_edit_user_page">
+<span class="sig-name descname"><span class="pre">test_user_without_permission_cannot_access_edit_user_page</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#EditUserViewTests.test_user_without_permission_cannot_access_edit_user_page"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.EditUserViewTests.test_user_without_permission_cannot_access_edit_user_page" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="accounts.tests.LoginViewTests">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">accounts.tests.</span></span><span class="sig-name descname"><span class="pre">LoginViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#LoginViewTests"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.LoginViewTests" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
@@ -141,6 +194,33 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="accounts.tests.LoginViewTests.test_login_view_renders_for_unauthenticated_user">
 <span class="sig-name descname"><span class="pre">test_login_view_renders_for_unauthenticated_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#LoginViewTests.test_login_view_renders_for_unauthenticated_user"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.LoginViewTests.test_login_view_renders_for_unauthenticated_user" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="accounts.tests.UserListViewTests">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">accounts.tests.</span></span><span class="sig-name descname"><span class="pre">UserListViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#UserListViewTests"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.UserListViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.tests.UserListViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#UserListViewTests.setUp"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.UserListViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.tests.UserListViewTests.test_unauthenticated_user_redirected_to_login">
+<span class="sig-name descname"><span class="pre">test_unauthenticated_user_redirected_to_login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#UserListViewTests.test_unauthenticated_user_redirected_to_login"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.UserListViewTests.test_unauthenticated_user_redirected_to_login" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.tests.UserListViewTests.test_user_with_permission_is_redirected_from_user_list">
+<span class="sig-name descname"><span class="pre">test_user_with_permission_is_redirected_from_user_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#UserListViewTests.test_user_with_permission_is_redirected_from_user_list"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.UserListViewTests.test_user_with_permission_is_redirected_from_user_list" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="accounts.tests.UserListViewTests.test_user_without_permission_cannot_access_user_list">
+<span class="sig-name descname"><span class="pre">test_user_without_permission_cannot_access_user_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/accounts/tests.html#UserListViewTests.test_user_without_permission_cannot_access_user_list"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#accounts.tests.UserListViewTests.test_user_without_permission_cannot_access_user_list" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>

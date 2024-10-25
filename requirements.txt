@@ -8,3 +8,5 @@ psycopg2-binary==2.9.9
 drf-yasg==1.21.7
 celery
 redis
+dj-database-url
+whitenoise

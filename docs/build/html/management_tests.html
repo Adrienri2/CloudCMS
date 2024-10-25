@@ -72,7 +72,19 @@
 <li class="toctree-l1"><a class="reference internal" href="management_forms.html">Formularios para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="management_middleware.html">Middleware para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="management_models.html">Modelos para la Aplicación CloudCMS</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Pruebas para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pruebas para la Aplicación CloudCMS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#management.tests.KanbanViewTest"><code class="docutils literal notranslate"><span class="pre">KanbanViewTest</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.tests.KanbanViewTest.setUp"><code class="docutils literal notranslate"><span class="pre">KanbanViewTest.setUp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.tests.KanbanViewTest.test_admin_with_moderated_category"><code class="docutils literal notranslate"><span class="pre">KanbanViewTest.test_admin_with_moderated_category()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.tests.KanbanViewTest.test_admin_without_category_type"><code class="docutils literal notranslate"><span class="pre">KanbanViewTest.test_admin_without_category_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.tests.KanbanViewTest.test_author_with_moderated_category"><code class="docutils literal notranslate"><span class="pre">KanbanViewTest.test_author_with_moderated_category()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.tests.KanbanViewTest.test_author_without_category_type"><code class="docutils literal notranslate"><span class="pre">KanbanViewTest.test_author_without_category_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.tests.KanbanViewTest.test_editor_with_moderated_category"><code class="docutils literal notranslate"><span class="pre">KanbanViewTest.test_editor_with_moderated_category()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.tests.KanbanViewTest.test_publisher_with_moderated_category"><code class="docutils literal notranslate"><span class="pre">KanbanViewTest.test_publisher_with_moderated_category()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="management_urls.html">URLs para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="management_views.html">Vistas para la Aplicación CloudCMS</a></li>
 </ul>
@@ -103,6 +115,48 @@
              
   <section id="module-management.tests">
 <span id="pruebas-para-la-aplicacion-cloudcms"></span><h1>Pruebas para la Aplicación CloudCMS<a class="headerlink" href="#module-management.tests" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="management.tests.KanbanViewTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.tests.</span></span><span class="sig-name descname"><span class="pre">KanbanViewTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/tests.html#KanbanViewTest"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.tests.KanbanViewTest" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.tests.KanbanViewTest.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/tests.html#KanbanViewTest.setUp"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.tests.KanbanViewTest.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.tests.KanbanViewTest.test_admin_with_moderated_category">
+<span class="sig-name descname"><span class="pre">test_admin_with_moderated_category</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/tests.html#KanbanViewTest.test_admin_with_moderated_category"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.tests.KanbanViewTest.test_admin_with_moderated_category" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.tests.KanbanViewTest.test_admin_without_category_type">
+<span class="sig-name descname"><span class="pre">test_admin_without_category_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/tests.html#KanbanViewTest.test_admin_without_category_type"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.tests.KanbanViewTest.test_admin_without_category_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.tests.KanbanViewTest.test_author_with_moderated_category">
+<span class="sig-name descname"><span class="pre">test_author_with_moderated_category</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/tests.html#KanbanViewTest.test_author_with_moderated_category"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.tests.KanbanViewTest.test_author_with_moderated_category" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.tests.KanbanViewTest.test_author_without_category_type">
+<span class="sig-name descname"><span class="pre">test_author_without_category_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/tests.html#KanbanViewTest.test_author_without_category_type"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.tests.KanbanViewTest.test_author_without_category_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.tests.KanbanViewTest.test_editor_with_moderated_category">
+<span class="sig-name descname"><span class="pre">test_editor_with_moderated_category</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/tests.html#KanbanViewTest.test_editor_with_moderated_category"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.tests.KanbanViewTest.test_editor_with_moderated_category" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.tests.KanbanViewTest.test_publisher_with_moderated_category">
+<span class="sig-name descname"><span class="pre">test_publisher_with_moderated_category</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/tests.html#KanbanViewTest.test_publisher_with_moderated_category"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.tests.KanbanViewTest.test_publisher_with_moderated_category" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 
 

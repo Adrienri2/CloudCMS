@@ -10,34 +10,35 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
-
-# Cargar variables de entorno desde .env
-load_dotenv()
+from django.contrib.messages import constants as messages
 
 # Construir rutas dentro del proyecto como: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Cargar variables de entorno desde .env en modo desarrollo
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+if DEBUG:
+    # Cargar variables de entorno desde .env
+    load_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env'))
 
-#  SECURITY WARNING: mantenga la clave secreta utilizada en producción en secreto!
+# SECURITY WARNING: mantenga la clave secreta utilizada en producción en secreto!
 SECRET_KEY = os.getenv('SECRET_KEY')
 if not SECRET_KEY:
     raise ImproperlyConfigured("La variable de entorno 'SECRET_KEY' no está configurada.")
 
-# SECURITY WARNING: mantenga la clave secreta utilizada en producción en secreto!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+# SECURITY WARNING: no ejecute con DEBUG activado en producción!
+# Ya definimos DEBUG anteriormente
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
-
+CSRF_TRUSTED_ORIGINS = ['https://cloudcms.up.railway.app']
 
 # Definición de aplicaciones
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,6 +60,7 @@ INSTALLED_APPS += EXTERNAL_APPS
 # Configuración de middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Añadido para servir archivos estáticos en producción
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -79,18 +81,18 @@ ROOT_URLCONF = 'cloudcms.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/"templates"],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'cloudcms.context_processors.admin_media',
-                'cloudcms.context_processors.categories_processor', 
+                'cloudcms.context_processors.categories_processor',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'blogs.context_processors.categories_processor',
-            
+                'blogs.context_processors.notification_processor',
             ],
         },
     },
@@ -98,33 +100,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cloudcms.wsgi.application'
 
-
 # Configuración de la base de datos
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 if DEBUG:
+    # Base de datos local para desarrollo
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'dbcloudcms_dev',
-            'USER': 'admin_cms',
-            'PASSWORD': '1234',
-            'HOST': 'localhost',
-            'PORT': '5432',
+            'NAME': os.getenv('DB_NAME', 'dbcloudcms_dev'),
+            'USER': os.getenv('DB_USER', 'admin_cms'),
+            'PASSWORD': os.getenv('DB_PASSWORD', '1234'),
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', '5432'),
         }
     }
 else:
+    # Base de datos de producción usando DATABASE_URL
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'dbcloudcms_prod',
-            'USER': 'admin_cms',
-            'PASSWORD': '1234',
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
-
 
 # Validación de contraseñas
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -144,7 +143,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internacionalización
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -156,22 +154,21 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Archivos estáticos (CSS, JavaScript, Imágenes)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_prod')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static_dev'),
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Configuración de Whitenoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
-
-
-
 
 # Tipo de campo predeterminado para la clave primaria
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -184,12 +181,10 @@ AUTH_USER_MODEL = "accounts.User"
 # Configuraciones globales del sitio
 GLOBAL_SETTINGS = {
     "SITE_NAME": "CloudCMS",
-    "SITE_URL": "http://localhost:8000"
+    "SITE_URL": os.getenv('SITE_URL', 'http://localhost:8000')
 }
 
-#Configuración de etiquetas para mensajes
-from django.contrib.messages import constants as messages
-
+# Configuración de etiquetas para mensajes
 MESSAGE_TAGS = {
     messages.DEBUG: 'debug',
     messages.INFO: 'info',
@@ -199,9 +194,62 @@ MESSAGE_TAGS = {
 }
 
 # Configuración de Celery
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+if DEBUG:
+    CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+    CELERY_RESULT_BACKEND = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+else:
+    CELERY_BROKER_URL = os.getenv('REDIS_URL')
+    CELERY_RESULT_BACKEND = os.getenv('REDIS_URL')
+
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+
+# Configuración del backend de correo electrónico
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+
+# Resto de la configuración...
+
+# Configuración del backend de correo electrónico
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+
+# Resto de la configuración...
+# Configuración de logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'management': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}

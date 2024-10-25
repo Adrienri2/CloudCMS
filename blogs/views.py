@@ -1,9 +1,12 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views import View
 from django.db.models import F
 from django.urls import reverse
 from .models import *
+from .models import Notification, Category, FavoriteCategory
+from django.http import HttpResponseRedirect, JsonResponse
 
 """
 Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.
@@ -135,3 +138,113 @@ class CreateReply(View):
 
         messages.success(request, "Respuesta creada")
         return redirect(get_blog_url(comment.blog.slug)+"#comments")
+    
+
+
+@login_required
+def notifications(request):
+    """
+    Vista para mostrar las notificaciones no leídas del usuario.
+
+    Parámetros:
+    request (HttpRequest): El objeto de solicitud HTTP.
+
+    Retorna:
+    HttpResponse: Renderiza la plantilla 'notifications.html' con las notificaciones no leídas
+                  y el conteo de las mismas.
+
+    Funcionalidad:
+    - Filtra las notificaciones del usuario autenticado que no han sido leídas.
+    - Ordena las notificaciones por fecha de creación en orden descendente.
+    - Cuenta el número de notificaciones no leídas.
+    - Renderiza la plantilla 'notifications.html' con las notificaciones y su conteo.
+    """
+    notifications = Notification.objects.filter(user=request.user, is_read=False).order_by('-created_at')
+    notifications_count = notifications.count()
+    return render(request, 'notifications.html', {'notifications': notifications, 'notifications_count': notifications_count})
+
+@login_required
+def mark_as_read(request, notification_id):
+    """
+    Vista para marcar una notificación específica como leída.
+
+    Parámetros:
+    request (HttpRequest): El objeto de solicitud HTTP.
+    notification_id (int): El ID de la notificación a marcar como leída.
+
+    Retorna:
+    HttpResponseRedirect: Redirige a la vista 'manage:kanban'.
+
+    Funcionalidad:
+    - Obtiene la notificación especificada por ID y perteneciente al usuario autenticado.
+    - Marca la notificación como leída.
+    - Guarda los cambios en la base de datos.
+    - Redirige a la vista 'manage:kanban'.
+    """
+    notification = get_object_or_404(Notification, id=notification_id, user=request.user)
+    notification.is_read = True
+    notification.save()
+    return redirect('manage:kanban')
+
+@login_required
+def mark_all_as_read(request):
+    """
+    Vista para marcar todas las notificaciones no leídas del usuario como leídas.
+
+    Parámetros:
+    request (HttpRequest): El objeto de solicitud HTTP.
+
+    Retorna:
+    HttpResponseRedirect: Redirige a la página anterior usando HTTP_REFERER.
+
+    Funcionalidad:
+    - Filtra las notificaciones no leídas del usuario autenticado.
+    - Marca todas las notificaciones filtradas como leídas.
+    - Redirige a la página anterior usando HTTP_REFERER.
+    """
+    notifications = Notification.objects.filter(user=request.user, is_read=False)
+    notifications.update(is_read=True)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+@login_required
+def toggle_favorite_category(request, category_id):
+    """
+    Vista para añadir o eliminar una categoría de las favoritas del usuario.
+
+    Parámetros:
+    request (HttpRequest): El objeto de solicitud HTTP.
+    category_id (int): El ID de la categoría a añadir o eliminar de favoritas.
+
+    Retorna:
+    JsonResponse: Retorna un JSON con el estado de la operación ('added' o 'removed').
+
+    Funcionalidad:
+    - Obtiene la categoría especificada por ID.
+    - Intenta obtener o crear una relación de categoría favorita para el usuario autenticado.
+    - Si la relación ya existe, la elimina y retorna un estado 'removed'.
+    - Si la relación no existe, la crea y retorna un estado 'added'.
+    """
+    category = get_object_or_404(Category, id=category_id)
+    favorite, created = FavoriteCategory.objects.get_or_create(user=request.user, category=category)
+    if not created:
+        favorite.delete()
+        return JsonResponse({'status': 'removed'})
+    return JsonResponse({'status': 'added'})
+
+@login_required
+def favorite_categories(request):
+    """
+    Vista para mostrar las categorías favoritas del usuario.
+
+    Parámetros:
+    request (HttpRequest): El objeto de solicitud HTTP.
+
+    Retorna:
+    HttpResponse: Renderiza la plantilla 'blogs/favorite_categories.html' con las categorías favoritas.
+
+    Funcionalidad:
+    - Filtra las categorías favoritas del usuario autenticado.
+    - Renderiza la plantilla 'blogs/favorite_categories.html' con las categorías favoritas.
+    """
+    favorites = FavoriteCategory.objects.filter(user=request.user)
+    return render(request, 'blogs/favorite_categories.html', {'favorites': favorites})

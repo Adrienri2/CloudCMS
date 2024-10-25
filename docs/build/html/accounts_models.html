@@ -61,10 +61,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.USERNAME_FIELD"><code class="docutils literal notranslate"><span class="pre">User.USERNAME_FIELD</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.avatar"><code class="docutils literal notranslate"><span class="pre">User.avatar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.blogs"><code class="docutils literal notranslate"><span class="pre">User.blogs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.blogversion_set"><code class="docutils literal notranslate"><span class="pre">User.blogversion_set</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.bookmarks"><code class="docutils literal notranslate"><span class="pre">User.bookmarks</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.comments"><code class="docutils literal notranslate"><span class="pre">User.comments</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.date_joined"><code class="docutils literal notranslate"><span class="pre">User.date_joined</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.email"><code class="docutils literal notranslate"><span class="pre">User.email</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.favorite_categories"><code class="docutils literal notranslate"><span class="pre">User.favorite_categories</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.first_name"><code class="docutils literal notranslate"><span class="pre">User.first_name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.gender"><code class="docutils literal notranslate"><span class="pre">User.gender</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.get_gender_display"><code class="docutils literal notranslate"><span class="pre">User.get_gender_display()</span></code></a></li>
@@ -82,6 +84,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.likes"><code class="docutils literal notranslate"><span class="pre">User.likes</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.logentry_set"><code class="docutils literal notranslate"><span class="pre">User.logentry_set</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.modified_blogs"><code class="docutils literal notranslate"><span class="pre">User.modified_blogs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.notification_set"><code class="docutils literal notranslate"><span class="pre">User.notification_set</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.objects"><code class="docutils literal notranslate"><span class="pre">User.objects</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.password"><code class="docutils literal notranslate"><span class="pre">User.password</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accounts.models.User.replies"><code class="docutils literal notranslate"><span class="pre">User.replies</span></code></a></li>
@@ -210,6 +213,21 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="accounts.models.User.blogversion_set">
+<span class="sig-name descname"><span class="pre">blogversion_set</span></span><a class="headerlink" href="#accounts.models.User.blogversion_set" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="accounts.models.User.bookmarks">
 <span class="sig-name descname"><span class="pre">bookmarks</span></span><a class="headerlink" href="#accounts.models.User.bookmarks" title="Link to this definition"></a></dt>
 <dd><p>Accessor to the related objects manager on the reverse side of a
@@ -251,6 +269,21 @@ object the first time, the query is executed.</p>
 <span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#accounts.models.User.email" title="Link to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="accounts.models.User.favorite_categories">
+<span class="sig-name descname"><span class="pre">favorite_categories</span></span><a class="headerlink" href="#accounts.models.User.favorite_categories" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -384,6 +417,21 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 <dl class="py attribute">
 <dt class="sig sig-object py" id="accounts.models.User.modified_blogs">
 <span class="sig-name descname"><span class="pre">modified_blogs</span></span><a class="headerlink" href="#accounts.models.User.modified_blogs" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="accounts.models.User.notification_set">
+<span class="sig-name descname"><span class="pre">notification_set</span></span><a class="headerlink" href="#accounts.models.User.notification_set" title="Link to this definition"></a></dt>
 <dd><p>Accessor to the related objects manager on the reverse side of a
 many-to-one relation.</p>
 <p>In the example:</p>

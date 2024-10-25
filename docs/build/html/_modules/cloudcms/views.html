@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="es" data-content_root="../../">
 <head>
@@ -5,19 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>cloudcms.views &mdash; documentación de CloudCMS - 1.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=7ab3649f" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=4936afed"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/translations.js?v=d190bf04"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4936afed"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=d190bf04"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" /> 
@@ -66,6 +64,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cloudcms_urls.html">URLs para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cloudcms_views.html">Vistas para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cloudcms_wsgi.html">WSGI para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_admin.html">Admin para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_apps.html">Configuración de la Aplicación Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_forms.html">Formularios para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_middleware.html">Middleware para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_models.html">Modelos para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_tests.html">Pruebas para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_urls.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_views.html">Vistas para la Aplicación CloudCMS</a></li>
 </ul>
 
         </div>
@@ -98,7 +104,7 @@
 <span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">View</span>
 <span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
 <span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span>
-<span class="kn">from</span> <span class="nn">blogs.models</span> <span class="kn">import</span> <span class="n">Blog</span><span class="p">,</span> <span class="n">Bookmark</span><span class="p">,</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">blogs.models</span> <span class="kn">import</span> <span class="n">Blog</span><span class="p">,</span> <span class="n">Bookmark</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">FavoriteCategory</span>
 <span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span><span class="p">,</span> <span class="n">EmptyPage</span><span class="p">,</span> <span class="n">PageNotAnInteger</span>
 <span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
 
@@ -171,11 +177,20 @@
 <span class="sd">            QuerySet: Un conjunto de objetos Blog filtrados por la consulta.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
         <span class="n">blogs</span> <span class="o">=</span> <span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">title__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">desc__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)),</span> <span class="n">is_active</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">title__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span> 
+            <span class="n">Q</span><span class="p">(</span><span class="n">desc__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">))</span> <span class="o">|</span> 
+            <span class="n">Q</span><span class="p">(</span><span class="n">content__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+            <span class="n">Q</span><span class="p">(</span><span class="n">creator__username__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+            <span class="n">Q</span><span class="p">(</span><span class="n">category__category__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">),</span>
+            <span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_published</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-published_on&quot;</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">blogs</span></div>
 
+        
 
 <div class="viewcode-block" id="Search.get_context_data">
 <a class="viewcode-back" href="../../cloudcms_views.html#cloudcms.views.Search.get_context_data">[documentos]</a>
@@ -256,10 +271,14 @@
         <span class="n">category</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">slug</span><span class="p">)</span>
         <span class="n">blogs</span> <span class="o">=</span> <span class="n">category</span><span class="o">.</span><span class="n">blogs</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_published</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-published_on&quot;</span><span class="p">)</span>
         <span class="n">costo_membresia</span> <span class="o">=</span> <span class="n">category</span><span class="o">.</span><span class="n">costo_membresia</span> <span class="k">if</span> <span class="n">category</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">is_favorite</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+            <span class="n">is_favorite</span> <span class="o">=</span> <span class="n">FavoriteCategory</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;get_category.html&#39;</span><span class="p">,</span> <span class="p">{</span>
             <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>  <span class="c1"># Pasar la categoría al contexto</span>
             <span class="s1">&#39;blogs&#39;</span><span class="p">:</span> <span class="n">blogs</span><span class="p">,</span>  <span class="c1"># Pasar los blogs al contexto</span>
             <span class="s1">&#39;costo_membresia&#39;</span><span class="p">:</span> <span class="n">costo_membresia</span><span class="p">,</span>  <span class="c1"># Pasar el costo de la membresía al contexto</span>
+            <span class="s1">&#39;is_favorite&#39;</span><span class="p">:</span> <span class="n">is_favorite</span>  <span class="c1"># Pasar el estado de favorito al contexto</span>
         <span class="p">})</span></div>
 </div>
 

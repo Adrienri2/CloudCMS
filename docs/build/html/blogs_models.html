@@ -71,6 +71,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.creator"><code class="docutils literal notranslate"><span class="pre">Blog.creator</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.creator_id"><code class="docutils literal notranslate"><span class="pre">Blog.creator_id</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.desc"><code class="docutils literal notranslate"><span class="pre">Blog.desc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.expiry_date"><code class="docutils literal notranslate"><span class="pre">Blog.expiry_date</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.generate_notifications"><code class="docutils literal notranslate"><span class="pre">Blog.generate_notifications()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.get_button_text"><code class="docutils literal notranslate"><span class="pre">Blog.get_button_text()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.get_next_by_published_on"><code class="docutils literal notranslate"><span class="pre">Blog.get_next_by_published_on()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.get_previous_by_published_on"><code class="docutils literal notranslate"><span class="pre">Blog.get_previous_by_published_on()</span></code></a></li>
@@ -82,7 +84,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.last_modified_by_id"><code class="docutils literal notranslate"><span class="pre">Blog.last_modified_by_id</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.last_modified_by_role"><code class="docutils literal notranslate"><span class="pre">Blog.last_modified_by_role</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.likes"><code class="docutils literal notranslate"><span class="pre">Blog.likes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.notification_set"><code class="docutils literal notranslate"><span class="pre">Blog.notification_set</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.objects"><code class="docutils literal notranslate"><span class="pre">Blog.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.previous_status"><code class="docutils literal notranslate"><span class="pre">Blog.previous_status</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.published_on"><code class="docutils literal notranslate"><span class="pre">Blog.published_on</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.save"><code class="docutils literal notranslate"><span class="pre">Blog.save()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.scheduled_date"><code class="docutils literal notranslate"><span class="pre">Blog.scheduled_date</span></code></a></li>
@@ -91,6 +95,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.status_comments"><code class="docutils literal notranslate"><span class="pre">Blog.status_comments</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.thumbnail"><code class="docutils literal notranslate"><span class="pre">Blog.thumbnail</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.title"><code class="docutils literal notranslate"><span class="pre">Blog.title</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.versions"><code class="docutils literal notranslate"><span class="pre">Blog.versions</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Blog.views"><code class="docutils literal notranslate"><span class="pre">Blog.views</span></code></a></li>
 </ul>
 </li>
@@ -103,6 +108,28 @@
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogLike.creator_id"><code class="docutils literal notranslate"><span class="pre">BlogLike.creator_id</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogLike.id"><code class="docutils literal notranslate"><span class="pre">BlogLike.id</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogLike.objects"><code class="docutils literal notranslate"><span class="pre">BlogLike.objects</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.models.BlogVersion"><code class="docutils literal notranslate"><span class="pre">BlogVersion</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">BlogVersion.DoesNotExist</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">BlogVersion.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.blog"><code class="docutils literal notranslate"><span class="pre">BlogVersion.blog</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.blog_id"><code class="docutils literal notranslate"><span class="pre">BlogVersion.blog_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.category"><code class="docutils literal notranslate"><span class="pre">BlogVersion.category</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.category_id"><code class="docutils literal notranslate"><span class="pre">BlogVersion.category_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.content"><code class="docutils literal notranslate"><span class="pre">BlogVersion.content</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.created_at"><code class="docutils literal notranslate"><span class="pre">BlogVersion.created_at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.desc"><code class="docutils literal notranslate"><span class="pre">BlogVersion.desc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">BlogVersion.get_next_by_created_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">BlogVersion.get_previous_by_created_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.id"><code class="docutils literal notranslate"><span class="pre">BlogVersion.id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.modified_by"><code class="docutils literal notranslate"><span class="pre">BlogVersion.modified_by</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.modified_by_id"><code class="docutils literal notranslate"><span class="pre">BlogVersion.modified_by_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.modified_by_role"><code class="docutils literal notranslate"><span class="pre">BlogVersion.modified_by_role</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.objects"><code class="docutils literal notranslate"><span class="pre">BlogVersion.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.return_comment"><code class="docutils literal notranslate"><span class="pre">BlogVersion.return_comment</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.thumbnail"><code class="docutils literal notranslate"><span class="pre">BlogVersion.thumbnail</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.BlogVersion.title"><code class="docutils literal notranslate"><span class="pre">BlogVersion.title</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#blogs.models.Bookmark"><code class="docutils literal notranslate"><span class="pre">Bookmark</span></code></a><ul>
@@ -125,10 +152,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Category.MultipleObjectsReturned</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.SUBCATEGORY_TYPE_CHOICES"><code class="docutils literal notranslate"><span class="pre">Category.SUBCATEGORY_TYPE_CHOICES</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.blogs"><code class="docutils literal notranslate"><span class="pre">Category.blogs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.blogversion_set"><code class="docutils literal notranslate"><span class="pre">Category.blogversion_set</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.category"><code class="docutils literal notranslate"><span class="pre">Category.category</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.category_type"><code class="docutils literal notranslate"><span class="pre">Category.category_type</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.costo_membresia"><code class="docutils literal notranslate"><span class="pre">Category.costo_membresia</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.desc"><code class="docutils literal notranslate"><span class="pre">Category.desc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.favorited_by"><code class="docutils literal notranslate"><span class="pre">Category.favorited_by</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.get_category_type_display"><code class="docutils literal notranslate"><span class="pre">Category.get_category_type_display()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.get_subcategory_type_display"><code class="docutils literal notranslate"><span class="pre">Category.get_subcategory_type_display()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Category.id"><code class="docutils literal notranslate"><span class="pre">Category.id</span></code></a></li>
@@ -155,6 +184,36 @@
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Comment.objects"><code class="docutils literal notranslate"><span class="pre">Comment.objects</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Comment.published_on"><code class="docutils literal notranslate"><span class="pre">Comment.published_on</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.models.Comment.replies"><code class="docutils literal notranslate"><span class="pre">Comment.replies</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.models.FavoriteCategory"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.DoesNotExist</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.category"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.category</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.category_id"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.category_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.created_at"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.created_at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.get_next_by_created_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.get_previous_by_created_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.id"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.objects"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.user"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.user</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.FavoriteCategory.user_id"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory.user_id</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.models.Notification"><code class="docutils literal notranslate"><span class="pre">Notification</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Notification.DoesNotExist</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Notification.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.blog"><code class="docutils literal notranslate"><span class="pre">Notification.blog</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.blog_id"><code class="docutils literal notranslate"><span class="pre">Notification.blog_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.created_at"><code class="docutils literal notranslate"><span class="pre">Notification.created_at</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">Notification.get_next_by_created_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">Notification.get_previous_by_created_at()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.id"><code class="docutils literal notranslate"><span class="pre">Notification.id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.is_read"><code class="docutils literal notranslate"><span class="pre">Notification.is_read</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.message"><code class="docutils literal notranslate"><span class="pre">Notification.message</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.objects"><code class="docutils literal notranslate"><span class="pre">Notification.objects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.user"><code class="docutils literal notranslate"><span class="pre">Notification.user</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.models.Notification.user_id"><code class="docutils literal notranslate"><span class="pre">Notification.user_id</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#blogs.models.Reply"><code class="docutils literal notranslate"><span class="pre">Reply</span></code></a><ul>
@@ -329,6 +388,19 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 object the first time, the query is executed.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Blog.expiry_date">
+<span class="sig-name descname"><span class="pre">expiry_date</span></span><a class="headerlink" href="#blogs.models.Blog.expiry_date" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.models.Blog.generate_notifications">
+<span class="sig-name descname"><span class="pre">generate_notifications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old_status</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/models.html#Blog.generate_notifications"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.models.Blog.generate_notifications" title="Link to this definition"></a></dt>
+<dd><p>Genera notificaciones basadas en el cambio de estado del blog.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="blogs.models.Blog.get_button_text">
 <span class="sig-name descname"><span class="pre">get_button_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/models.html#Blog.get_button_text"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.models.Blog.get_button_text" title="Link to this definition"></a></dt>
@@ -412,9 +484,31 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Blog.notification_set">
+<span class="sig-name descname"><span class="pre">notification_set</span></span><a class="headerlink" href="#blogs.models.Blog.notification_set" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.objects">
 <span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#blogs.models.Blog.objects" title="Link to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Blog.previous_status">
+<span class="sig-name descname"><span class="pre">previous_status</span></span><a class="headerlink" href="#blogs.models.Blog.previous_status" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Blog.published_on">
@@ -426,7 +520,7 @@ object the first time, the query is executed.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="blogs.models.Blog.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/models.html#Blog.save"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.models.Blog.save" title="Link to this definition"></a></dt>
-<dd><p>Sobrescribe el método save para asignar el slug como el id del blog después de guardarlo.</p>
+<dd><p>Sobrescribe el método save para asignar el slug como el id del blog después de guardarlo y generar notificaciones.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -469,6 +563,21 @@ assigning the width/height to the width_field/height_field, if appropriate.</p>
 <span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#blogs.models.Blog.title" title="Link to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Blog.versions">
+<span class="sig-name descname"><span class="pre">versions</span></span><a class="headerlink" href="#blogs.models.Blog.versions" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -544,6 +653,150 @@ object the first time, the query is executed.</p>
 <dt class="sig sig-object py" id="blogs.models.BlogLike.objects">
 <span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#blogs.models.BlogLike.objects" title="Link to this definition"></a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.models.</span></span><span class="sig-name descname"><span class="pre">BlogVersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/models.html#BlogVersion"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.models.BlogVersion" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Modelo para representar una versión de un blog.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#blogs.models.BlogVersion.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#blogs.models.BlogVersion.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.blog">
+<span class="sig-name descname"><span class="pre">blog</span></span><a class="headerlink" href="#blogs.models.BlogVersion.blog" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.blog_id">
+<span class="sig-name descname"><span class="pre">blog_id</span></span><a class="headerlink" href="#blogs.models.BlogVersion.blog_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.category">
+<span class="sig-name descname"><span class="pre">category</span></span><a class="headerlink" href="#blogs.models.BlogVersion.category" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.category_id">
+<span class="sig-name descname"><span class="pre">category_id</span></span><a class="headerlink" href="#blogs.models.BlogVersion.category_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.content">
+<span class="sig-name descname"><span class="pre">content</span></span><a class="headerlink" href="#blogs.models.BlogVersion.content" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#blogs.models.BlogVersion.created_at" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.desc">
+<span class="sig-name descname"><span class="pre">desc</span></span><a class="headerlink" href="#blogs.models.BlogVersion.desc" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.get_next_by_created_at">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.models.BlogVersion.get_next_by_created_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.get_previous_by_created_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.models.BlogVersion.get_previous_by_created_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#blogs.models.BlogVersion.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.modified_by">
+<span class="sig-name descname"><span class="pre">modified_by</span></span><a class="headerlink" href="#blogs.models.BlogVersion.modified_by" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.modified_by_id">
+<span class="sig-name descname"><span class="pre">modified_by_id</span></span><a class="headerlink" href="#blogs.models.BlogVersion.modified_by_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.modified_by_role">
+<span class="sig-name descname"><span class="pre">modified_by_role</span></span><a class="headerlink" href="#blogs.models.BlogVersion.modified_by_role" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#blogs.models.BlogVersion.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.return_comment">
+<span class="sig-name descname"><span class="pre">return_comment</span></span><a class="headerlink" href="#blogs.models.BlogVersion.return_comment" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.thumbnail">
+<span class="sig-name descname"><span class="pre">thumbnail</span></span><a class="headerlink" href="#blogs.models.BlogVersion.thumbnail" title="Link to this definition"></a></dt>
+<dd><p>Just like the FileDescriptor, but for ImageFields. The only difference is
+assigning the width/height to the width_field/height_field, if appropriate.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.BlogVersion.title">
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#blogs.models.BlogVersion.title" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -674,6 +927,21 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Category.blogversion_set">
+<span class="sig-name descname"><span class="pre">blogversion_set</span></span><a class="headerlink" href="#blogs.models.Category.blogversion_set" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="blogs.models.Category.category">
 <span class="sig-name descname"><span class="pre">category</span></span><a class="headerlink" href="#blogs.models.Category.category" title="Link to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
@@ -699,6 +967,21 @@ object the first time, the query is executed.</p>
 <span class="sig-name descname"><span class="pre">desc</span></span><a class="headerlink" href="#blogs.models.Category.desc" title="Link to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Category.favorited_by">
+<span class="sig-name descname"><span class="pre">favorited_by</span></span><a class="headerlink" href="#blogs.models.Category.favorited_by" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -869,6 +1152,188 @@ many-to-one relation.</p>
 <p>Most of the implementation is delegated to a dynamically defined manager
 class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.models.</span></span><span class="sig-name descname"><span class="pre">FavoriteCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/models.html#FavoriteCategory"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.models.FavoriteCategory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Modelo para representar una categoría favorita de un usuario.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#blogs.models.FavoriteCategory.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#blogs.models.FavoriteCategory.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.category">
+<span class="sig-name descname"><span class="pre">category</span></span><a class="headerlink" href="#blogs.models.FavoriteCategory.category" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.category_id">
+<span class="sig-name descname"><span class="pre">category_id</span></span><a class="headerlink" href="#blogs.models.FavoriteCategory.category_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#blogs.models.FavoriteCategory.created_at" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.get_next_by_created_at">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.models.FavoriteCategory.get_next_by_created_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.get_previous_by_created_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.models.FavoriteCategory.get_previous_by_created_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#blogs.models.FavoriteCategory.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#blogs.models.FavoriteCategory.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.user">
+<span class="sig-name descname"><span class="pre">user</span></span><a class="headerlink" href="#blogs.models.FavoriteCategory.user" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.FavoriteCategory.user_id">
+<span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#blogs.models.FavoriteCategory.user_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.models.Notification">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.models.</span></span><span class="sig-name descname"><span class="pre">Notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/models.html#Notification"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.models.Notification" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Modelo para representar una notificación.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="blogs.models.Notification.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#blogs.models.Notification.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blogs.models.Notification.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#blogs.models.Notification.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Notification.blog">
+<span class="sig-name descname"><span class="pre">blog</span></span><a class="headerlink" href="#blogs.models.Notification.blog" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Notification.blog_id">
+<span class="sig-name descname"><span class="pre">blog_id</span></span><a class="headerlink" href="#blogs.models.Notification.blog_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Notification.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><a class="headerlink" href="#blogs.models.Notification.created_at" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.models.Notification.get_next_by_created_at">
+<span class="sig-name descname"><span class="pre">get_next_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.models.Notification.get_next_by_created_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.models.Notification.get_previous_by_created_at">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_at&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.models.Notification.get_previous_by_created_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Notification.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#blogs.models.Notification.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Notification.is_read">
+<span class="sig-name descname"><span class="pre">is_read</span></span><a class="headerlink" href="#blogs.models.Notification.is_read" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Notification.message">
+<span class="sig-name descname"><span class="pre">message</span></span><a class="headerlink" href="#blogs.models.Notification.message" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Notification.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#blogs.models.Notification.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Notification.user">
+<span class="sig-name descname"><span class="pre">user</span></span><a class="headerlink" href="#blogs.models.Notification.user" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blogs.models.Notification.user_id">
+<span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#blogs.models.Notification.user_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

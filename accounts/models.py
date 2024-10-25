@@ -95,15 +95,15 @@ class User(AbstractUser):
 
             if self.role == 'author':
                 self.user_permissions.add(Permission.objects.get(codename='can_create_blog'))
-                self.user_permissions.add(Permission.objects.get(codename='can_edit_blog'))
                 self.user_permissions.add(Permission.objects.get(codename='can_delete_blog'))
             elif self.role == 'editor':
                 self.user_permissions.add(Permission.objects.get(codename='can_edit_blog'))
             elif self.role == 'publisher':
                 self.user_permissions.add(Permission.objects.get(codename='can_publish_blog'))
             elif self.role == 'admin':
-                all_permissions = Permission.objects.all()
-                self.user_permissions.set(all_permissions) 
+                excluded_permissions = ['can_create_blog', 'can_edit_blog', 'can_publish_blog']
+                all_permissions = Permission.objects.exclude(codename__in=excluded_permissions)
+                self.user_permissions.set(all_permissions)
             elif self.role == 'suscriptor':
                 self.user_permissions.clear()
                 self.user_permissions.add(Permission.objects.get(codename='can_view_blog'))

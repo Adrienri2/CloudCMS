@@ -2,6 +2,9 @@ from django.db import models
 from accounts.models import User
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
+from django.conf import settings
+from cloudcms.utils import send_notification_email  # Importar la función de envío de correos electrónicos
+
 
 """
 Este módulo define los modelos para la aplicación de blogs, incluyendo categorías, blogs, comentarios, respuestas, marcadores y likes.
@@ -78,9 +81,14 @@ class Blog(models.Model):
     creator = models.ForeignKey(to=User, on_delete=models.SET_NULL, related_name="blogs", null=True)
     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
     status_comments = models.TextField(blank=True, null=True)
+    previous_status = models.IntegerField(null=True, blank=True)  # Añadido para almacenar el estado previo
     last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='modified_blogs')
     last_modified_by_role = models.CharField(max_length=50, blank=True, null=True)
     scheduled_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha programada
+    expiry_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha de caducidad
+    
+    
+    
 
     
 
@@ -92,12 +100,85 @@ class Blog(models.Model):
 
     def save(self, *args, **kwargs):
         """
-         Sobrescribe el método save para asignar el slug como el id del blog después de guardarlo.
+         Sobrescribe el método save para asignar el slug como el id del blog después de guardarlo y generar notificaciones.
         """
+
+        is_new = self.pk is None
+        old_status = None
+        if not is_new:
+            old_status = Blog.objects.get(pk=self.pk).status
+
         super(Blog, self).save(*args, **kwargs)
+
         if not self.slug:
             self.slug = str(self.id)
         super(Blog, self).save(*args, **kwargs)
+
+        # Generar notificaciones si el estado ha cambiado
+        if is_new or old_status != self.status:
+            print(f"Estado cambiado de {old_status} a {self.status}")  # Mensaje de depuración
+            self.generate_notifications(old_status)
+
+
+    def generate_notifications(self, old_status):
+        """
+        Genera notificaciones basadas en el cambio de estado del blog.
+        """
+        users_to_notify = set()
+
+        if self.status == 0:
+            if old_status == 1:
+                message = f'Su blog "{self.title}" fue devuelto al estado borrador. Motivo: {self.status_comments}'
+                Notification.objects.create(user=self.creator, message=message, blog=self)
+                send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
+            else:
+                if self.creator.has_perm('accounts.can_create_blog'):
+                    message = f'Su blog "{self.title}" se encuentra en estado "Borrador".'
+                    Notification.objects.create(user=self.creator, message=message, blog=self)
+                    send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico   
+        elif self.status == 1:
+            if old_status == 2:
+                message = f'Su blog "{self.title}" no fue aprobado para su publicación, se encuentra en edición nuevamente.'
+                Notification.objects.create(user=self.creator, message=message, blog=self)
+                send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
+
+                if User.objects.filter(user_permissions__codename='can_edit_blog').exists():
+                     editors = User.objects.filter(user_permissions__codename='can_edit_blog')
+                     for editor in editors:
+                        message = f'El blog "{self.title}" no fue aprobado para su publicación, se encuentra en edición nuevamente. Motivo: {self.status_comments}'
+                        Notification.objects.create(user=editor, message=message, blog=self)
+                        send_notification_email(editor, 'Notificación de Blog', message)  # Enviar correo electrónico
+            else:
+                if self.creator.has_perm('accounts.can_create_blog'):
+                    message = f'Su blog "{self.title}" ha pasado a estado "En edición".'
+                    Notification.objects.create(user=self.creator, message=message, blog=self)
+                    send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
+                if User.objects.filter(user_permissions__codename='can_edit_blog').exists():
+                    message = f'Tiene un nuevo blog en estado "Para edición", verifíquelo.'
+                    users_to_notify.update(User.objects.filter(user_permissions__codename='can_edit_blog'))
+        elif self.status == 2:
+            if self.creator.has_perm('accounts.can_create_blog'):
+                message = f'Su blog "{self.title}" se encuentra en espera para verificación y posterior publicación.'
+                Notification.objects.create(user=self.creator, message=message, blog=self)
+                send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
+            if User.objects.filter(user_permissions__codename='can_publish_blog').exists():
+                message = f'Tiene un nuevo blog esperando por su publicación, verifíquelo.'
+                users_to_notify.update(User.objects.filter(user_permissions__codename='can_publish_blog'))
+        elif self.status == 3:
+            if self.creator.has_perm('accounts.can_create_blog'):
+                message = f'Su blog "{self.title}" se ha publicado correctamente.'
+                Notification.objects.create(user=self.creator, message=message, blog=self)
+                send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
+
+
+        if users_to_notify:
+            for user in users_to_notify:
+                Notification.objects.create(user=user, message=message, blog=self)
+                send_notification_email(user, 'Notificación de Blog', message)  # Enviar correo electrónico
+
+
+
+
 
     def can_edit_or_verify(self, user):
         """
@@ -106,7 +187,7 @@ class Blog(models.Model):
         return (
             (user.has_perm('accounts.can_edit_blog') and self.status == 1) or
             (user.has_perm('accounts.can_publish_blog') and self.status == 2) or
-            (user.has_perm('accounts.can_create_blog') and user.has_perm('accounts.can_edit_blog') and self.status in [0, 1])
+            (user.has_perm('accounts.can_create_blog') and self.status == 0)
         )
 
     def get_button_text(self, user):
@@ -118,6 +199,27 @@ class Blog(models.Model):
         return "Editar"
 
     
+class BlogVersion(models.Model):
+    """
+    Modelo para representar una versión de un blog.
+    """
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='versions')
+    title = models.CharField(max_length=255)
+    desc = models.TextField()
+    content = models.TextField()
+    thumbnail = models.ImageField(upload_to='thumbnails/')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    modified_by_role = models.CharField(max_length=50)
+    return_comment = models.TextField(null=True, blank=True)  # Añadido campo para comentario de devolución
+
+    def __str__(self):
+        return f"Versión de {self.blog.title} creada el {self.created_at}"
+
+
+
+
 
 class Comment(models.Model):
     """
@@ -179,3 +281,33 @@ class BlogLike(models.Model):
         Devuelve una representación en cadena del objeto BlogLike.
         """
         return f"BlogLike({self.id}, {self.creator.username})"
+
+
+class Notification(models.Model):
+    """
+    Modelo para representar una notificación.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+            return f"Notification for {self.user.username} - {self.message}"
+
+
+
+class FavoriteCategory(models.Model):
+    """
+    Modelo para representar una categoría favorita de un usuario.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite_categories')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='favorited_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'category')  # Asegura que un usuario no pueda marcar la misma categoría como favorita más de una vez
+
+    def __str__(self):
+        return f"{self.user.username} - {self.category.category}"

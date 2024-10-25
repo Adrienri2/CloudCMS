@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.db.models import Q
 from django.views.generic import ListView
-from blogs.models import Blog, Bookmark, Category
+from blogs.models import Blog, Bookmark, Category, FavoriteCategory
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 
@@ -66,10 +66,19 @@ class Search(ListView):
             QuerySet: Un conjunto de objetos Blog filtrados por la consulta.
         """
         query = self.request.GET.get("query", "")
+
         blogs = Blog.objects.filter(
-            (Q(title__icontains=query) | Q(desc__icontains=query)), is_active=True
+            (Q(title__icontains=query) | 
+            Q(desc__icontains=query)) | 
+            Q(content__icontains=query) |
+            Q(creator__username__icontains=query) |
+            Q(category__category__icontains=query),
+            is_active=True,
+            is_published=True
         ).order_by("-published_on")
+
         return blogs
+        
 
     def get_context_data(self, **kwargs):
         """
@@ -136,10 +145,14 @@ class GetCategory(View):
         category = get_object_or_404(Category, slug=slug)
         blogs = category.blogs.filter(is_active=True, is_published=True).order_by("-published_on")
         costo_membresia = category.costo_membresia if category else None
+        is_favorite = False
+        if request.user.is_authenticated:
+            is_favorite = FavoriteCategory.objects.filter(user=request.user, category=category).exists()
         return render(request, 'get_category.html', {
             'category': category,  # Pasar la categoría al contexto
             'blogs': blogs,  # Pasar los blogs al contexto
             'costo_membresia': costo_membresia,  # Pasar el costo de la membresía al contexto
+            'is_favorite': is_favorite  # Pasar el estado de favorito al contexto
         })
 
 class TermsAndConditions(View):
