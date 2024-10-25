@@ -144,7 +144,7 @@ class CreateReply(View):
 
 @login_required
 def notifications(request):
-    notifications = Notification.objects.filter(user=request.user, is_read=False)
+    notifications = Notification.objects.filter(user=request.user, is_read=False).order_by('-created_at')
     notifications_count = notifications.count()
     return render(request, 'notifications.html', {'notifications': notifications, 'notifications_count': notifications_count})
 
