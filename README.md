@@ -145,7 +145,13 @@
     python manage.py test accounts.tests.LoginViewTests
     python manage.py test accounts.tests.UserListViewTests
     python manage.py test accounts.tests.EditUserViewTests
-    python manage.py test blogs.tests
+
+    python manage.py test blogs.tests.BlogViewTests
+    python manage.py test blogs.tests.CreateBookmarkTests
+    python manage.py test blogs.tests.CreateLikeTests
+    python manage.py test blogs.tests.MarkAsReadViewTests
+    python manage.py test blogs.tests.ToggleFavoriteCategoryViewTests
+
     python manage.py test management.tests.KanbanViewTest
     ```
 
