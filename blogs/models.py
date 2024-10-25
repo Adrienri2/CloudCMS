@@ -2,6 +2,9 @@ from django.db import models
 from accounts.models import User
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
+from django.conf import settings
+from cloudcms.utils import send_notification_email  # Importar la función de envío de correos electrónicos
+
 
 """
 Este módulo define los modelos para la aplicación de blogs, incluyendo categorías, blogs, comentarios, respuestas, marcadores y likes.
@@ -126,18 +129,26 @@ class Blog(models.Model):
         if self.status == 0:
             if self.creator.has_perm('accounts.can_create_blog'):
                 message = f'Su blog "{self.title}" se encuentra en estado "Borrador".'
-                Notification.objects.create(user=self.creator, message=message, blog=self)   
-        elif self.status == 1:
-            if self.creator.has_perm('accounts.can_create_blog'):
-                message = f'Su blog "{self.title}" ha pasado a estado "En edición".'
                 Notification.objects.create(user=self.creator, message=message, blog=self)
-            if User.objects.filter(user_permissions__codename='can_edit_blog').exists():
-                message = f'Tiene un nuevo blog en estado "Para edición", verifíquelo.'
-                users_to_notify.update(User.objects.filter(user_permissions__codename='can_edit_blog'))
+                send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico   
+        elif self.status == 1:
+            if old_status == 2:
+                message = f'Su blog "{self.title}" no fue aprobado para su publicación, se encuentra en edición nuevamente.'
+                Notification.objects.create(user=self.creator, message=message, blog=self)
+                send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
+            else:
+                if self.creator.has_perm('accounts.can_create_blog'):
+                    message = f'Su blog "{self.title}" ha pasado a estado "En edición".'
+                    Notification.objects.create(user=self.creator, message=message, blog=self)
+                    send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
+                if User.objects.filter(user_permissions__codename='can_edit_blog').exists():
+                    message = f'Tiene un nuevo blog en estado "Para edición", verifíquelo.'
+                    users_to_notify.update(User.objects.filter(user_permissions__codename='can_edit_blog'))
         elif self.status == 2:
             if self.creator.has_perm('accounts.can_create_blog'):
                 message = f'Su blog "{self.title}" se encuentra en espera para verificación y posterior publicación.'
                 Notification.objects.create(user=self.creator, message=message, blog=self)
+                send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
             if User.objects.filter(user_permissions__codename='can_publish_blog').exists():
                 message = f'Tiene un nuevo blog esperando por su publicación, verifíquelo.'
                 users_to_notify.update(User.objects.filter(user_permissions__codename='can_publish_blog'))
@@ -145,10 +156,13 @@ class Blog(models.Model):
             if self.creator.has_perm('accounts.can_create_blog'):
                 message = f'Su blog "{self.title}" se ha publicado correctamente.'
                 Notification.objects.create(user=self.creator, message=message, blog=self)
+                send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
+
 
         if users_to_notify:
             for user in users_to_notify:
                 Notification.objects.create(user=user, message=message, blog=self)
+                send_notification_email(user, 'Notificación de Blog', message)  # Enviar correo electrónico
 
 
 
