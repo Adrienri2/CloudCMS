@@ -66,10 +66,19 @@ class Search(ListView):
             QuerySet: Un conjunto de objetos Blog filtrados por la consulta.
         """
         query = self.request.GET.get("query", "")
+
         blogs = Blog.objects.filter(
-            (Q(title__icontains=query) | Q(desc__icontains=query)), is_active=True
+            (Q(title__icontains=query) | 
+            Q(desc__icontains=query)) | 
+            Q(content__icontains=query) |
+            Q(creator__username__icontains=query) |
+            Q(category__category__icontains=query),
+            is_active=True,
+            is_published=True
         ).order_by("-published_on")
+
         return blogs
+        
 
     def get_context_data(self, **kwargs):
         """

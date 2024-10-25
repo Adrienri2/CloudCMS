@@ -127,15 +127,27 @@ class Blog(models.Model):
         users_to_notify = set()
 
         if self.status == 0:
-            if self.creator.has_perm('accounts.can_create_blog'):
-                message = f'Su blog "{self.title}" se encuentra en estado "Borrador".'
+            if old_status == 1:
+                message = f'Su blog "{self.title}" fue devuelto al estado borrador. Motivo: {self.status_comments}'
                 Notification.objects.create(user=self.creator, message=message, blog=self)
-                send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico   
+                send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
+            else:
+                if self.creator.has_perm('accounts.can_create_blog'):
+                    message = f'Su blog "{self.title}" se encuentra en estado "Borrador".'
+                    Notification.objects.create(user=self.creator, message=message, blog=self)
+                    send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico   
         elif self.status == 1:
             if old_status == 2:
                 message = f'Su blog "{self.title}" no fue aprobado para su publicación, se encuentra en edición nuevamente.'
                 Notification.objects.create(user=self.creator, message=message, blog=self)
                 send_notification_email(self.creator, 'Notificación de Blog', message)  # Enviar correo electrónico
+
+                if User.objects.filter(user_permissions__codename='can_edit_blog').exists():
+                     editors = User.objects.filter(user_permissions__codename='can_edit_blog')
+                     for editor in editors:
+                        message = f'El blog "{self.title}" no fue aprobado para su publicación, se encuentra en edición nuevamente. Motivo: {self.status_comments}'
+                        Notification.objects.create(user=editor, message=message, blog=self)
+                        send_notification_email(editor, 'Notificación de Blog', message)  # Enviar correo electrónico
             else:
                 if self.creator.has_perm('accounts.can_create_blog'):
                     message = f'Su blog "{self.title}" ha pasado a estado "En edición".'
