@@ -322,6 +322,12 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     
 
+      if (blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') {
+        finalReturnStatus.style.display = 'none';
+      } else {
+        finalReturnStatus.style.display = 'inline-block';
+      }
+
       if (newStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') {
         finalConfirmChangeStatus.textContent = 'Publicar';
       } else {

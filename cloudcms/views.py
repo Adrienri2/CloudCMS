@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.db.models import Q
 from django.views.generic import ListView
-from blogs.models import Blog, Bookmark, Category, FavoriteCategory
+from blogs.models import Blog, Bookmark, Category, FavoriteCategory, Notification
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 
