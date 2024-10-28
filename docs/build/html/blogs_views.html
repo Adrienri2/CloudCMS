@@ -81,7 +81,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#blogs.views.CreateReply.post"><code class="docutils literal notranslate"><span class="pre">CreateReply.post()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.favorite_categories"><code class="docutils literal notranslate"><span class="pre">favorite_categories()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#blogs.views.get_blog_url"><code class="docutils literal notranslate"><span class="pre">get_blog_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.mark_all_as_read"><code class="docutils literal notranslate"><span class="pre">mark_all_as_read()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.mark_as_read"><code class="docutils literal notranslate"><span class="pre">mark_as_read()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.notifications"><code class="docutils literal notranslate"><span class="pre">notifications()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.toggle_favorite_category"><code class="docutils literal notranslate"><span class="pre">toggle_favorite_category()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cloudcms_asgi.html">URLs para la Aplicación CloudCMS</a></li>
@@ -192,9 +197,86 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="blogs.views.favorite_categories">
+<span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">favorite_categories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#favorite_categories"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.favorite_categories" title="Link to this definition"></a></dt>
+<dd><p>Vista para mostrar las categorías favoritas del usuario.</p>
+<p>Parámetros:
+request (HttpRequest): El objeto de solicitud HTTP.</p>
+<p>Retorna:
+HttpResponse: Renderiza la plantilla “blogs/favorite_categories.html” con las categorías favoritas.</p>
+<p>Funcionalidad:
+- Filtra las categorías favoritas del usuario autenticado.
+- Renderiza la plantilla “blogs/favorite_categories.html” con las categorías favoritas.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="blogs.views.get_blog_url">
 <span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">get_blog_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slug</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#get_blog_url"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.get_blog_url" title="Link to this definition"></a></dt>
 <dd><p>Devuelve la URL de un blog basado en su slug.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blogs.views.mark_all_as_read">
+<span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">mark_all_as_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#mark_all_as_read"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.mark_all_as_read" title="Link to this definition"></a></dt>
+<dd><p>Vista para marcar todas las notificaciones no leídas del usuario como leídas.</p>
+<p>Parámetros:
+request (HttpRequest): El objeto de solicitud HTTP.</p>
+<p>Retorna:
+HttpResponseRedirect: Redirige a la página anterior usando HTTP_REFERER.</p>
+<p>Funcionalidad:
+- Filtra las notificaciones no leídas del usuario autenticado.
+- Marca todas las notificaciones filtradas como leídas.
+- Redirige a la página anterior usando HTTP_REFERER.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blogs.views.mark_as_read">
+<span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">mark_as_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notification_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#mark_as_read"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.mark_as_read" title="Link to this definition"></a></dt>
+<dd><p>Vista para marcar una notificación específica como leída.</p>
+<p>Parámetros:
+request (HttpRequest): El objeto de solicitud HTTP.
+notification_id (int): El ID de la notificación a marcar como leída.</p>
+<p>Retorna:
+HttpResponseRedirect: Redirige a la vista “manage:kanban”.</p>
+<p>Funcionalidad:
+- Obtiene la notificación especificada por ID y perteneciente al usuario autenticado.
+- Marca la notificación como leída.
+- Guarda los cambios en la base de datos.
+- Redirige a la vista “manage:kanban”.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blogs.views.notifications">
+<span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">notifications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#notifications"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.notifications" title="Link to this definition"></a></dt>
+<dd><p>Vista para mostrar las notificaciones no leídas del usuario.</p>
+<p>Parámetros:
+request (HttpRequest): El objeto de solicitud HTTP.</p>
+<p>Retorna:
+HttpResponse: Renderiza la plantilla “notifications.html” con las notificaciones no leídas</p>
+<blockquote>
+<div><p>y el conteo de las mismas.</p>
+</div></blockquote>
+<p>Funcionalidad:
+- Filtra las notificaciones del usuario autenticado que no han sido leídas.
+- Ordena las notificaciones por fecha de creación en orden descendente.
+- Cuenta el número de notificaciones no leídas.
+- Renderiza la plantilla “notifications.html” con las notificaciones y su conteo.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blogs.views.toggle_favorite_category">
+<span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">toggle_favorite_category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#toggle_favorite_category"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.toggle_favorite_category" title="Link to this definition"></a></dt>
+<dd><p>Vista para añadir o eliminar una categoría de las favoritas del usuario.</p>
+<p>Parámetros:
+request (HttpRequest): El objeto de solicitud HTTP.
+category_id (int): El ID de la categoría a añadir o eliminar de favoritas.</p>
+<p>Retorna:
+JsonResponse: Retorna un JSON con el estado de la operación (“added” o “removed”).</p>
+<p>Funcionalidad:
+- Obtiene la categoría especificada por ID.
+- Intenta obtener o crear una relación de categoría favorita para el usuario autenticado.
+- Si la relación ya existe, la elimina y retorna un estado “removed”.
+- Si la relación no existe, la crea y retorna un estado “added”.</p>
 </dd></dl>
 
 </section>

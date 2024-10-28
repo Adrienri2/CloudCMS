@@ -74,6 +74,15 @@
 <li class="toctree-l1"><a class="reference internal" href="management_tests.html">Pruebas para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="management_urls.html">URLs para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Vistas para la Aplicación CloudCMS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.BlogPreviewView"><code class="docutils literal notranslate"><span class="pre">BlogPreviewView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.BlogPreviewView.get"><code class="docutils literal notranslate"><span class="pre">BlogPreviewView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.ChangeBlogStatusView"><code class="docutils literal notranslate"><span class="pre">ChangeBlogStatusView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.ChangeBlogStatusView.dispatch"><code class="docutils literal notranslate"><span class="pre">ChangeBlogStatusView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.ChangeBlogStatusView.post"><code class="docutils literal notranslate"><span class="pre">ChangeBlogStatusView.post()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#management.views.CreateBlog"><code class="docutils literal notranslate"><span class="pre">CreateBlog</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#management.views.CreateBlog.dispatch"><code class="docutils literal notranslate"><span class="pre">CreateBlog.dispatch()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#management.views.CreateBlog.get"><code class="docutils literal notranslate"><span class="pre">CreateBlog.get()</span></code></a></li>
@@ -110,6 +119,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#management.views.EditCategory.post"><code class="docutils literal notranslate"><span class="pre">EditCategory.post()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.GetBlogStatusView"><code class="docutils literal notranslate"><span class="pre">GetBlogStatusView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.GetBlogStatusView.get"><code class="docutils literal notranslate"><span class="pre">GetBlogStatusView.get()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#management.views.KanbanView"><code class="docutils literal notranslate"><span class="pre">KanbanView</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#management.views.KanbanView.get"><code class="docutils literal notranslate"><span class="pre">KanbanView.get()</span></code></a></li>
 </ul>
@@ -127,6 +140,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#management.views.ManageComment.get"><code class="docutils literal notranslate"><span class="pre">ManageComment.get()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.blog_version_preview"><code class="docutils literal notranslate"><span class="pre">blog_version_preview()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.blog_versions"><code class="docutils literal notranslate"><span class="pre">blog_versions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.create_blog_version"><code class="docutils literal notranslate"><span class="pre">create_blog_version()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.schedule_publication"><code class="docutils literal notranslate"><span class="pre">schedule_publication()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -157,6 +174,33 @@
              
   <section id="module-management.views">
 <span id="vistas-para-la-aplicacion-cloudcms"></span><h1>Vistas para la Aplicación CloudCMS<a class="headerlink" href="#module-management.views" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.BlogPreviewView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">BlogPreviewView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#BlogPreviewView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.BlogPreviewView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.BlogPreviewView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blog_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#BlogPreviewView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.BlogPreviewView.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.ChangeBlogStatusView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">ChangeBlogStatusView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#ChangeBlogStatusView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.ChangeBlogStatusView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.ChangeBlogStatusView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#ChangeBlogStatusView.dispatch"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.ChangeBlogStatusView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.ChangeBlogStatusView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blog_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#ChangeBlogStatusView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.ChangeBlogStatusView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="management.views.CreateBlog">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">CreateBlog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#CreateBlog"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.CreateBlog" title="Link to this definition"></a></dt>
@@ -275,6 +319,17 @@
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="management.views.GetBlogStatusView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">GetBlogStatusView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#GetBlogStatusView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.GetBlogStatusView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.GetBlogStatusView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blog_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#GetBlogStatusView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.GetBlogStatusView.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="management.views.KanbanView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">KanbanView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#KanbanView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.KanbanView" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
@@ -322,6 +377,26 @@
 <dd></dd></dl>
 
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="management.views.blog_version_preview">
+<span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">blog_version_preview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#blog_version_preview"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.blog_version_preview" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="management.views.blog_versions">
+<span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">blog_versions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blog_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#blog_versions"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.blog_versions" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="management.views.create_blog_version">
+<span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">create_blog_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#create_blog_version"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.create_blog_version" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="management.views.schedule_publication">
+<span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">schedule_publication</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blog_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#schedule_publication"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.schedule_publication" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 
