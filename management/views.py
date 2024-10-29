@@ -130,6 +130,19 @@ class CreateBlog(View):
         blog.slug = blog.id
         blog.save()
 
+        # Crear y guardar una versión del blog
+        blog_version = BlogVersion(
+            blog=blog,
+            title=blog.title,
+            desc=blog.desc,
+            content=blog.content,
+            thumbnail=blog.thumbnail,
+            category=blog.category,
+            modified_by=request.user,  # Asignar el usuario que creó la versión
+            modified_by_role=request.user.role  # Asignar el rol del usuario que creó la versión
+        )
+        blog_version.save()
+
         messages.success(request, "Artículo creado")
         return redirect("manage:blog")
    
@@ -300,6 +313,35 @@ class EditBlog(View):
         # Guarda el blog con los cambios realizados
         blog.save()
 
+        # Obtener la última versión del blog
+        last_version = BlogVersion.objects.filter(blog=blog).order_by('-created_at').first()
+
+        # Comparar el contenido del blog actual con la última versión
+        if not last_version or (
+            blog.title != last_version.title or
+            blog.desc != last_version.desc or
+            blog.content != last_version.content or
+            blog.thumbnail != last_version.thumbnail or
+            blog.category != last_version.category
+        ):
+            # Si hay cambios, se formatea blog.status_comments para que sea None
+            blog.status_comments=None
+            blog.save()
+            print("AL MODIFICAR EL BLOG, SE FORMATEA EL COMENTARIO DE DEVOLUCIÓN")  # Mensaje de depuración
+
+            # Si hay cambios, crear una nueva versión del blog
+            BlogVersion.objects.create(
+                blog=blog,
+                title=blog.title,
+                desc=blog.desc,
+                content=blog.content,
+                thumbnail=blog.thumbnail,
+                category=blog.category,
+                modified_by=request.user,
+                modified_by_role=request.user.role,
+                return_comment= blog.status_comments
+            )
+            print("AL MODIFICAR EL BLOG, SE CREA UNA NUEVA VERSION")  # Mensaje de depuración
 
         # Muestra un mensaje de éxito indicando que los cambios se han guardado
         messages.success(request, "Cambios guardados")
@@ -538,6 +580,7 @@ class ChangeBlogStatusView(View):
                             modified_by=request.user,
                             modified_by_role=request.user.role
                         )
+                        print("VERSION CREADA PUNTO 1. Hubo cambios")  # Mensaje de depuración
                     else:
                         # Si no hay cambios, eliminar el comentario return_comment
                         new_version = BlogVersion.objects.create(
@@ -551,8 +594,11 @@ class ChangeBlogStatusView(View):
                             modified_by_role=request.user.role,
                             return_comment= None
                         )
-
+                        print("VERSION CREADA PUNTO 2")  # Mensaje de depuración
                         # Comparar la nueva versión con la versión anterior
+                        print("Si no hay cambios, eliminar el comentario return_comment")  # Mensaje de depuración
+                        # Comparar la nueva versión con la versión anterior
+                        
                         if last_version and (
                             new_version.title == last_version.title and
                             new_version.desc == last_version.desc and
@@ -561,15 +607,13 @@ class ChangeBlogStatusView(View):
                             new_version.category == last_version.category and
                             new_version.return_comment == last_version.return_comment
                         ):
+                            print("Se creó una nueva version")  # Mensaje de depuración
                             # Si son idénticas, eliminar la nueva versión
                             new_version.delete()
-                            print("Nueva versión eliminada")  # Mensaje de depuración
-                
-
-
-
+                            print("Nueva versión eliminada, identica a la anterior ")  # Mensaje de depuración
                 else:
                         # Crear una versión del blog al retroceder en el flujo
+                        print("SE RETROCEDE EN EL FLUJO ")  # Mensaje de depuración
                         BlogVersion.objects.create(
                             blog=blog,
                             title=blog.title,
@@ -581,6 +625,7 @@ class ChangeBlogStatusView(View):
                             modified_by_role=request.user.role,
                             return_comment=blog.status_comments if blog.previous_status > blog.status else None  # Guardar el comentario de devolución
                         )
+                        print("Se creó una nueva versión ")  # Mensaje de depuración
 
 
                 return JsonResponse({'success': True})
@@ -593,12 +638,70 @@ class ChangeBlogStatusView(View):
         except Exception as e:
             print(f"Error al cambiar el estado del blog: {str(e)}")
             return JsonResponse({'success': False, 'error': str(e)})
-                
-
-
 
 class BlogPreviewView(View):
     def get(self, request, blog_id):
         blog = get_object_or_404(Blog, id=blog_id)
         last_version = BlogVersion.objects.filter(blog=blog).order_by('-created_at').first()
         return render(request, 'management/blog_preview.html', {'blog': blog, 'last_version': last_version})
+    
+
+class RevertToVersionView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request):
+        try:
+            print("RevertToVersionView POST request received")  # Mensaje de depuración
+            data = json.loads(request.body)
+            print(f"Data received: {data}")  # Mensaje de depuración
+
+            blog_id = data.get('blog_id')
+            version_id = data.get('version_id')
+
+            if not blog_id or not version_id:
+                print("Faltan blog_id o version_id")  # Mensaje de depuración
+                return JsonResponse({'success': False, 'error': 'Faltan blog_id o version_id'})
+
+            print(f"Blog ID: {blog_id}, Version ID: {version_id}")  # Mensaje de depuración
+
+
+            blog = get_object_or_404(Blog, id=blog_id)
+            version = get_object_or_404(BlogVersion, id=version_id)
+
+            print(f"Blog encontrado: {blog.title}, Versión encontrada: {version.title}")  # Mensaje de depuración
+
+
+            # Crear una nueva versión idéntica a la versión en cuestión
+            new_version = BlogVersion.objects.create(
+                blog=blog,
+                title=version.title,
+                desc=version.desc,
+                content=version.content,
+                thumbnail=version.thumbnail,
+                category=version.category,
+                modified_by=request.user,
+                modified_by_role=request.user.role,
+                return_comment=None
+            )
+
+            print(f"Nueva versión creada: {new_version.id}")  # Mensaje de depuración
+
+
+            # Actualizar el contenido del modelo Blog
+            blog.title = version.title
+            blog.desc = version.desc
+            blog.content = version.content
+            blog.thumbnail = version.thumbnail
+            blog.category = version.category
+            blog.status_comments = None  # Eliminar comentario de devolución
+            blog.save()
+
+            print(f"Blog actualizado: {blog.title}")  # Mensaje de depuración
+
+
+            return JsonResponse({'success': True})
+        except Exception as e:
+            print(f"Error al revertir a la versión :c: {str(e)}")  # Mensaje de depuración
+            return JsonResponse({'success': False, 'error': str(e)})
