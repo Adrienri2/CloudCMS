@@ -251,17 +251,33 @@ document.addEventListener('DOMContentLoaded', function() {
           if (data.previous_status > blogStatus) {
             console.log(`Comentario de devolución para el blog ${selectedBlogId}: ${data.return_comment}`);
             returnCommentText.textContent = data.return_comment;
+
+            
             //Verificar permisos y estado del blog antes de mostrar el cuarto modal
-            if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
-                (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
-                (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
-                (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true')) {
+            if (data.return_comment && (
+              (blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
+              (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
+              (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
+              (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true')
+            )) {
+                  
               console.log('Mostrando el cuarto modal con el comentario de devolución.');
               returnedBlogModal.show();
             } else {
               console.log('No tiene permisos para ver el comentario de devolución.');
+               // Verificar permisos y estado del blog antes de mostrar el primer modal
+              if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
+                  (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
+                  (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
+                  (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true')) { 
+                modalMessage.textContent = 'Seleccione una acción:'; 
+                changeStatusModal.show();
+              } else {
+                console.log('No tiene permisos para cambiar el estado de este blog.');
+              }
             }
-          } else {
+          
+        } else {
             // Verificar permisos y estado del blog antes de mostrar el primer modal
             if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
@@ -273,6 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
               console.log('No tiene permisos para cambiar el estado de este blog.');
             }
           }
+        
         });
     });
   });
@@ -322,6 +339,12 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     
 
+      if (blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') {
+        finalReturnStatus.style.display = 'none';
+      } else {
+        finalReturnStatus.style.display = 'inline-block';
+      }
+
       if (newStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') {
         finalConfirmChangeStatus.textContent = 'Publicar';
       } else {
@@ -336,6 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   finalConfirmChangeStatus.addEventListener('click', function() {
     if (selectedBlogId && newStatus !== null) {
+      finalConfirmChangeStatus.disabled = true;
       console.log(`Enviando solicitud para cambiar el estado del blog ${selectedBlogId} a ${newStatus}`);
       fetch(`/manage/change_blog_status/${selectedBlogId}/`, {
         method: 'POST',
@@ -368,6 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const comment = returnComment.value.trim();
     console.log(`Comentario de devolución generado: ${comment}`);
     if (selectedBlogId && comment) {
+      submitReturnComment.disabled = true;
       let returnStatus = null;
       if (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') {
         returnStatus = 0; // Devolver a Borrador
@@ -424,6 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Abrir el modal "Programar Publicación" al hacer clic en el botón
 schedulePublication.addEventListener('click', function() {
   schedulePublicationModal.show();
+  confirmStatusChangeModal.hide();
 });
 
 // Manejar el envío del formulario de programación de publicación
@@ -444,7 +470,7 @@ schedulePublicationForm.addEventListener('submit', function(event) {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        schedulePublicationModal.hide();
+        schedulePublicationModal.hide();  
         alert('Publicación programada con éxito');
       } else {
         alert('Error al programar la publicación');

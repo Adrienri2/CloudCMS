@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from accounts.views import UserListView, EditUserView
-from .views import blog_versions, blog_version_preview, GetBlogStatusView, BlogPreviewView, schedule_publication
+from .views import blog_versions, blog_version_preview, GetBlogStatusView, BlogPreviewView, schedule_publication, RevertToVersionView
 
 app_name = "manage"
 
@@ -16,7 +16,8 @@ urlpatterns = [
     path('blog_version_preview/<int:version_id>/', blog_version_preview, name='blog_version_preview'),
     path('get_blog_status/<int:blog_id>/', GetBlogStatusView.as_view(), name='get_blog_status'),
     path('blog_preview/<int:blog_id>/', BlogPreviewView.as_view(), name='blog_preview'),
-    
+    path('revert_to_version/', RevertToVersionView.as_view(), name='revert_to_version'),
+
 
 
 

@@ -22,7 +22,7 @@
   <div class="row mt-3">
     <div class="col">
       <div class="card border-warning">
-        <div class="card-header bg-warning text-dark">-
+        <div class="card-header bg-warning text-dark">
           <strong>Comentario de devolución</strong>
         </div>
         <div class="card-body">
@@ -41,6 +41,14 @@
     {% endif %}
   </div>
 
+  {% if version.title != blog.title or version.desc != blog.desc or version.content != blog.content or version.thumbnail.url != blog.thumbnail.url or version.category.id != blog.category.id %}
+  <div class="row mb-3">
+    <div class="col">
+        <button type="button" class="btn btn-warning" id="revertVersionButton">Volver a esta versión</button>
+    </div>   
+  </div>
+  {% endif %}
+
   <div class="row">
     <div class="ratio ratio-16x9">
       <img src="{{ version.thumbnail.url }}" class="img-fluid rounded mx-auto d-block" alt="miniatura del blog">
@@ -50,4 +58,73 @@
     </p>
   </div>
 </div>
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmRevertModal" tabindex="-1" aria-labelledby="confirmRevertModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmRevertModalLabel">Confirmar Reversión</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro que desea volver a esta versión?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="confirmRevertButton">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const revertVersionButton = document.getElementById('revertVersionButton');
+  const confirmRevertModal = new bootstrap.Modal(document.getElementById('confirmRevertModal'));
+  const confirmRevertButton = document.getElementById('confirmRevertButton');
+
+  revertVersionButton.addEventListener('click', function() {
+    confirmRevertModal.show();
+  });
+
+  confirmRevertButton.addEventListener('click', function() {
+    // Deshabilitar el botón para evitar múltiples clics
+    confirmRevertButton.disabled = true;
+
+    // Enviar solicitud para revertir a la versión seleccionada
+    fetch("{% url 'manage:revert_to_version' %}", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      body: JSON.stringify({
+        blog_id: '{{ version.blog.id }}',
+        version_id: '{{ version.id }}'
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        console.log('Reversión confirmada');
+      
+        window.location.href = "{% url 'manage:blog_versions' version.blog.id %}";
+      
+      } else {
+        alert('Error al revertir a la versión.');
+        console.error('Error:', data.error);
+      }
+    })
+    .catch(error => {
+      alert('Error al revertir a la versión.');
+      console.error('Error:', error);
+    })
+    .finally(() => {
+      confirmRevertModal.hide();
+      confirmRevertButton.disabled = false;
+    });
+  });
+});
+</script>
 {% endblock %}
