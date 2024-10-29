@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from accounts.views import UserListView, EditUserView
-from .views import blog_versions, blog_version_preview, GetBlogStatusView, BlogPreviewView
+from .views import blog_versions, blog_version_preview, GetBlogStatusView, BlogPreviewView, schedule_publication
 
 app_name = "manage"
 
@@ -31,5 +31,7 @@ urlpatterns = [
     path("edit/category/<int:id>", views.EditCategory.as_view(), name="edit_category"),
     path('users/', UserListView.as_view(), name='users'),
     path('edit/<int:user_id>/', EditUserView.as_view(), name='edit_user'),
+     path('schedule_publication/<int:blog_id>/', schedule_publication, name='schedule_publication'),
+
     
 ]

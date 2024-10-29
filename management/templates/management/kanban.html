@@ -126,7 +126,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-warning" id="finalReturnStatus">Devolver</button> 
           <button type="button" class="btn btn-primary" id="finalConfirmChangeStatus" style="display: none;">Avanzar</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success" id="schedulePublication">Programar Publicación</button>
         </div>
       </div>
     </div>
@@ -173,8 +173,36 @@
   </div>
 </div>
 
+<!-- Modal para Programar Publicación // QUINTO MODAL -->
+<div class="modal fade" id="schedulePublicationModal" tabindex="-1" aria-labelledby="schedulePublicationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="schedulePublicationModalLabel">Programar Publicación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="schedulePublicationForm">
+          <div class="mb-3">
+            <label for="scheduledDate" class="form-label">Fecha y Hora de Publicación</label>
+            <input type="datetime-local" class="form-control" id="scheduledDate" name="scheduled_date" required>
+          </div>
+          <!--  Añadir campo para la fecha de caducidad -->
+          <div class="mb-3">
+            <label for="expiryDate" class="form-label">Activo hasta:</label>
+            <input type="datetime-local" class="form-control" id="expiryDate" name="expiry_date" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Programar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('JavaScript cargado correctamente'); // Mensaje de depuración
   const categoryTypeSelect = document.getElementById('category_type');
   const changeStatusModal = new bootstrap.Modal(document.getElementById('changeStatusModal'));
   const confirmStatusChangeModal = new bootstrap.Modal(document.getElementById('confirmStatusChangeModal'));
@@ -191,6 +219,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const acceptReturnComment = document.getElementById('acceptReturnComment');
   const viewVersions = document.getElementById('viewVersions'); // Añadido
   const openBlog = document.getElementById('openBlog'); // Añadido referencia al botón "Abrir"
+  const schedulePublication = document.getElementById('schedulePublication'); // Añadido referencia al botón "Programar Publicación"
+  const schedulePublicationModal = new bootstrap.Modal(document.getElementById('schedulePublicationModal'));
+  const schedulePublicationForm = document.getElementById('schedulePublicationForm');
+  
   let selectedBlogId = null;
   let newStatus = null;
   let blogStatus = null; // Añadido para mantener el estado del blog
@@ -215,19 +247,22 @@ document.addEventListener('DOMContentLoaded', function() {
       fetch(`/manage/get_blog_status/${selectedBlogId}/`)
         .then(response => response.json())
         .then(data => {
+          console.log(`Datos recibidos para el blog ${selectedBlogId}:`, data);
           if (data.previous_status > blogStatus) {
+            console.log(`Comentario de devolución para el blog ${selectedBlogId}: ${data.return_comment}`);
             returnCommentText.textContent = data.return_comment;
-            // AMORRRR, AQUI: Verificar permisos y estado del blog antes de mostrar el cuarto modal
+            //Verificar permisos y estado del blog antes de mostrar el cuarto modal
             if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true')) {
+              console.log('Mostrando el cuarto modal con el comentario de devolución.');
               returnedBlogModal.show();
             } else {
               console.log('No tiene permisos para ver el comentario de devolución.');
             }
           } else {
-            // AMORRRR, AQUI: Verificar permisos y estado del blog antes de mostrar el primer modal
+            // Verificar permisos y estado del blog antes de mostrar el primer modal
             if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
@@ -272,14 +307,31 @@ document.addEventListener('DOMContentLoaded', function() {
       confirmModalMessage.textContent = message;
       confirmStatusChangeModal.show();
 
+      if (schedulePublication) {
+        if (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') {
+          schedulePublication.style.display = 'inline-block';
+        } else {
+          schedulePublication.style.display = 'none';
+        }
+      }
+      
       if (blogStatus === 3) {
         finalConfirmChangeStatus.style.display = 'none';
       } else {
         finalConfirmChangeStatus.style.display = 'inline-block';
       }
+    
+
+      if (newStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') {
+        finalConfirmChangeStatus.textContent = 'Publicar';
+      } else {
+        finalConfirmChangeStatus.textContent = 'Avanzar';
+      }
     } else {
       console.log('selectedBlogId es nulo');
     }
+
+
   });
 
   finalConfirmChangeStatus.addEventListener('click', function() {
@@ -314,6 +366,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   submitReturnComment.addEventListener('click', function() {
     const comment = returnComment.value.trim();
+    console.log(`Comentario de devolución generado: ${comment}`);
     if (selectedBlogId && comment) {
       let returnStatus = null;
       if (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') {
@@ -323,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
       } else if (blogStatus === 3 && '{{ category_type }}' === 'no_moderada' && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') {
         returnStatus = 0; // Devolver a Borrador en categorías no moderadas
       } else if (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') { 
-        returnStatus = 2; // Devolver a En Espera en categorías moderadas
+        returnStatus = 1; // Devolver a En Espera en categorías moderadas
       } else {
         return;
       }
@@ -365,6 +418,44 @@ document.addEventListener('DOMContentLoaded', function() {
     window.location.href = `/manage/blog_preview/${selectedBlogId}/`;
   } else {
     console.log('selectedBlogId es nulo');
+  }
+});
+
+// Abrir el modal "Programar Publicación" al hacer clic en el botón
+schedulePublication.addEventListener('click', function() {
+  schedulePublicationModal.show();
+});
+
+// Manejar el envío del formulario de programación de publicación
+schedulePublicationForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const scheduledDate = document.getElementById('scheduledDate').value; // Obtener la fecha y hora de publicación
+  const expiryDate = document.getElementById('expiryDate').value; // Obtener la fecha de caducidad
+  if (scheduledDate && expiryDate) {
+    // Enviar la solicitud para programar la publicación
+    fetch(`/manage/schedule_publication/${selectedBlogId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      body: JSON.stringify({ scheduled_date: scheduledDate, expiry_date: expiryDate  })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        schedulePublicationModal.hide();
+        alert('Publicación programada con éxito');
+      } else {
+        alert('Error al programar la publicación');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Error al programar la publicación');
+    });
+  } else {
+    alert('Por favor, complete ambas fechas.');
   }
 });
 

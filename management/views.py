@@ -16,6 +16,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
+from blogs.tasks import publish_scheduled_blogs, expire_scheduled_blogs  #Importar las tareas de Celery
+
 
 # Importa el decorador desde accounts
 
@@ -51,6 +53,15 @@ def blog_versions(request, blog_id):
 def blog_version_preview(request, version_id):
     version = get_object_or_404(BlogVersion, id=version_id)
     return render(request, 'management/blog_version.html', {'version': version})
+
+
+class GetBlogStatusView(View):
+    def get(self, request, blog_id):
+        try:
+            blog = Blog.objects.get(id=blog_id)
+            return JsonResponse({'previous_status': blog.previous_status, 'return_comment': blog.status_comments})
+        except Blog.DoesNotExist:
+            return JsonResponse({'previous_status': None, 'return_comment': ''})
 
 
 class ManageBlog(View):
@@ -118,9 +129,6 @@ class CreateBlog(View):
         # Asignar el slug como el id del blog
         blog.slug = blog.id
         blog.save()
-
-        # Crear una versión del blog
-        create_blog_version(blog, request.user)
 
         messages.success(request, "Artículo creado")
         return redirect("manage:blog")
@@ -196,13 +204,13 @@ class EditBlog(View):
         status = data.get("status")
         thumbnail = request.FILES.get("thumbnail")
         category_id = data.get("category")
-        status_comments = data.get("status_comments")
         scheduled_date = data.get("scheduled_date")  # Obtener la fecha programada
+        expiry_date = data.get("expiry_date")  # Obtener la fecha de caducidad
 
 
 
         # Verifica que el estado no sea None
-        if not status:
+        if request.user.has_perm('accounts.can_publish_blog')  and not status:
             messages.warning(request, "Debe asignarle un estado")
             return redirect("manage:edit_blog", id=blog.id)
         
@@ -217,39 +225,61 @@ class EditBlog(View):
             blog.thumbnail = thumbnail
 
         try:
-            # Intenta convertir el estado a un entero y luego a un booleano
-            status = int(status)
-            blog.status = status
-            # Publicado solo si el estado es 3
-            blog.is_published = status == 3
-            
-            if blog.is_published:
-                blog.published_on = timezone.now()
-            elif status == 2 and scheduled_date:  # Manejar la programación de la publicación
+             # Ajustar el estado del blog según los permisos del usuario
+            if request.user.has_perm('accounts.can_create_blog'):
+                blog.status = 0  # Borrador
+            elif request.user.has_perm('accounts.can_edit_blog'):
+                blog.status = 1  # En edición
+            elif request.user.has_perm('accounts.can_publish_blog'):
+                # Intenta convertir el estado a un entero y luego a un booleano
+                status = int(status)
+                blog.status = status
+                # Publicado solo si el estado es 3
+                blog.is_published = status == 3
                 
-                # Convertir la fecha y hora ingresada a un objeto datetime
-                local_scheduled_date = timezone.datetime.strptime(scheduled_date, '%Y-%m-%dT%H:%M')
+                if blog.is_published:
+                    blog.published_on = timezone.now()
+                elif status == 2 and scheduled_date:  # Manejar la programación de la publicación
                 
-                # Asegurarse de que el objeto datetime tenga información de zona horaria
-                local_scheduled_date = timezone.make_aware(local_scheduled_date, timezone.get_current_timezone())
-                
-                # Convertir la fecha y hora local a UTC
-                utc_scheduled_date = local_scheduled_date.astimezone(pytz.UTC)
-                
-                if utc_scheduled_date > timezone.now():
-                    blog.scheduled_date = utc_scheduled_date
+                    # Convertir la fecha y hora ingresada a un objeto datetime
+                    local_scheduled_date = timezone.datetime.strptime(scheduled_date, '%Y-%m-%dT%H:%M')
+                    
+                    # Asegurarse de que el objeto datetime tenga información de zona horaria
+                    local_scheduled_date = timezone.make_aware(local_scheduled_date, timezone.get_current_timezone())
+                    
+                    # Convertir la fecha y hora local a UTC
+                    utc_scheduled_date = local_scheduled_date.astimezone(pytz.UTC)
+                    
+                    if utc_scheduled_date > timezone.now():
+                        blog.scheduled_date = utc_scheduled_date
+                    else:
+                        messages.warning(request, "La fecha y hora programadas deben estar en el futuro.")
+                        return redirect("manage:edit_blog", id=blog.id)
                 else:
-                    messages.warning(request, "La fecha y hora programadas deben estar en el futuro.")
-                    return redirect("manage:edit_blog", id=blog.id)
-            else:
-                blog.scheduled_date = None
+                    blog.scheduled_date = None
+
+                # Manejar la fecha de caducidad
+                if expiry_date:
+                    local_expiry_date = timezone.datetime.strptime(expiry_date, '%Y-%m-%dT%H:%M')
+                    local_expiry_date = timezone.make_aware(local_expiry_date, timezone.get_current_timezone())
+                    utc_expiry_date = local_expiry_date.astimezone(pytz.UTC)
+                    
+                    if utc_expiry_date > timezone.now():
+
+                        blog.expiry_date = utc_expiry_date
+                    else:
+                        messages.warning(request, "La fecha y hora de caducidad deben estar en el futuro.")
+                        return redirect("manage:edit_blog", id=blog.id)
+                else:
+                    blog.expiry_date = None
+
+
         except ValueError:
             # Si hay un error al convertir el estado, muestra un mensaje de información
             messages.info(request, "Error al actualizar el estado")
             return redirect("manage:edit_blog", id=blog.id)
 
-        # Actualiza los comentarios del blog
-        blog.status_comments = status_comments if status_comments else ""
+        # Actualiza el ultimo usuario que modificó el blog
         blog.last_modified_by = request.user
         blog.last_modified_by_role = request.user.role
 
@@ -270,8 +300,6 @@ class EditBlog(View):
         # Guarda el blog con los cambios realizados
         blog.save()
 
-        # Crear una versión del blog antes de guardar los cambios
-        create_blog_version(blog, request.user)
 
         # Muestra un mensaje de éxito indicando que los cambios se han guardado
         messages.success(request, "Cambios guardados")
@@ -279,6 +307,42 @@ class EditBlog(View):
         # Redirige al usuario a la página de gestión de blogs
         return redirect("manage:blog")
 
+
+
+@permission_required('accounts.can_publish_blog', raise_exception=True)
+def schedule_publication(request, blog_id):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        scheduled_date = data.get('scheduled_date') # Obtener la fecha programada
+        expiry_date = data.get('expiry_date')  # Obtener la fecha de caducidad
+        
+        blog = get_object_or_404(Blog, id=blog_id)
+
+        try:
+            # Convertir la fecha y hora ingresada a un objeto datetime
+            local_scheduled_date = timezone.datetime.strptime(scheduled_date, '%Y-%m-%dT%H:%M')
+            # Asegurarse de que el objeto datetime tenga información de zona horaria
+            local_scheduled_date = timezone.make_aware(local_scheduled_date, timezone.get_current_timezone())
+            # Convertir la fecha y hora local a UTC
+            utc_scheduled_date = local_scheduled_date.astimezone(pytz.UTC)
+            
+            # Convertir la fecha de caducidad a un objeto datetime
+            local_expiry_date = timezone.datetime.strptime(expiry_date, '%Y-%m-%dT%H:%M')
+            local_expiry_date = timezone.make_aware(local_expiry_date, timezone.get_current_timezone())
+            utc_expiry_date = local_expiry_date.astimezone(pytz.UTC)
+            
+
+            if utc_scheduled_date > timezone.now() and utc_expiry_date > utc_scheduled_date:
+                blog.scheduled_date = utc_scheduled_date # Guardar la fecha programada
+                blog.expiry_date = utc_expiry_date  # Guardar la fecha de caducidad
+                blog.status = 2  # En espera
+                blog.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'error': 'La fecha y hora programadas deben estar en el futuro y la fecha de caducidad debe ser posterior a la fecha de publicación.'})
+        except ValueError:
+            return JsonResponse({'success': False, 'error': 'Error al procesar las fecha y horas ingresadas.'})
+    return JsonResponse({'success': False, 'error': 'Método no permitido.'})
 
 
 #solo el admin y el autor pueden eliminar un blog
@@ -425,11 +489,10 @@ class ChangeBlogStatusView(View):
     def post(self, request, blog_id):
         try:
             blog = Blog.objects.get(id=blog_id)
-            data = json.loads(request.body)  #Cargar el cuerpo de la solicitud como JSON
+            data = json.loads(request.body)  # Cargar el cuerpo de la solicitud como JSON
             new_status = data.get('new_status')  # Obtener new_status del JSON
-            comment = data.get('comment') # Obtener el comentario del JSON
+            comment = data.get('comment')  # Obtener el comentario del JSON
             previous_status = data.get('previous_status')  # Obtener estado previo del JSON
-
 
             if new_status is None:
                 print("new_status es None")
@@ -438,21 +501,88 @@ class ChangeBlogStatusView(View):
             new_status = int(new_status)
 
             if new_status in [0, 1, 2, 3]:
+                blog.previous_status = blog.status  # Guardar el estado anterior
                 blog.status = new_status
                 blog.is_published = new_status == 3  # Actualizar is_published
                 if blog.is_published:
                     blog.published_on = timezone.now()  # Actualizar la fecha de publicación
 
-                if comment:  #Guardar comentario de justificación
-                   formatted_date = timezone.now().strftime('%Y-%m-%d %H:%M')  # Formatear la fecha
-                   blog.status_comments = f"{comment}\n\nDevolución realizada por: {request.user.username}, Rol: {request.user.role}, Fecha: {formatted_date}"
-                
-    
-                
-                if previous_status is not None:  #Guardar estado previo
-                    blog.previous_status = previous_status
+                if comment:  # Guardar comentario de justificación
+                    formatted_date = timezone.now().strftime('%Y-%m-%d %H:%M')  # Formatear la fecha
+                    blog.status_comments = f"{comment}\n\t | Devolución realizada por: {request.user.username}, Rol: {request.user.role}, Fecha: {formatted_date}"
                 
                 blog.save()
+
+                # Verificar si el blog está avanzando en el flujo de aprobación
+                if blog.previous_status is not None and blog.previous_status < blog.status:
+                    # Obtener la última versión del blog
+                    last_version = BlogVersion.objects.filter(blog=blog).order_by('-created_at').first()
+
+                    # Comparar el contenido del blog actual con la última versión
+                    if not last_version or (
+                        blog.title != last_version.title or
+                        blog.desc != last_version.desc or
+                        blog.content != last_version.content or
+                        blog.thumbnail != last_version.thumbnail or
+                        blog.category != last_version.category
+                    ):
+                        # Si hay cambios, crear una nueva versión del blog
+                        # Crear una versión del blog
+                        BlogVersion.objects.create(
+                            blog=blog,
+                            title=blog.title,
+                            desc=blog.desc,
+                            content=blog.content,
+                            thumbnail=blog.thumbnail,
+                            category=blog.category,
+                            modified_by=request.user,
+                            modified_by_role=request.user.role
+                        )
+                    else:
+                        # Si no hay cambios, eliminar el comentario return_comment
+                        new_version = BlogVersion.objects.create(
+                            blog=blog,
+                            title=blog.title,
+                            desc=blog.desc,
+                            content=blog.content,
+                            thumbnail=blog.thumbnail,
+                            category=blog.category,
+                            modified_by=request.user,
+                            modified_by_role=request.user.role,
+                            return_comment= None
+                        )
+
+                        # Comparar la nueva versión con la versión anterior
+                        if last_version and (
+                            new_version.title == last_version.title and
+                            new_version.desc == last_version.desc and
+                            new_version.content == last_version.content and
+                            new_version.thumbnail == last_version.thumbnail and
+                            new_version.category == last_version.category and
+                            new_version.return_comment == last_version.return_comment
+                        ):
+                            # Si son idénticas, eliminar la nueva versión
+                            new_version.delete()
+                            print("Nueva versión eliminada")  # Mensaje de depuración
+                
+
+
+
+                else:
+                        # Crear una versión del blog al retroceder en el flujo
+                        BlogVersion.objects.create(
+                            blog=blog,
+                            title=blog.title,
+                            desc=blog.desc,
+                            content=blog.content,
+                            thumbnail=blog.thumbnail,
+                            category=blog.category,
+                            modified_by=request.user,
+                            modified_by_role=request.user.role,
+                            return_comment=blog.status_comments if blog.previous_status > blog.status else None  # Guardar el comentario de devolución
+                        )
+
+
                 return JsonResponse({'success': True})
             else:
                 print(f"Estado no válido: {new_status}")
@@ -463,18 +593,12 @@ class ChangeBlogStatusView(View):
         except Exception as e:
             print(f"Error al cambiar el estado del blog: {str(e)}")
             return JsonResponse({'success': False, 'error': str(e)})
-        
-class GetBlogStatusView(View):  # obtener el estado previo del blog
-    def get(self, request, blog_id):
-        try:
-            blog = Blog.objects.get(id=blog_id)
-            return JsonResponse({'previous_status': blog.previous_status, 'return_comment': blog.status_comments})
-        except Blog.DoesNotExist:
-            return JsonResponse({'previous_status': None, 'return_comment': ''})
-        
+                
+
 
 
 class BlogPreviewView(View):
     def get(self, request, blog_id):
         blog = get_object_or_404(Blog, id=blog_id)
-        return render(request, 'management/blog_preview.html', {'blog': blog})
+        last_version = BlogVersion.objects.filter(blog=blog).order_by('-created_at').first()
+        return render(request, 'management/blog_preview.html', {'blog': blog, 'last_version': last_version})

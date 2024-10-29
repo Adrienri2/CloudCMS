@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="es" data-content_root="../../">
 <head>
@@ -5,19 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>blogs.views &mdash; documentación de CloudCMS - 1.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=7ab3649f" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=4936afed"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script src="../../_static/translations.js?v=d190bf04"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4936afed"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=d190bf04"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" /> 
@@ -66,6 +64,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cloudcms_urls.html">URLs para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cloudcms_views.html">Vistas para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cloudcms_wsgi.html">WSGI para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_admin.html">Admin para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_apps.html">Configuración de la Aplicación Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_forms.html">Formularios para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_middleware.html">Middleware para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_models.html">Modelos para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_tests.html">Pruebas para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_urls.html">URLs para la Aplicación CloudCMS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../management_views.html">Vistas para la Aplicación CloudCMS</a></li>
 </ul>
 
         </div>
@@ -93,12 +99,15 @@
            <div itemprop="articleBody">
              
   <h1>Código fuente para blogs.views</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
 <span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
 <span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">View</span>
 <span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">F</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Notification</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">FavoriteCategory</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">JsonResponse</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.</span>
@@ -262,6 +271,131 @@
         <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Respuesta creada&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">get_blog_url</span><span class="p">(</span><span class="n">comment</span><span class="o">.</span><span class="n">blog</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;#comments&quot;</span><span class="p">)</span></div>
 </div>
+
+    
+
+
+<div class="viewcode-block" id="notifications">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.notifications">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">notifications</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar las notificaciones no leídas del usuario.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">    request (HttpRequest): El objeto de solicitud HTTP.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">    HttpResponse: Renderiza la plantilla &#39;notifications.html&#39; con las notificaciones no leídas</span>
+<span class="sd">                  y el conteo de las mismas.</span>
+
+<span class="sd">    Funcionalidad:</span>
+<span class="sd">    - Filtra las notificaciones del usuario autenticado que no han sido leídas.</span>
+<span class="sd">    - Ordena las notificaciones por fecha de creación en orden descendente.</span>
+<span class="sd">    - Cuenta el número de notificaciones no leídas.</span>
+<span class="sd">    - Renderiza la plantilla &#39;notifications.html&#39; con las notificaciones y su conteo.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">notifications</span> <span class="o">=</span> <span class="n">Notification</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">is_read</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created_at&#39;</span><span class="p">)</span>
+    <span class="n">notifications_count</span> <span class="o">=</span> <span class="n">notifications</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;notifications.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;notifications&#39;</span><span class="p">:</span> <span class="n">notifications</span><span class="p">,</span> <span class="s1">&#39;notifications_count&#39;</span><span class="p">:</span> <span class="n">notifications_count</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="mark_as_read">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.mark_as_read">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">mark_as_read</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">notification_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para marcar una notificación específica como leída.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">    request (HttpRequest): El objeto de solicitud HTTP.</span>
+<span class="sd">    notification_id (int): El ID de la notificación a marcar como leída.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">    HttpResponseRedirect: Redirige a la vista &#39;manage:kanban&#39;.</span>
+
+<span class="sd">    Funcionalidad:</span>
+<span class="sd">    - Obtiene la notificación especificada por ID y perteneciente al usuario autenticado.</span>
+<span class="sd">    - Marca la notificación como leída.</span>
+<span class="sd">    - Guarda los cambios en la base de datos.</span>
+<span class="sd">    - Redirige a la vista &#39;manage:kanban&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">notification</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Notification</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">notification_id</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">notification</span><span class="o">.</span><span class="n">is_read</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">notification</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;manage:kanban&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mark_all_as_read">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.mark_all_as_read">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">mark_all_as_read</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para marcar todas las notificaciones no leídas del usuario como leídas.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">    request (HttpRequest): El objeto de solicitud HTTP.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">    HttpResponseRedirect: Redirige a la página anterior usando HTTP_REFERER.</span>
+
+<span class="sd">    Funcionalidad:</span>
+<span class="sd">    - Filtra las notificaciones no leídas del usuario autenticado.</span>
+<span class="sd">    - Marca todas las notificaciones filtradas como leídas.</span>
+<span class="sd">    - Redirige a la página anterior usando HTTP_REFERER.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">notifications</span> <span class="o">=</span> <span class="n">Notification</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">is_read</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">notifications</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">is_read</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="toggle_favorite_category">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.toggle_favorite_category">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">toggle_favorite_category</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para añadir o eliminar una categoría de las favoritas del usuario.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">    request (HttpRequest): El objeto de solicitud HTTP.</span>
+<span class="sd">    category_id (int): El ID de la categoría a añadir o eliminar de favoritas.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">    JsonResponse: Retorna un JSON con el estado de la operación (&#39;added&#39; o &#39;removed&#39;).</span>
+
+<span class="sd">    Funcionalidad:</span>
+<span class="sd">    - Obtiene la categoría especificada por ID.</span>
+<span class="sd">    - Intenta obtener o crear una relación de categoría favorita para el usuario autenticado.</span>
+<span class="sd">    - Si la relación ya existe, la elimina y retorna un estado &#39;removed&#39;.</span>
+<span class="sd">    - Si la relación no existe, la crea y retorna un estado &#39;added&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">category_id</span><span class="p">)</span>
+    <span class="n">favorite</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">FavoriteCategory</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">created</span><span class="p">:</span>
+        <span class="n">favorite</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;removed&#39;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;added&#39;</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="favorite_categories">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.favorite_categories">[documentos]</a>
+<span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">favorite_categories</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar las categorías favoritas del usuario.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">    request (HttpRequest): El objeto de solicitud HTTP.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">    HttpResponse: Renderiza la plantilla &#39;blogs/favorite_categories.html&#39; con las categorías favoritas.</span>
+
+<span class="sd">    Funcionalidad:</span>
+<span class="sd">    - Filtra las categorías favoritas del usuario autenticado.</span>
+<span class="sd">    - Renderiza la plantilla &#39;blogs/favorite_categories.html&#39; con las categorías favoritas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">favorites</span> <span class="o">=</span> <span class="n">FavoriteCategory</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;blogs/favorite_categories.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;favorites&#39;</span><span class="p">:</span> <span class="n">favorites</span><span class="p">})</span></div>
 
 </pre></div>
 

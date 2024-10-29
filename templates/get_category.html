@@ -7,6 +7,16 @@
     <div class="row mb-5">
       <h2 class="text-center">{{ category.category }}</h2>
       <p>{{ category.desc }}</p>
+      <div>
+        <!-- Botón para marcar como favorita -->
+        <button class="btn btn-primary" id="favorite-btn" data-category-id="{{ category.id }}">
+          {% if is_favorite %}
+          <i class="fas fa-times"></i> Quitar de Favoritos
+          {% else %}
+          <i class="fas fa-star"></i> Marcar como Favorito
+          {% endif %}
+        </button>
+      </div>
     </div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       {% for blog in category.blogs.all %}
@@ -18,6 +28,27 @@
       {% endfor %}
     </div>
   </div>
+
+<!-- Modal para confirmar agregar o quitar de favoritos -->
+<div class="modal fade" id="favoriteModal" tabindex="-1" aria-labelledby="favoriteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="favoriteModalLabel">Confirmar Acción</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="favoriteModalMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
+        <button type="button" class="btn btn-primary" id="confirm-favorite-btn">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
   {% if category.subcategory_type == "paga" %}
     <script>
@@ -96,4 +127,46 @@
       });
     </script>
   {% endif %}
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const favoriteBtn = document.getElementById('favorite-btn');
+      const favoriteModal = new bootstrap.Modal(document.getElementById('favoriteModal'));
+      const confirmFavoriteBtn = document.getElementById('confirm-favorite-btn');
+      const favoriteModalMessage = document.getElementById('favoriteModalMessage');
+  
+      favoriteBtn.addEventListener('click', function() {
+        if (favoriteBtn.textContent.trim() === 'Marcar como Favorito') {
+          favoriteModalMessage.textContent = '¿Quieres agregar esta categoría como favorita?';
+        } else {
+          favoriteModalMessage.textContent = '¿Quieres quitar esta categoría de tus favoritas?';
+        }
+        favoriteModal.show();
+      });
+
+      confirmFavoriteBtn.addEventListener('click', function() {
+        const categoryId = favoriteBtn.getAttribute('data-category-id');
+        fetch(`/blogs/toggle_favorite_category/${categoryId}/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'added') {
+            favoriteBtn.textContent = 'Quitar de Favoritos';
+          } else {
+            favoriteBtn.textContent = 'Marcar como Favorito';
+          }
+          favoriteModal.hide();
+          location.reload();
+        });
+      });
+    });
+    </script>
+
+
 {% endblock %}

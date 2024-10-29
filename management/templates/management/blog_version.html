@@ -17,13 +17,30 @@
   <div class="row">
     <p>Modificado: {{ version.created_at }} | Modificado por: {{ version.modified_by.username }} ({{ version.modified_by_role }})</p>
   </div>
-  <div class="row mb-3">
-      {% if version.category.is_active %}
-      <div class="col">
-        <p>Categoria: <span style="font-weight: bold; color: #007bff;">{{ version.category.category }}</span></p>
+  
+  {% if version.return_comment %} <!-- Mostrar comentario de devolución si existe -->
+  <div class="row mt-3">
+    <div class="col">
+      <div class="card border-warning">
+        <div class="card-header bg-warning text-dark">-
+          <strong>Comentario de devolución</strong>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{ version.return_comment|linebreaksbr }}</p>
+        </div>
       </div>
-      {% endif %}
+    </div>
   </div>
+  {% endif %}
+
+  <div class="row mb-3">
+    {% if version.category.is_active %}
+    <div class="col">
+      <p>Categoria: <span style="font-weight: bold; color: #007bff;">{{ version.category.category }}</span></p>
+    </div>
+    {% endif %}
+  </div>
+
   <div class="row">
     <div class="ratio ratio-16x9">
       <img src="{{ version.thumbnail.url }}" class="img-fluid rounded mx-auto d-block" alt="miniatura del blog">
