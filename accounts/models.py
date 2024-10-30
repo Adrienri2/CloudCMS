@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 from .managers import UserManager
 from cloudinary.models import CloudinaryField
+from django.conf import settings
 
 class User(AbstractUser):
     """
@@ -38,7 +39,10 @@ class User(AbstractUser):
     
     is_author = models.BooleanField(default=False)
 
-    avatar = CloudinaryField('image', default="avatars/default.jpeg")
+    if settings.DEBUG:
+        avatar = models.ImageField(upload_to='avatars/', default="avatars/default.jpeg")
+    else:
+        avatar = CloudinaryField('image', default="avatars/default.jpeg")
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
