@@ -10,3 +10,4 @@ celery
 redis
 dj-database-url
 whitenoise
+django-cloudinary-storage
