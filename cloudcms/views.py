@@ -25,6 +25,8 @@ class Index(View):
             blog_list = Blog.objects.filter(is_active=True, is_published=True, category__in=public_categories).order_by("-published_on")
 
         
+        featured_blogs = Blog.objects.filter(is_featured=True, is_published=True, is_active=True).order_by('-featured_at')[:4]  # Limitar a los 6 más recientes
+        
         page = request.GET.get('page', 1)
         paginator = Paginator(blog_list, 9)
 
@@ -36,7 +38,8 @@ class Index(View):
             blogs = paginator.page(paginator.num_pages)
 
         context = {
-            'blogs': blogs
+            'blogs': blogs,
+            'featured_blogs': featured_blogs
         }
         return render(request, 'index.html', context)
 

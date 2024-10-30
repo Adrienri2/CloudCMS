@@ -86,6 +86,8 @@ class Blog(models.Model):
     last_modified_by_role = models.CharField(max_length=50, blank=True, null=True)
     scheduled_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha programada
     expiry_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha de caducidad
+    is_featured = models.BooleanField(default=False)  # Añadido campo para destacar blogs
+    featured_at = models.DateTimeField(null=True, blank=True)  # Añadido campo para fecha de destacado
     
     
     
