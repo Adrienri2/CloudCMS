@@ -705,3 +705,26 @@ class RevertToVersionView(View):
         except Exception as e:
             print(f"Error al revertir a la versión :c: {str(e)}")  # Mensaje de depuración
             return JsonResponse({'success': False, 'error': str(e)})
+
+
+@method_decorator(role_required(['admin']), name='dispatch')
+class SetFeaturedBlogView(View):
+    def post(self, request, blog_id):
+        try:
+            blog = get_object_or_404(Blog, id=blog_id, is_published=True, is_active=True)
+            blog.is_featured = not blog.is_featured  # Alternar el estado de destacado
+            if blog.is_featured:
+                blog.featured_at = timezone.now()  # Establecer la fecha y hora actual
+            else:
+                blog.featured_at = None  # Eliminar la fecha y hora si se quita de destacados
+            blog.save()
+            return JsonResponse({'success': True, 'is_featured': blog.is_featured})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+        
+
+
+class BlogDetailView(View):
+    def get(self, request, id):
+        blog = get_object_or_404(Blog, id=id)
+        return render(request, 'blogs/blog.html', {'blog': blog})
