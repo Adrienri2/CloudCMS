@@ -236,6 +236,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
+# Configuración de Disqus
+DISQUS_SHORTNAME = 'cloudcms'
 
 # Resto de la configuración...
 # Configuración de logging
