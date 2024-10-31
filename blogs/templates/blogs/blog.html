@@ -33,32 +33,12 @@
     </p>
   </div>
   <br>
-  <div class="row" id="features">
-    <div class="col">
-      <form action="{% url 'blogs:create_like' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="id" value="{{blog.id}}">
-        <button type="submit" style="background:none!important;border:none;padding:0!important;" class="text-primary">
-          {% if liked %}
-          <i class="bi bi-hand-thumbs-up-fill"></i>
-          {% else %}
-          <i class="bi bi-hand-thumbs-up"></i>
-          {% endif %}
-          {{ blog.likes.count }}
-        </button>
-      </form>
-    </div>
-    <div class="col">
-      <a href="#comments" class="text-decoration-none">
-        <i class="bi bi-chat-text"></i>
-        {{ comments.count }}
-      </a>
-    </div>
-    <div class="col">
+  <div class="row justify-content-center" id="features">
+    <div class="col-auto">
       <form action="{% url 'blogs:create_bookmark' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{blog.id}}">
-        <button type="submit" style="background:none!important;border:none;padding:0!important;" class="float-end text-primary">
+        <button type="submit" style="background:none!important;border:none;padding:0!important;" class="text-primary">
           {% if bookmarked %}
           <i class="bi bi-bookmark-check-fill"></i>
           {% else %}
@@ -67,8 +47,8 @@
         </button>
       </form>
     </div>
-    <div class="col">
-      <button class="text-primary float-end" style="background:none!important;border:none;padding:0!important;" data-bs-toggle="modal" data-bs-target="#shareModal">
+    <div class="col-auto">
+      <button class="text-primary" style="background:none!important;border:none;padding:0!important;" data-bs-toggle="modal" data-bs-target="#shareModal">
         <i class="bi bi-box-arrow-up"></i>
       </button>
     </div>
