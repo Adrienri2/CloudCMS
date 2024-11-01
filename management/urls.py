@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from accounts.views import UserListView, EditUserView
-from .views import blog_versions, blog_version_preview, GetBlogStatusView, BlogPreviewView, schedule_publication
+from .views import blog_versions, blog_version_preview, GetBlogStatusView, BlogPreviewView, schedule_publication, RevertToVersionView, SetFeaturedBlogView, BlogDetailView
 
 app_name = "manage"
 
@@ -16,7 +16,8 @@ urlpatterns = [
     path('blog_version_preview/<int:version_id>/', blog_version_preview, name='blog_version_preview'),
     path('get_blog_status/<int:blog_id>/', GetBlogStatusView.as_view(), name='get_blog_status'),
     path('blog_preview/<int:blog_id>/', BlogPreviewView.as_view(), name='blog_preview'),
-    
+    path('revert_to_version/', RevertToVersionView.as_view(), name='revert_to_version'),
+
 
 
 
@@ -31,7 +32,11 @@ urlpatterns = [
     path("edit/category/<int:id>", views.EditCategory.as_view(), name="edit_category"),
     path('users/', UserListView.as_view(), name='users'),
     path('edit/<int:user_id>/', EditUserView.as_view(), name='edit_user'),
-     path('schedule_publication/<int:blog_id>/', schedule_publication, name='schedule_publication'),
+    path('schedule_publication/<int:blog_id>/', schedule_publication, name='schedule_publication'),
+    path('set_featured_blog/<int:blog_id>/', SetFeaturedBlogView.as_view(), name='set_featured_blog'),
+    path('blogs/<int:id>/', BlogDetailView.as_view(), name='blog_detail'),
+
+
 
     
 ]

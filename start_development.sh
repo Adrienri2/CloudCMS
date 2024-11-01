@@ -17,5 +17,11 @@ python manage.py makemigrations
 python manage.py migrate
 
 
+# Ejecutar el worker de Celery en segundo plano
+nohup celery -A cloudcms worker --loglevel=info &
+
+# Ejecutar el beat scheduler de Celery en segundo plano
+nohup celery -A cloudcms beat --loglevel=info &
+
 # Ejecutar el servidor en modo desarrollo
 python manage.py runserver

@@ -3,12 +3,19 @@
 {% block title %}CloudCMS{% endblock %}
 
 {% block body %}
-<div class="container mt-5 mb-5">
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for blog in blogs %}
-      {% include 'card.html' with blog=blog %}
-    {% endfor %}
+<div class="container mt-5 mb-5" style="margin-right: 10;">
+  <div class="row">
+    <div class="col-md-9">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for blog in blogs %}
+          {% include 'card.html' with blog=blog %}
+        {% endfor %}
+      </div>
+      {% include 'pagination.html' with blogs=blogs %}
+    </div>
+    <div class="col-md-2" style="margin-right: 0;">
+      {% include 'aside_featured_blogs.html' with featured_blogs=featured_blogs %}
+    </div>
   </div>
-  {% include 'pagination.html' with blogs=blogs %}
 </div>
 {% endblock %}

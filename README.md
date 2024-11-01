@@ -97,12 +97,7 @@
     python manage.py migrate
     ```
 
-2. Crear un superusuario:
-    ```sh
-    python manage.py createsuperuser
-    ```
-
-3. Asignarle el rol de admin al superusario:
+2. Asignarle el rol de admin al superusario:
     ```sh
     python manage.py shell
     from accounts.models import User
@@ -126,13 +121,7 @@
 
 ## Documentación
 
-1. Instalar Sphinx y el tema:
-    ```sh
-    pip install sphinx
-    pip install sphinx_rtd_theme
-    ```
-
-2. Generar la documentación:
+1. Generar la documentación:
     ```sh
     cd docs
     make html

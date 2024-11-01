@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block title %}Mis Membresías{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+  <h2>Mis Suscripciones</h2>
+  <div class="row">
+    {% for membership in memberships %}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ membership.category.category }}</h5>
+            <p class="card-text">{{ membership.category_desc }}</p>
+            <p><strong>Tipo:</strong> {{ membership.category_type }}</p>
+            <p><strong>Subcategoría:</strong> {{ membership.subcategory_type }}</p>
+            <p><strong>Costo:</strong> Gs. {{ membership.membership_cost }}</p>
+            <p><strong>Fecha de Pago:</strong> {{ membership.payment_date|date:"d M, Y H:i:s" }}</p>
+            <form method="post" action="{% url 'blogs:delete_membership' membership.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Eliminar suscripción</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

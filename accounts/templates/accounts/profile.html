@@ -40,8 +40,8 @@
                 <!--  Se unió el: -->
                 <li><i class="icono fas fa-user-check"></i><strong>Se unió el:</strong> {{ request.user.date_joined|date:"d M, Y" }}
                 </li>
-
             </ul>
+        <a href="{% url 'blogs:memberships' %}" class="btn btn-primary">Membresías</a>
         </div>
     </div>
 </div>

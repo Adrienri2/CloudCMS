@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 from django.conf import settings
 from cloudcms.utils import send_notification_email  # Importar la función de envío de correos electrónicos
+from cloudinary.models import CloudinaryField  # Importar CloudinaryField
 
 
 """
@@ -57,6 +58,32 @@ class Category(models.Model):
         """
         return self.category
 
+
+class PaidMembership(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category_desc = models.TextField()
+    category_type = models.CharField(max_length=20)
+    subcategory_type = models.CharField(max_length=20)
+    membership_cost = models.IntegerField()
+    payment_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.category.category}"
+    
+
+
+class MembershipPayment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category_type = models.CharField(max_length=20)
+    membership_cost = models.IntegerField()
+    payment_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.category.category} - {self.payment_date}"
+    
+
 class Blog(models.Model):
     """
     Modelo para representar una entrada de blog.
@@ -72,7 +99,10 @@ class Blog(models.Model):
     title = models.CharField(max_length=100)
     desc = models.TextField()
     content = RichTextField()
-    thumbnail = models.ImageField(upload_to="thumbnails/%Y/%m/%d/")
+    if settings.DEBUG:
+        thumbnail = models.ImageField(upload_to='thumbnails/')
+    else:
+        thumbnail = CloudinaryField('image')
     views = models.IntegerField(default=0)
     category = models.ForeignKey(Category, related_name="blogs", on_delete=models.CASCADE, null=True, blank=True)
     is_active = models.BooleanField(default=True)
@@ -86,6 +116,8 @@ class Blog(models.Model):
     last_modified_by_role = models.CharField(max_length=50, blank=True, null=True)
     scheduled_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha programada
     expiry_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha de caducidad
+    is_featured = models.BooleanField(default=False)  # Añadido campo para destacar blogs
+    featured_at = models.DateTimeField(null=True, blank=True)  # Añadido campo para fecha de destacado
     
     
     
@@ -207,7 +239,10 @@ class BlogVersion(models.Model):
     title = models.CharField(max_length=255)
     desc = models.TextField()
     content = models.TextField()
-    thumbnail = models.ImageField(upload_to='thumbnails/')
+    if settings.DEBUG:
+        thumbnail = models.ImageField(upload_to='thumbnails/')
+    else:
+        thumbnail = CloudinaryField('image')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
