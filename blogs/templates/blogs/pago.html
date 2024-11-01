@@ -1,0 +1,200 @@
+{% extends 'layout.html' %}
+
+{% block title %}Pago{% endblock %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-12"> 
+      <h2>Comprar suscripción a Categoría</h2>
+      <p>Aquí puedes completar el proceso de pago para acceder a la categoría de paga.</p>
+      <div class="row">
+        <!-- Aside para los datos de la categoría -->
+        <aside class="col-md-6 category-aside">
+          <div class="ticket">
+            <h3>Datos de la Categoría</h3>
+          </div>
+          <div class="ticket">
+            <p><strong>Nombre:</strong> {{ category.category }}</p>
+          </div>
+          <div class="ticket">
+            <p><strong>Descripción:</strong> {{ category.desc }}</p>
+          </div>
+          <div class="ticket">
+            <p><strong>Precio:</strong> Gs. {{ category.costo_membresia }}</p>
+          </div>
+          <div class="ticket">
+            <p><strong>El pago de la membresía</strong></p>
+            <p>Es único, abonando por única vez, usted tiene acceso a los articulos que se publican en esta categoría.</p>
+          </div>
+        </aside>
+        <!-- Aside para el formulario de pago -->
+        <aside class="col-md-6 payment-aside">
+          <!-- Formulario de Pago -->
+          <form method="post" action="{% url 'blogs:procesar_pago' category.id %}">
+            {% csrf_token %}
+            <div class="mb-3 position-relative">
+              <label for="tipoPago" class="form-label">Tipo de Pago:</label>
+              <input type="text" class="form-control" id="tipoPago" value="Tarjeta Crédito/Débito" readonly>
+              <!-- Iconos de las tarjetas -->
+              <div class="input-icons">
+                <i class="fab fa-cc-visa" style="font-size: 1.5rem; color: #1a1f71;"></i>
+                <i class="fab fa-cc-mastercard" style="font-size: 1.5rem; color: #eb001b;"></i>
+                <i class="fab fa-cc-amex" style="font-size: 1.5rem; color: #007bc1;"></i>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="nombreTarjeta" class="form-label">Nombre del titular de la tarjeta:</label>
+              <input type="text" class="form-control" id="nombreTarjeta" name="nombreTarjeta" required>
+            </div>
+            <div class="mb-3 position-relative">
+              <label for="numeroTarjeta" class="form-label">Número de la tarjeta:</label>
+              <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required>
+              <!-- Icono de tarjeta -->
+              <div class="card-icon">
+                <i class="fas fa-credit-card" style="font-size: 1.5rem; color: #6c757d;"></i>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="vencimiento" class="form-label">Vencimiento:</label>
+              <input type="text" class="form-control" id="vencimiento" name="vencimiento" placeholder="mm/aa" maxlength="5" required>
+            </div>
+            <div class="mb-3 position-relative">
+              <label for="cvc" class="form-label">CVC:</label>
+              <input type="text" class="form-control" id="cvc" name="cvc" maxlength="3" required>
+              <!-- Icono de CVC -->
+              <div class="cvc-icon">
+                <i class="fas fa-credit-card" style="font-size: 1.5rem; color: #6c757d;"></i>
+              </div>
+            </div>
+            <div class="mb-3 position-relative">
+              <label for="pais" class="form-label">País o región:</label>
+              <input type="text" class="form-control" id="pais" value="Paraguay" readonly>
+              <!-- Icono de la bandera de Paraguay -->
+              <div class="flag-icon">
+                <span class="flag-icon flag-icon-py" style="font-size: 1.5rem;"></span>
+              </div>
+            </div>
+            {% if not datos_tarjeta %}
+              <div class="mb-3">
+                <label for="recordarTarjeta" class="form-label">¿Desea recordar los datos de su tarjeta para pagos futuros?</label>
+                <select class="form-control" id="recordarTarjeta" name="recordarTarjeta" required>
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary">Comprar membresía</button>
+          </form>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .position-relative {
+    position: relative;
+  }
+  .input-icons {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    height: 100%;
+  }
+  .input-icons i {
+    margin-left: 5px;
+    margin-top: 30px;
+  }
+  .card-icon, .cvc-icon, .flag-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .flag-icon {
+    margin-right: -5px;
+  }
+
+  .card-icon i, .cvc-icon i {
+    margin-top: 35px;
+  }
+
+  .flag-icon span {
+    margin-top: 15px;
+  }
+
+  .payment-aside, .category-aside {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+  }
+
+  .ticket {
+    background-color: #fff;
+    border: 1px dashed #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .ticket h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+
+  .ticket p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .ticket p strong {
+    color: #000;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const numeroTarjetaInput = document.getElementById('numeroTarjeta');
+    const vencimientoInput = document.getElementById('vencimiento');
+
+    // Formatear el número de la tarjeta en grupos de 4 dígitos
+    numeroTarjetaInput.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+      value = value.match(/.{1,4}/g)?.join(' ') || value; // Agrupar en bloques de 4
+      e.target.value = value;
+    });
+
+    // Agregar automáticamente una barra después de los primeros dos dígitos en el campo de vencimiento
+    vencimientoInput.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+      if (value.length > 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2);
+      }
+      e.target.value = value;
+    });
+  
+
+  // Rellenar automáticamente los campos si los datos de la tarjeta están guardados
+  const datosTarjeta = {{ datos_tarjeta|safe }};
+  if (datosTarjeta) {
+    document.getElementById('nombreTarjeta').value = datosTarjeta.nombre_tarjeta;
+    document.getElementById('numeroTarjeta').value = datosTarjeta.numero_tarjeta.match(/.{1,4}/g).join(' ');
+    document.getElementById('vencimiento').value = datosTarjeta.fecha_vencimiento;
+    document.getElementById('cvc').value = datosTarjeta.codigo_seguridad;
+  }
+});
+
+</script>
+{% endblock %}

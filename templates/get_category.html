@@ -50,7 +50,7 @@
 
 
 
-  {% if category.subcategory_type == "paga" %}
+  {% if category.subcategory_type == "paga"  and not has_membership %}
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         // Definir el HTML del modal con un id único
@@ -65,7 +65,7 @@
                   <p>Para tener acceso a esta categoría, debe pagar una membresía única de Gs: {{ costo_membresia }}</p>
                   <p>Costo de la membresia Gs: {{ costo_membresia }}</p>
                   <button id="buyMembershipButtonUnique" class="btn btn-primary">Comprar membresía</button>
-                  <button id="continueButtonUnique" class="btn btn-secondary">Continuar</button>
+                  <button id="continueButtonUnique" class="btn btn-secondary">Cancelar</button>
                 </div>
               </div>
             </div>
@@ -82,47 +82,19 @@
         paymentModal.show();
 
         // Manejar el clic en el botón "Comprar membresía"
-        const buyMembershipButton = document.getElementById('buyMembershipButtonUnique');
-        buyMembershipButton.addEventListener('click', function() {
-          // Crear y enviar el formulario de pago
-          const form = document.createElement('form');
-          form.action = 'https://checkout.wompi.co/p/';
-          form.method = 'GET';
-
-          const publicKey = document.createElement('input');
-          publicKey.type = 'hidden';
-          publicKey.name = 'public-key';
-          publicKey.value = 'pub_test_501zz4iE1TnIknS0Ob5DEs22JFFVaxYe';
-          form.appendChild(publicKey);
-
-          const currency = document.createElement('input');
-          currency.type = 'hidden';
-          currency.name = 'currency';
-          currency.value = 'COP';
-          form.appendChild(currency);
-
-          const amount = document.createElement('input');
-          amount.type = 'hidden';
-          amount.name = 'amount-in-cents';
-          amount.value = '{{ costo_membresia|floatformat:0 }}';  // '1000';
-          form.appendChild(amount);
-
-          const reference = document.createElement('input');
-          reference.type = 'hidden';
-          reference.name = 'reference';
-          reference.value = 'referencia_pago_web_checkout_ejemplo_01';
-          form.appendChild(reference);
-
-          document.body.appendChild(form);
-          form.submit();
-        });
+      const buyMembershipButton = document.getElementById('buyMembershipButtonUnique');
+      buyMembershipButton.addEventListener('click', function() {
+        // Redirigir a la plantilla "pago.html"
+        window.location.href = "{% url 'blogs:pago' category.id %}";
+      });
 
         // Manejar el clic en el botón "Continuar"
         const continueButton = document.getElementById('continueButtonUnique');
         continueButton.addEventListener('click', function() {
-          // Cerrar el modal
-          const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModalUnique'));
           paymentModal.hide();
+          // Redirigir a la página de inicio (index)
+          window.location.href = "{% url 'index' %}";
+        
         });
       });
     </script>

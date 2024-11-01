@@ -1,9 +1,13 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
+from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views import View
 from django.db.models import F
 from django.urls import reverse
+from django.db.models import Q
+
+from accounts.models import DatosTarjeta
 from .models import *
 from .models import Notification, Category, FavoriteCategory
 from django.http import HttpResponseRedirect, JsonResponse
@@ -248,3 +252,109 @@ def favorite_categories(request):
     """
     favorites = FavoriteCategory.objects.filter(user=request.user)
     return render(request, 'blogs/favorite_categories.html', {'favorites': favorites})
+
+
+class PagoView(View):
+    def get(self, request, category_id ):
+        category = get_object_or_404(Category, id=category_id)
+        datos_tarjeta = None
+        if hasattr(request.user, 'datos_tarjeta'):
+            datos_tarjeta = {
+                'nombre_tarjeta': request.user.datos_tarjeta.nombre_tarjeta,
+                'numero_tarjeta': request.user.datos_tarjeta.numero_tarjeta,
+                'fecha_vencimiento': request.user.datos_tarjeta.fecha_vencimiento,
+                'codigo_seguridad': request.user.datos_tarjeta.codigo_seguridad,
+            }
+        return render(request, 'blogs/pago.html', {'category': category, 'datos_tarjeta': datos_tarjeta})
+    
+
+@method_decorator(login_required, name='dispatch')
+class ProcesarPagoView(View):
+    def post(self, request, category_id):
+        category = get_object_or_404(Category, id=category_id)
+
+         # Verificar si el usuario ya tiene una membresía para esta categoría
+        if PaidMembership.objects.filter(user=request.user, category=category).exists():
+            messages.success(request, "Ya tienes una membresía para esta categoría. Ve y disfruta de los Artículos.")
+            return redirect('blogs:pago', category_id=category_id)
+        
+
+        nombre_tarjeta = request.POST.get('nombreTarjeta')
+        numero_tarjeta = request.POST.get('numeroTarjeta').replace(' ', '')  # Eliminar espacios
+        vencimiento = request.POST.get('vencimiento')
+        cvc = request.POST.get('cvc')
+        recordar_tarjeta = request.POST.get('recordarTarjeta')  # Obtener el valor de recordar_tarjeta
+
+
+        # Guardar los datos de la tarjeta si el usuario eligió "Sí"
+        if recordar_tarjeta == 'si':
+            DatosTarjeta.objects.update_or_create(
+                usuario=request.user,
+                defaults={
+                    'nombre_tarjeta': nombre_tarjeta,
+                    'numero_tarjeta': numero_tarjeta,
+                    'fecha_vencimiento': vencimiento,
+                    'codigo_seguridad': cvc
+                }
+            )
+
+        # Guardar la membresía pagada
+        PaidMembership.objects.create(
+            user=request.user,
+            category=category,
+            category_desc=category.desc,
+            category_type=category.category_type,
+            subcategory_type=category.subcategory_type,
+            membership_cost=category.costo_membresia
+        )
+
+        # Guardar el registro de pago de la membresía
+        MembershipPayment.objects.create(
+            user=request.user,
+            category=category,
+            category_type=category.category_type,
+            membership_cost=category.costo_membresia
+        )
+
+
+        # Redirigir a una página de éxito o de confirmación
+        return redirect('blogs:success', category_id=category_id)
+    
+class SuccessView(View):
+    def get(self, request, category_id):
+        category = get_object_or_404(Category, id=category_id)
+        return render(request, 'blogs/success.html', {'category': category})
+    
+
+@method_decorator(login_required, name='dispatch')
+class MembershipsView(View):
+    def get(self, request):
+        memberships = PaidMembership.objects.filter(user=request.user).order_by('-payment_date')
+        return render(request, 'blogs/memberships.html', {'memberships': memberships})
+    
+
+@method_decorator(login_required, name='dispatch')
+class DeleteMembershipView(View):
+    def post(self, request, membership_id):
+        membership = get_object_or_404(PaidMembership, id=membership_id, user=request.user)
+        membership.delete()
+        return redirect('blogs:memberships')
+    
+
+@method_decorator(permission_required('accounts.can_view_membership_payments', raise_exception=True), name='dispatch')
+class AllMembershipPaymentsView(View):
+    def get(self, request):
+        query = request.GET.get('q')
+        payments = MembershipPayment.objects.all().order_by('-payment_date')
+        
+    
+        if query:
+                payments = payments.filter(
+                    Q(user__username__icontains=query) |
+                    Q(category__category__icontains=query) |
+                    Q(category_type__iexact=query) |
+                    Q(membership_cost__icontains=query) |
+                    Q(payment_date__icontains=query)
+                )
+
+        return render(request, 'blogs/all_membership_payments.html', {'payments': payments})

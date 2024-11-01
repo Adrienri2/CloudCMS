@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block title %}Todas las Membresías Pagadas{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+  <h2>Todas las Membresías Pagadas</h2>
+  
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <div>
+        <p>Filtrar:</p>
+      </div>
+      <form method="get" action="{% url 'blogs:all_membership_payments' %}">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Buscar..." value="{{ request.GET.q }}">
+          <button class="btn btn-primary" type="submit">Buscar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Categoría</th>
+            <th>Tipo de Categoría</th>
+            <th>Costo de la Membresía</th>
+            <th>Fecha de Pago</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in payments %}
+          <tr>
+            <td>{{ payment.user.username }}</td>
+            <td>{{ payment.category.category }}</td>
+            <td>{{ payment.category_type }}</td>
+            <td>Gs. {{ payment.membership_cost }}</td>
+            <td>{{ payment.payment_date|date:"d M, Y H:i:s" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
