@@ -24,11 +24,13 @@
       </div>
       {% endif %}
   </div>
+
+  <!-- Botón Destacar Artículo -->
   <div class="row mb-3">
     {% if request.user.is_authenticated and request.user.role == 'admin' %}
       <div class="row mb-3">
         <div class="col">
-          <button type="button" class="btn btn-warning" id="setFeaturedButton" data-blog-id="{{ blog.id }}">
+          <button type="button" class="btn btn-warning" id="setFeaturedButton" data-blog-id="{{ blog.id }}" data-bs-toggle="modal" data-bs-target="#confirmFeaturedModal">
             {% if blog.is_featured %}
             Quitar de Destacados
             {% else %}
@@ -49,12 +51,12 @@
     </p>
   </div>
   <br>
-  <div class="row justify-content-center" id="features">
-    <div class="col-auto">
+  <div class="row" id="features">
+    <div class="col">
       <form action="{% url 'blogs:create_bookmark' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{blog.id}}">
-        <button type="submit" style="background:none!important;border:none;padding:0!important;" class="text-primary">
+        <button type="submit" style="background:none!important;border:none;padding:0!important;" class="float-end text-primary">
           {% if bookmarked %}
           <i class="bi bi-bookmark-check-fill"></i>
           {% else %}
@@ -71,94 +73,76 @@
   </div>
   <br><br><hr>
   
-<!-- Contadores de Calificaciones -->
-<div class="row mb-3">
-  <div class="col">
-    <div class="card p-3 shadow-sm rating-card">
-      <p class="mb-2 rating-title">Calificaciones actuales del Artículo:</p>
-        <div class="col d-flex justify-content-between">
-          <div class="me-3 text-center rating-block">
-            <p><i class="fas fa-star star-yellow"></i></p><p> {{ blog.one_star_ratings }}</p>
-          </div>
-          <div class="me-3 text-center rating-block">
-            <p><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></p><p> {{ blog.two_star_ratings }}</p>
-          </div>
-          <div class="me-3 text-center rating-block">
-            <p><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></p><p> {{ blog.three_star_ratings }}</p>
-          </div>
-        </div>
-     </div>
-  </div>
-</div>
-
- <!-- Formulario de Calificaciones -->
- <div class="row mb-3">
-  <div class="col">
-    <div class="card p-3 shadow-sm rating-card">
-      <form action="{% url 'blogs:rate_blog' blog.id %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="rating" class="form-label rating-label">Calificar:</label>
-          <div id="rating" class="rating d-flex">
+  <!-- Contadores de Calificaciones -->
+  <div class="row mb-3">
+    <div class="col">
+      <div class="card p-3 shadow-sm rating-card">
+        <p class="mb-2 rating-title">Calificaciones actuales del Artículo:</p>
+          <div class="col d-flex justify-content-between">
             <div class="me-3 text-center rating-block">
-              <input type="radio" id="star1" name="rating" value="1">
-              <label for="star1"><i class="fas fa-star star-yellow"></i></label>
+              <p><i class="fas fa-star star-yellow"></i></p><p> {{ blog.one_star_ratings }}</p>
             </div>
             <div class="me-3 text-center rating-block">
-              <input type="radio" id="star2" name="rating" value="2">
-              <label for="star2"><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></label>
+              <p><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></p><p> {{ blog.two_star_ratings }}</p>
             </div>
             <div class="me-3 text-center rating-block">
-              <input type="radio" id="star3" name="rating" value="3">
-              <label for="star3"><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></label>
+              <p><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></p><p> {{ blog.three_star_ratings }}</p>
             </div>
           </div>
-        </div>
-        <button type="submit" class="btn btn-primary mt-2">Enviar Calificación</button>
-      </form>
-   </div> 
-  </div>
-</div>
-
-<div id="disqus_thread"></div>
-<script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-    /*
-    var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://cloudcms.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-
-
-<!-- Modal de Confirmación -->
-<div class="modal fade" id="confirmFeaturedModal" tabindex="-1" aria-labelledby="confirmFeaturedModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="confirmFeaturedModalLabel">Contenido Destacado</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p id="confirmFeaturedMessage"></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" id="confirmFeaturedButton">Aceptar</button>
-      </div>
+       </div>
     </div>
   </div>
+
+  <!-- Formulario de Calificaciones -->
+  {% if user.is_authenticated %}
+  <div class="row mb-3">
+    <div class="col">
+      <div class="card p-3 shadow-sm rating-card">
+        <form action="{% url 'blogs:rate_blog' blog.id %}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="rating" class="form-label rating-label">Calificar:</label>
+            <div id="rating" class="rating d-flex">
+              <div class="me-3 text-center rating-block">
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1"><i class="fas fa-star star-yellow"></i></label>
+              </div>
+              <div class="me-3 text-center rating-block">
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2"><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></label>
+              </div>
+              <div class="me-3 text-center rating-block">
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3"><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></label>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-2">Enviar Calificación</button>
+        </form>
+     </div> 
+    </div>
+  </div>
+  {% endif %}
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+      *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+      /*
+      var disqus_config = function () {
+      this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://cloudcms.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
 
 <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
@@ -192,20 +176,28 @@
   </div>
 </div>
 
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmFeaturedModal" tabindex="-1" aria-labelledby="confirmFeaturedModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmFeaturedModalLabel">Confirmación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmFeaturedMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="confirmFeaturedButton">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="{% static 'js/blogs/blog.js' %}"></script>
 
 <script>
-
-  function copyUrl() {
-    const url = "{{ request.build_absolute_uri }}";
-    navigator.clipboard.writeText(url).then(function() {
-      alert('URL copiada al portapapeles');
-    }, function(err) {
-      console.error('Error al copiar la URL: ', err);
-    });
-  }
-
-
   document.addEventListener('DOMContentLoaded', function() {
     const setFeaturedButton = document.getElementById('setFeaturedButton');
     const confirmFeaturedModal = new bootstrap.Modal(document.getElementById('confirmFeaturedModal'));
@@ -216,7 +208,7 @@
       setFeaturedButton.addEventListener('click', function() {
         const blogId = this.getAttribute('data-blog-id');
         const isFeatured = this.textContent.includes('Quitar');
-        confirmFeaturedMessage.textContent = isFeatured ? '¿Desea quitar de contenidos destacados?' : '¿Desea destacar este contenido?';
+        confirmFeaturedMessage.textContent = isFeatured ? '¿Desea retirar de Destacados?' : '¿Desea destacar este Artículo?';
         confirmFeaturedButton.setAttribute('data-blog-id', blogId);
         confirmFeaturedButton.setAttribute('data-is-featured', isFeatured);
         confirmFeaturedModal.show();
@@ -236,7 +228,8 @@
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': '{{ csrf_token }}'
-        }
+        },
+        body: JSON.stringify({ is_featured: !isFeatured })
       })
       .then(response => response.json())
       .then(data => {
@@ -257,8 +250,19 @@
         confirmFeaturedButton.disabled = false;
       });
     });
-
   });
+</script>
+
+<script>
+  function copyUrl() {
+    const url = "{{ request.build_absolute_uri }}";
+    navigator.clipboard.writeText(url).then(function() {
+      alert('URL copiada al portapapeles');
+    }, function(err) {
+      console.error('Error al copiar la URL: ', err);
+    });
+  }
+  
   </script>
 
 <style>
@@ -326,5 +330,5 @@
   color: #333;
 }
 </style>
+{% endblock %}  
 
-{% endblock %}
