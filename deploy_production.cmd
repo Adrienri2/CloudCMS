@@ -1,6 +1,14 @@
 @echo off
 SETLOCAL
 
+REM Verificar si se pasó un tag como parámetro
+IF "%~1"=="" (
+    echo Debes especificar un tag como parametro.
+    exit /b 1
+) ELSE (
+    SET TAG=%~1
+)
+
 REM Verificar si Node.js está instalado
 where node >nul 2>nul
 IF %ERRORLEVEL% NEQ 0 (
@@ -36,7 +44,9 @@ IF EXIST "%USERPROFILE%\CarpetaVacia" (
     rmdir /S /Q "%USERPROFILE%\CarpetaVacia"
 )
 mkdir "%USERPROFILE%\CarpetaVacia"
-git clone --branch adrian --single-branch --depth 1 https://github.com/Adrienri2/CloudCMS %USERPROFILE%\CloudCMS
+
+REM Clonar el repositorio usando el tag especificado
+git -c advice.detachedHead=false clone --branch %TAG% --single-branch --depth 1 https://github.com/Adrienri2/CloudCMS %USERPROFILE%\CloudCMS
 
 REM Variables para el proyecto
 SET "PROJECT_NAME=cloudcms"

@@ -27,6 +27,14 @@ sudo apt install -y python3-pip python3-virtualenv redis-server postgresql postg
 # Configuración de PostgreSQL
 echo "Configurando PostgreSQL..."
 sudo -u postgres psql <<EOF
+-- Eliminar las bases de datos si existen
+DROP DATABASE IF EXISTS dbcloudcms_dev;
+DROP DATABASE IF EXISTS dbcloudcms_prod;
+
+-- Eliminar el usuario si existe
+DROP USER IF EXISTS admin_cms;
+
+-- Crear el usuario y las bases de datos
 CREATE USER admin_cms WITH PASSWORD '1234';
 CREATE DATABASE dbcloudcms_dev OWNER admin_cms;
 CREATE DATABASE dbcloudcms_prod OWNER admin_cms;
