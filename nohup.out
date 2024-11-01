@@ -26876,3 +26876,168 @@ Configuration ->
     . db -> celerybeat-schedule
     . logfile -> [stderr]@%INFO
     . maxinterval -> 5.00 minutes (300s)
+[2024-10-31 23:07:55,359: INFO/MainProcess] beat: Starting...
+[2024-10-31 23:07:55,380: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+ 
+ -------------- celery@Carlos v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.15.153.1-microsoft-standard-WSL2-x86_64-with-glibc2.35 2024-10-31 23:07:55
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         cloudcms:0x7fb29e5e2260
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 16 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . blogs.tasks.expire_scheduled_blogs
+  . blogs.tasks.publish_scheduled_blogs
+
+[2024-10-31 23:07:55,391: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:07:56,100: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2024-10-31 23:07:56,104: INFO/MainProcess] mingle: searching for neighbors
+[2024-10-31 23:07:57,140: INFO/MainProcess] mingle: all alone
+[2024-10-31 23:07:57,160: INFO/MainProcess] celery@Carlos ready.
+[2024-10-31 23:07:57,163: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[f24769a2-e3d2-426b-b870-23a9f953c7b8] received
+[2024-10-31 23:07:57,165: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[99559ad5-b0d8-451e-a94b-8d7772c9edd2] received
+[2024-10-31 23:07:57,181: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[f24769a2-e3d2-426b-b870-23a9f953c7b8] succeeded in 0.01650333900033729s: None
+[2024-10-31 23:07:57,183: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[99559ad5-b0d8-451e-a94b-8d7772c9edd2] succeeded in 0.016331482998793945s: None
+[2024-10-31 23:08:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:08:00,001: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:08:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[01b936d0-cf12-4fa5-a75c-b571bf392201] received
+[2024-10-31 23:08:00,003: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[e3d305fa-fe0a-4726-ab82-1ce8dde75c91] received
+[2024-10-31 23:08:00,012: INFO/ForkPoolWorker-15] Task blogs.tasks.expire_scheduled_blogs[e3d305fa-fe0a-4726-ab82-1ce8dde75c91] succeeded in 0.008550567996280733s: None
+[2024-10-31 23:08:00,012: INFO/ForkPoolWorker-14] Task blogs.tasks.publish_scheduled_blogs[01b936d0-cf12-4fa5-a75c-b571bf392201] succeeded in 0.009195942999213003s: None
+[2024-10-31 23:09:00,037: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:09:00,050: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:09:00,052: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[f3df2b10-2ccc-4535-90da-3b9feef2bc5c] received
+[2024-10-31 23:09:00,054: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[6bb34662-30df-403c-b5a5-b7f5465452f4] received
+[2024-10-31 23:09:00,070: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[6bb34662-30df-403c-b5a5-b7f5465452f4] succeeded in 0.013065614002698567s: None
+[2024-10-31 23:09:00,070: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[f3df2b10-2ccc-4535-90da-3b9feef2bc5c] succeeded in 0.013996166999277193s: None
+[2024-10-31 23:10:00,005: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:10:00,007: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:10:00,008: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[a34d09b5-9054-49bd-81b1-b59c9b1430c8] received
+[2024-10-31 23:10:00,009: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[da4b63dd-6eb7-4295-ba38-ef3f08b38d99] received
+[2024-10-31 23:10:00,018: INFO/ForkPoolWorker-15] Task blogs.tasks.expire_scheduled_blogs[da4b63dd-6eb7-4295-ba38-ef3f08b38d99] succeeded in 0.009043520993145648s: None
+[2024-10-31 23:10:00,018: INFO/ForkPoolWorker-14] Task blogs.tasks.publish_scheduled_blogs[a34d09b5-9054-49bd-81b1-b59c9b1430c8] succeeded in 0.009122931005549617s: None
+[2024-10-31 23:11:00,000: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:11:00,001: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:11:00,002: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[1a36e352-94fc-4219-9e6f-648e57ed03b7] received
+[2024-10-31 23:11:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[0db82d94-0d5e-4de8-be91-7eadf9244e8b] received
+[2024-10-31 23:11:00,012: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[1a36e352-94fc-4219-9e6f-648e57ed03b7] succeeded in 0.008829906000755727s: None
+[2024-10-31 23:11:00,012: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[0db82d94-0d5e-4de8-be91-7eadf9244e8b] succeeded in 0.009177223000733647s: None
+[2024-10-31 23:12:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:12:00,002: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:12:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[a0ed2dc6-7f63-4752-b47c-5c812462ef99] received
+[2024-10-31 23:12:00,004: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[31cf7553-b822-44bf-80c7-67184e844873] received
+[2024-10-31 23:12:00,013: INFO/ForkPoolWorker-14] Task blogs.tasks.publish_scheduled_blogs[a0ed2dc6-7f63-4752-b47c-5c812462ef99] succeeded in 0.010090364994539414s: None
+[2024-10-31 23:12:00,013: INFO/ForkPoolWorker-15] Task blogs.tasks.expire_scheduled_blogs[31cf7553-b822-44bf-80c7-67184e844873] succeeded in 0.008633859004476108s: None
+[2024-10-31 23:13:00,000: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:13:00,002: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:13:00,004: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[7e3d83fc-04bb-4b44-99a1-064a9a737b31] received
+[2024-10-31 23:13:00,006: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[09dc6ef2-1674-47fe-8437-1e19f99697f6] received
+[2024-10-31 23:13:00,015: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[7e3d83fc-04bb-4b44-99a1-064a9a737b31] succeeded in 0.00959248500294052s: None
+[2024-10-31 23:13:00,016: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[09dc6ef2-1674-47fe-8437-1e19f99697f6] succeeded in 0.008964904001913965s: None
+[2024-10-31 23:14:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:14:00,003: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:14:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[60fdfde7-d317-4771-9028-be80b0928fba] received
+[2024-10-31 23:14:00,006: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[a608d588-c853-4598-8d2f-2aec8ba4d2cd] received
+[2024-10-31 23:14:00,039: INFO/ForkPoolWorker-14] Task blogs.tasks.publish_scheduled_blogs[60fdfde7-d317-4771-9028-be80b0928fba] succeeded in 0.033318071997200605s: None
+[2024-10-31 23:14:00,039: INFO/ForkPoolWorker-15] Task blogs.tasks.expire_scheduled_blogs[a608d588-c853-4598-8d2f-2aec8ba4d2cd] succeeded in 0.031773145994520746s: None
+[2024-10-31 23:15:00,006: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:15:00,017: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:15:00,018: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[64293b47-2ced-4de8-a7dc-7da9a2c86651] received
+[2024-10-31 23:15:00,019: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[77566cb7-2d35-45d6-a282-f6623042812a] received
+[2024-10-31 23:15:00,044: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[77566cb7-2d35-45d6-a282-f6623042812a] succeeded in 0.023122641003283206s: None
+[2024-10-31 23:15:00,045: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[64293b47-2ced-4de8-a7dc-7da9a2c86651] succeeded in 0.023705690997303464s: None
+[2024-10-31 23:16:00,005: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:16:00,008: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:16:00,009: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[1014d5e5-28e2-4c8b-9eab-2c9bff547cfa] received
+[2024-10-31 23:16:00,011: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[cfaf02f9-b1c9-43a9-85ca-100480aa9db6] received
+[2024-10-31 23:16:00,024: INFO/ForkPoolWorker-15] Task blogs.tasks.expire_scheduled_blogs[cfaf02f9-b1c9-43a9-85ca-100480aa9db6] succeeded in 0.012385128997266293s: None
+[2024-10-31 23:16:00,024: INFO/ForkPoolWorker-14] Task blogs.tasks.publish_scheduled_blogs[1014d5e5-28e2-4c8b-9eab-2c9bff547cfa] succeeded in 0.012385285001073498s: None
+[2024-10-31 23:17:00,003: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:17:00,016: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:17:00,017: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[1e755a57-b9f8-4238-85ca-cc8678532152] received
+[2024-10-31 23:17:00,018: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[621e3e63-8924-4826-bbc8-49318c04dff7] received
+[2024-10-31 23:17:00,027: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[1e755a57-b9f8-4238-85ca-cc8678532152] succeeded in 0.008833627005515154s: None
+[2024-10-31 23:17:00,029: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[621e3e63-8924-4826-bbc8-49318c04dff7] succeeded in 0.009947167003701907s: None
+[2024-10-31 23:18:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:18:00,002: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:18:00,003: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[29a350dd-9c31-4a98-bb42-9c674e1e38f9] received
+[2024-10-31 23:18:00,004: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[8a91ae16-9aba-4820-b7d9-918844b5eb01] received
+[2024-10-31 23:18:00,013: INFO/ForkPoolWorker-14] Task blogs.tasks.publish_scheduled_blogs[29a350dd-9c31-4a98-bb42-9c674e1e38f9] succeeded in 0.009322894999058917s: None
+[2024-10-31 23:18:00,014: INFO/ForkPoolWorker-15] Task blogs.tasks.expire_scheduled_blogs[8a91ae16-9aba-4820-b7d9-918844b5eb01] succeeded in 0.008631234995846171s: None
+[2024-10-31 23:19:00,021: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:19:00,025: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:19:00,025: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[e2777801-f08b-43b1-bf3b-7d6f0304165b] received
+[2024-10-31 23:19:00,027: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[1ab5b091-aad7-49e2-b9c1-73d3e6b96521] received
+[2024-10-31 23:19:00,042: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[e2777801-f08b-43b1-bf3b-7d6f0304165b] succeeded in 0.015171291001024656s: None
+[2024-10-31 23:19:00,042: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[1ab5b091-aad7-49e2-b9c1-73d3e6b96521] succeeded in 0.01340680100111058s: None
+[2024-10-31 23:20:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:20:00,003: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:20:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[b7a17be5-a130-43a6-bddd-8448de3fe596] received
+[2024-10-31 23:20:00,006: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[60f5d6b7-bf51-4f56-932a-acb0bf406f77] received
+[2024-10-31 23:20:00,014: INFO/ForkPoolWorker-15] Task blogs.tasks.expire_scheduled_blogs[60f5d6b7-bf51-4f56-932a-acb0bf406f77] succeeded in 0.007753896003123373s: None
+[2024-10-31 23:20:00,015: INFO/ForkPoolWorker-14] Task blogs.tasks.publish_scheduled_blogs[b7a17be5-a130-43a6-bddd-8448de3fe596] succeeded in 0.00938587300333893s: None
+[2024-10-31 23:21:00,000: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:21:00,011: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:21:00,011: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[c45f0d58-24bb-47ce-995a-79a08b3f4ad1] received
+[2024-10-31 23:21:00,013: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[b3407078-21e3-472e-be2e-f388e9947ad2] received
+[2024-10-31 23:21:00,038: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[c45f0d58-24bb-47ce-995a-79a08b3f4ad1] succeeded in 0.02414490599767305s: None
+[2024-10-31 23:21:00,038: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[b3407078-21e3-472e-be2e-f388e9947ad2] succeeded in 0.024353763998078648s: None
+[2024-10-31 23:22:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:22:00,002: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:22:00,002: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[a81764c0-8d7c-4df7-9af1-0c067f0f430a] received
+[2024-10-31 23:22:00,004: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[fb7417df-c5b8-486b-ae2e-a45f4f5b1f49] received
+[2024-10-31 23:22:00,013: INFO/ForkPoolWorker-15] Task blogs.tasks.expire_scheduled_blogs[fb7417df-c5b8-486b-ae2e-a45f4f5b1f49] succeeded in 0.009050643995578866s: None
+[2024-10-31 23:22:00,013: INFO/ForkPoolWorker-14] Task blogs.tasks.publish_scheduled_blogs[a81764c0-8d7c-4df7-9af1-0c067f0f430a] succeeded in 0.010192510999331716s: None
+[2024-10-31 23:23:00,021: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:23:00,025: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:23:00,026: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[c1aeb881-6592-4663-baa4-ce2cd9b0cbf7] received
+[2024-10-31 23:23:00,028: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[fd7e41c9-cf17-4116-9c61-1a272477ee6b] received
+[2024-10-31 23:23:00,040: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[c1aeb881-6592-4663-baa4-ce2cd9b0cbf7] succeeded in 0.01035171200055629s: None
+[2024-10-31 23:23:00,041: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[fd7e41c9-cf17-4116-9c61-1a272477ee6b] succeeded in 0.011775587001466192s: None
+[2024-10-31 23:24:00,019: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:24:00,033: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:24:00,034: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[ce3852a1-3b21-4cbb-af22-3f46c543d075] received
+[2024-10-31 23:24:00,036: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[b2f3f7c4-d60e-40f4-81ef-1dbed7d99725] received
+[2024-10-31 23:24:00,062: INFO/ForkPoolWorker-14] Task blogs.tasks.publish_scheduled_blogs[ce3852a1-3b21-4cbb-af22-3f46c543d075] succeeded in 0.026650754000002053s: None
+[2024-10-31 23:24:00,062: INFO/ForkPoolWorker-15] Task blogs.tasks.expire_scheduled_blogs[b2f3f7c4-d60e-40f4-81ef-1dbed7d99725] succeeded in 0.022917412003153004s: None
+[2024-10-31 23:25:00,016: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:25:00,018: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:25:00,019: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[ffa37af3-e905-4f70-990d-4b53271c0fe7] received
+[2024-10-31 23:25:00,027: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[be062c2a-d276-44ae-b89d-7f0dc4b57776] received
+[2024-10-31 23:25:00,036: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[ffa37af3-e905-4f70-990d-4b53271c0fe7] succeeded in 0.009486969000136014s: None
+[2024-10-31 23:25:00,036: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[be062c2a-d276-44ae-b89d-7f0dc4b57776] succeeded in 0.00791886599472491s: None
+[2024-10-31 23:26:00,006: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:26:00,008: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:26:00,008: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[4683c0bb-c914-4234-99af-7db79eeae0a1] received
+[2024-10-31 23:26:00,009: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[6b9f2b43-3eb8-4b4b-9814-1125b146635e] received
+[2024-10-31 23:26:00,018: INFO/ForkPoolWorker-14] Task blogs.tasks.expire_scheduled_blogs[4683c0bb-c914-4234-99af-7db79eeae0a1] succeeded in 0.00827061999734724s: None
+[2024-10-31 23:26:00,018: INFO/ForkPoolWorker-15] Task blogs.tasks.publish_scheduled_blogs[6b9f2b43-3eb8-4b4b-9814-1125b146635e] succeeded in 0.008362551998288836s: None
+[2024-10-31 23:27:00,000: INFO/MainProcess] Scheduler: Sending due task publish-scheduled-blogs-every-minute (blogs.tasks.publish_scheduled_blogs)
+[2024-10-31 23:27:00,003: INFO/MainProcess] Scheduler: Sending due task expire-scheduled-blogs-every-minute (blogs.tasks.expire_scheduled_blogs)
+[2024-10-31 23:27:00,004: INFO/MainProcess] Task blogs.tasks.publish_scheduled_blogs[8db3061d-2f99-4c82-8135-b5c1d6262e8c] received
+[2024-10-31 23:27:00,006: INFO/MainProcess] Task blogs.tasks.expire_scheduled_blogs[702613f8-2739-4a48-a134-edc2e5bb2086] received
+[2024-10-31 23:27:00,020: INFO/ForkPoolWorker-15] Task blogs.tasks.expire_scheduled_blogs[702613f8-2739-4a48-a134-edc2e5bb2086] succeeded in 0.013031891998252831s: None
+[2024-10-31 23:27:00,020: INFO/ForkPoolWorker-14] Task blogs.tasks.publish_scheduled_blogs[8db3061d-2f99-4c82-8135-b5c1d6262e8c] succeeded in 0.01307152200024575s: None
+
+worker: Hitting Ctrl+C again will terminate all running tasks!
+
+worker: Warm shutdown (MainProcess)
+celery beat v5.4.0 (opalescent) is starting.
+__    -    ... __   -        _
+LocalTime -> 2024-10-31 23:07:55
+Configuration ->
+    . broker -> redis://localhost:6379/0
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> 5.00 minutes (300s)
