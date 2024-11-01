@@ -32,6 +32,8 @@ class User(AbstractUser):
         ('author', 'Autor'),
         ('editor', 'Editor'),
         ('publisher', 'Publicador'),
+        ('financiero', 'Financiero'),  # Nuevo rol agregado
+    
     ]
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='suscriptor')
     
@@ -65,6 +67,8 @@ class User(AbstractUser):
             ("can_view_user", "Puede ver usuarios"),
             ("can_edit_user", "Puede editar usuarios"),
             ("can_delete_user", "Puede eliminar usuarios"),
+            ("can_view_membership_payments", "Puede ver pagos de membresías"), 
+        
         ]
 
     def __str__(self):
@@ -107,5 +111,19 @@ class User(AbstractUser):
             elif self.role == 'suscriptor':
                 self.user_permissions.clear()
                 self.user_permissions.add(Permission.objects.get(codename='can_view_blog'))
+            elif self.role == 'financiero':  # Nuevo rol agregado
+                self.user_permissions.add(Permission.objects.get(codename='can_view_membership_payments'))
         else:
             super().save(*args, **kwargs)
+
+
+
+class DatosTarjeta(models.Model):
+    nombre_tarjeta = models.CharField(max_length=100)
+    numero_tarjeta = models.CharField(max_length=16)
+    fecha_vencimiento = models.CharField(max_length=5)  # Formato "mm/aa"
+    codigo_seguridad = models.CharField(max_length=3)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='datos_tarjeta')
+
+    def __str__(self):
+        return f"{self.nombre_tarjeta} - {self.numero_tarjeta}"
