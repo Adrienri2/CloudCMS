@@ -9,7 +9,7 @@ from django.db.models import Q
 
 from accounts.models import DatosTarjeta
 from .models import *
-from .models import Notification, Category, FavoriteCategory
+from .models import Notification, Category, FavoriteCategory, Blog, Rating
 from django.http import HttpResponseRedirect, JsonResponse
 
 """
@@ -376,3 +376,37 @@ class AllMembershipPaymentsView(View):
         payment.delete()
         
         return redirect('blogs:all_membership_payments')
+    
+
+class RateBlogView(View):
+    def post(self, request, blog_id):
+        blog = get_object_or_404(Blog, id=blog_id)
+        rating_value = int(request.POST.get('rating'))
+        user = request.user
+
+        # Obtener la calificación existente del usuario si existe
+        rating, created = Rating.objects.get_or_create(user=user, blog=blog, defaults={'rating': rating_value})
+
+        # Descontar la calificación anterior
+        if not created:
+            if rating.rating == 1:
+                blog.one_star_ratings -= 1
+            elif rating.rating == 2:
+                blog.two_star_ratings -= 1
+            elif rating.rating == 3:
+                blog.three_star_ratings -= 1
+
+        # Actualizar la calificación con la nueva
+        rating.rating = rating_value
+        rating.save()
+
+        # Incrementar la nueva calificación
+        if rating_value == 1:
+            blog.one_star_ratings += 1
+        elif rating_value == 2:
+            blog.two_star_ratings += 1
+        elif rating_value == 3:
+            blog.three_star_ratings += 1
+
+        blog.save()
+        return redirect('manage:blog_detail', id=blog.id)

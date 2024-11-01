@@ -1,7 +1,20 @@
 <div class="col">
   <div class="card h-100">
-    <div class="ratio ratio-16x9">
-      <img src="{{ blog.thumbnail.url }}" class="card-img-top" alt="blog's thumbnail">
+    <div class="position-relative">
+      <div class="ratio ratio-16x9">
+        <img src="{{ blog.thumbnail.url }}" class="card-img-top" alt="blog's thumbnail">
+      </div>
+      {% if blog.one_star_ratings > 0 or blog.two_star_ratings > 0 or blog.three_star_ratings > 0 %}
+        <div class="position-absolute top-0 start-0 p-2 bg-dark text-white rounded">
+          {% if blog.three_star_ratings >= blog.two_star_ratings and blog.three_star_ratings >= blog.one_star_ratings %}
+          <i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i>
+          {% elif blog.two_star_ratings >= blog.one_star_ratings %}
+          <i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i>
+          {% else %}
+          <i class="fas fa-star star-yellow"></i>
+          {% endif %}
+        </div>
+      {% endif %}
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ blog.title }}</h5>
@@ -24,3 +37,38 @@
     <a class="btn btn-outline-primary w-100" href="{% url 'blogs:blog' blog.slug %}" role="button">Leer más</a>
   </div>
 </div>
+
+
+<style>
+  .position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.top-0 {
+    top: 0;
+}
+
+.start-0 {
+    left: 0;
+}
+
+.bg-dark {
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con transparencia */
+}
+
+.text-white {
+    color: white;
+}
+
+.rounded {
+    border-radius: 0.25rem;
+}
+
+.p-2 {
+    padding: 0.5rem;
+}
+</style>

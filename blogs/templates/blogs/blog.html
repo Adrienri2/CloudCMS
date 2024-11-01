@@ -91,6 +91,55 @@
   </div>
   <br><br><hr>
   
+<!-- Contadores de Calificaciones -->
+<div class="row mb-3">
+  <div class="col">
+    <div class="card p-3 shadow-sm rating-card">
+      <p class="mb-2 rating-title">Calificaciones actuales del Artículo:</p>
+        <div class="col d-flex justify-content-between">
+          <div class="me-3 text-center rating-block">
+            <p><i class="fas fa-star star-yellow"></i></p><p> {{ blog.one_star_ratings }}</p>
+          </div>
+          <div class="me-3 text-center rating-block">
+            <p><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></p><p> {{ blog.two_star_ratings }}</p>
+          </div>
+          <div class="me-3 text-center rating-block">
+            <p><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></p><p> {{ blog.three_star_ratings }}</p>
+          </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+ <!-- Formulario de Calificaciones -->
+ <div class="row mb-3">
+  <div class="col">
+    <div class="card p-3 shadow-sm rating-card">
+      <form action="{% url 'blogs:rate_blog' blog.id %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="rating" class="form-label rating-label">Calificar:</label>
+          <div id="rating" class="rating d-flex">
+            <div class="me-3 text-center rating-block">
+              <input type="radio" id="star1" name="rating" value="1">
+              <label for="star1"><i class="fas fa-star star-yellow"></i></label>
+            </div>
+            <div class="me-3 text-center rating-block">
+              <input type="radio" id="star2" name="rating" value="2">
+              <label for="star2"><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></label>
+            </div>
+            <div class="me-3 text-center rating-block">
+              <input type="radio" id="star3" name="rating" value="3">
+              <label for="star3"><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i><i class="fas fa-star star-yellow"></i></label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Enviar Calificación</button>
+      </form>
+   </div> 
+  </div>
+</div>
+
   <div class="row mb-3" id="comments">
     <h1>
       <i class="bi bi-chat-left-text"></i>
@@ -183,21 +232,21 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
-        <button class="btn btn-primary">
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="btn btn-primary">
           <i class="bi bi-facebook"></i>
-        </button>
-        <button class="btn btn-success">
+        </a>
+        <a href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri }}" target="_blank" class="btn btn-success">
           <i class="bi bi-whatsapp"></i>
-        </button>
-        <button class="btn btn-dark">
+        </a>
+        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ blog.title }}" target="_blank" class="btn btn-dark">
           <i class="bi bi-twitter-x"></i>
-        </button>
-        <button class="btn btn-info">
+        </a>
+        <a href="https://www.instagram.com/?url={{ request.build_absolute_uri }}" target="_blank" class="btn btn-info">
           <i class="bi bi-instagram"></i>
-        </button>
-        <button class="btn btn-primary">
+        </a>
+        <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ blog.title }}" target="_blank" class="btn btn-primary">
           <i class="bi bi-telegram"></i>
-        </button>
+        </a>
         <button class="btn btn-outline-secondary rounded-pill" id="copyBtn" onclick="copyUrl()">
           <i class="bi bi-copy"></i>
         </button>
@@ -209,6 +258,17 @@
 <script src="{% static 'js/blogs/blog.js' %}"></script>
 
 <script>
+
+  function copyUrl() {
+    const url = "{{ request.build_absolute_uri }}";
+    navigator.clipboard.writeText(url).then(function() {
+      alert('URL copiada al portapapeles');
+    }, function(err) {
+      console.error('Error al copiar la URL: ', err);
+    });
+  }
+
+
   document.addEventListener('DOMContentLoaded', function() {
     const setFeaturedButton = document.getElementById('setFeaturedButton');
     const confirmFeaturedModal = new bootstrap.Modal(document.getElementById('confirmFeaturedModal'));
@@ -260,9 +320,74 @@
         confirmFeaturedButton.disabled = false;
       });
     });
+
   });
   </script>
 
+<style>
+  .star-yellow {
+    color: yellow;
+}
 
+.card {
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+}
+
+.card p {
+    margin-bottom: 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.rating-card {
+  background-color: #fdfdfd; 
+  border-color: #f0f0f0;
+}
+
+.rating-block {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rating-block p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.rating-block label {
+    cursor: pointer;
+}
+
+.rating-block input[type="radio"] {
+    display: none;
+}
+
+.rating-block input[type="radio"] + label i {
+    font-size: 24px;
+    color: #ccc;
+}
+
+.rating-block input[type="radio"]:checked + label i {
+    color: yellow;
+}
+
+.rating-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.rating-label {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+}
+</style>
 
 {% endblock %}

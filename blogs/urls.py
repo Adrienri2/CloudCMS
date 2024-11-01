@@ -35,6 +35,10 @@ urlpatterns = [
     path('notifications/mark_all_as_read/', mark_all_as_read, name='mark_all_as_read'),
     path('toggle_favorite_category/<int:category_id>/', toggle_favorite_category, name='toggle_favorite_category'),
     path('favorite_categories/', favorite_categories, name='favorite_categories'),
+    path('rate_blog/<int:blog_id>/', views.RateBlogView.as_view(), name='rate_blog'),
+    
+
+
 
 
 
