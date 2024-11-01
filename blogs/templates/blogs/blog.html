@@ -49,32 +49,12 @@
     </p>
   </div>
   <br>
-  <div class="row" id="features">
-    <div class="col">
-      <form action="{% url 'blogs:create_like' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="id" value="{{blog.id}}">
-        <button type="submit" style="background:none!important;border:none;padding:0!important;" class="text-primary">
-          {% if liked %}
-          <i class="bi bi-hand-thumbs-up-fill"></i>
-          {% else %}
-          <i class="bi bi-hand-thumbs-up"></i>
-          {% endif %}
-          {{ blog.likes.count }}
-        </button>
-      </form>
-    </div>
-    <div class="col">
-      <a href="#comments" class="text-decoration-none">
-        <i class="bi bi-chat-text"></i>
-        {{ comments.count }}
-      </a>
-    </div>
-    <div class="col">
+  <div class="row justify-content-center" id="features">
+    <div class="col-auto">
       <form action="{% url 'blogs:create_bookmark' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="id" value="{{blog.id}}">
-        <button type="submit" style="background:none!important;border:none;padding:0!important;" class="float-end text-primary">
+        <button type="submit" style="background:none!important;border:none;padding:0!important;" class="text-primary">
           {% if bookmarked %}
           <i class="bi bi-bookmark-check-fill"></i>
           {% else %}
@@ -83,76 +63,33 @@
         </button>
       </form>
     </div>
-    <div class="col">
-      <button class="text-primary float-end" style="background:none!important;border:none;padding:0!important;" data-bs-toggle="modal" data-bs-target="#shareModal">
+    <div class="col-auto">
+      <button class="text-primary" style="background:none!important;border:none;padding:0!important;" data-bs-toggle="modal" data-bs-target="#shareModal">
         <i class="bi bi-box-arrow-up"></i>
       </button>
     </div>
   </div>
   <br><br><hr>
   
-  <div class="row mb-3" id="comments">
-    <h1>
-      <i class="bi bi-chat-left-text"></i>
-      Comentarios ({{ comments.count }})
-    </h1>
-  </div>
-  <div class="row">
-    <form action="{% url 'blogs:create_comment' %}" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="id" value="{{ blog.id }}">
-      <div class="mb-3">
-        <label for="comment" class="form-label">Comentario:</label>
-        <textarea class="form-control" id="comment" rows="3" name="comment" placeholder="Añadir un comentario" required></textarea>
-      </div>
-      {% if request.user.is_authenticated %}
-      <button type="submit" class="float-end btn btn-primary">
-        <i class="bi bi-send"></i>
-        Enviar
-      </button>
-      {% else %}
-      <a href="{% url 'accounts:login' %}" class="btn btn-primary float-end">Iniciar sesión</a>
-      {% endif %}
-    </form>
-  </div>
-  <br>
-  <br><hr><br>
-  {% for comment in comments %}
-  <div class="row">
-    <b>@{{ comment.creator.username }}<b>
-    <span class="badge text-bg-primary">{{ comment.published_on }}</span>
-    <p>{{ comment.comment }}</p>
-    <a class="text-decoration-none" data-bs-toggle="collapse" href="#reply{{comment.id}}" role="button" aria-expanded="false" aria-controls="reply{{comment.id}}">
-      <i class="bi bi-reply"></i>
-      Responder
-    </a>
-    <div class="collapse" id="reply{{comment.id}}">
-      <div class="card card-body">
-        {% for reply in comment.replies.all %}
-        <b>@{{ reply.creator.username }}<b>
-        <span class="badge text-bg-primary">{{ reply.published_on }}</span>
-        <p>{{ reply.reply }}</p>
-        <hr>
-        {% endfor %}
-        <form action="{% url 'blogs:create_reply' %}" method="post">
-          {% csrf_token %}
-          <div class="row"> 
-            <input type="hidden" name="id" value="{{comment.id}}">
-            <div class="col-10">
-              <input type="text" class="form-control" name="reply" placeholder="Añadir una respuesta" required>
-            </div>
-            <div class="col-2">
-              <button type="submit" class="btn btn-primary">
-                <i class="bi bi-send"></i>
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <hr>
-  {% endfor %}
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+      *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+      /*
+      var disqus_config = function () {
+      this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://cloudcms.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
 
 

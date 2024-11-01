@@ -1,1 +1,1 @@
-web: gunicorn cloudcms.wsgi --log-file -
+web: sh ./start_production.sh
