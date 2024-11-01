@@ -11,3 +11,5 @@ redis
 dj-database-url
 whitenoise
 django-cloudinary-storage
+sphinx
+sphinx_rtd_theme

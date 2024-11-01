@@ -5,8 +5,11 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py collectstatic --noinput
 
+# Ejecutar el worker de Celery en segundo plano
+nohup celery -A cloudcms worker --loglevel=info --concurrency=1
+
+# Ejecutar el beat scheduler de Celery en segundo plano
+nohup celery -A cloudcms beat --loglevel=info &
+
 # Iniciar Gunicorn en segundo plano con 1 trabajador
 gunicorn cloudcms.wsgi --log-file - --workers=1 &
-
-# Iniciar el worker de Celery en primer plano con concurrencia limitada
-celery -A cloudcms worker --loglevel=info --concurrency=1
