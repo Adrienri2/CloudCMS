@@ -40,6 +40,13 @@
             <td>{{ payment.category_type }}</td>
             <td>Gs. {{ payment.membership_cost }}</td>
             <td>{{ payment.payment_date|date:"d M, Y H:i:s" }}</td>
+            <td>
+              <form method="post" action="{% url 'blogs:all_membership_payments' %}">
+                {% csrf_token %}
+                <input type="hidden" name="payment_id" value="{{ payment.id }}">
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+              </form>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

@@ -337,7 +337,13 @@ class MembershipsView(View):
 class DeleteMembershipView(View):
     def post(self, request, membership_id):
         membership = get_object_or_404(PaidMembership, id=membership_id, user=request.user)
+        
+         # Eliminar el registro correspondiente en MembershipPayment
+        MembershipPayment.objects.filter(user=request.user, category=membership.category).delete()
+        
+        # Eliminar la membresía
         membership.delete()
+
         return redirect('blogs:memberships')
     
 
@@ -358,3 +364,15 @@ class AllMembershipPaymentsView(View):
                 )
 
         return render(request, 'blogs/all_membership_payments.html', {'payments': payments})
+    
+    def post(self, request):
+        payment_id = request.POST.get('payment_id')
+        payment = get_object_or_404(MembershipPayment, id=payment_id)
+        
+        # Eliminar el registro correspondiente en PaidMembership
+        PaidMembership.objects.filter(user=payment.user, category=payment.category).delete()
+        
+        # Eliminar el registro en MembershipPayment
+        payment.delete()
+        
+        return redirect('blogs:all_membership_payments')
