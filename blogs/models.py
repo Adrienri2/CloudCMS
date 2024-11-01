@@ -118,6 +118,9 @@ class Blog(models.Model):
     expiry_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha de caducidad
     is_featured = models.BooleanField(default=False)  # Añadido campo para destacar blogs
     featured_at = models.DateTimeField(null=True, blank=True)  # Añadido campo para fecha de destacado
+    one_star_ratings = models.IntegerField(default=0)
+    two_star_ratings = models.IntegerField(default=0)
+    three_star_ratings = models.IntegerField(default=0)
     
     
     
@@ -230,7 +233,16 @@ class Blog(models.Model):
             return "Verificar"
         return "Editar"
 
-    
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+
+    class Meta:
+        unique_together = ('user', 'blog')
+        
+ 
 class BlogVersion(models.Model):
     """
     Modelo para representar una versión de un blog.
