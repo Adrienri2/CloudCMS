@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from accounts.views import UserListView, EditUserView
-from .views import blog_versions, blog_version_preview, GetBlogStatusView, BlogPreviewView, schedule_publication, RevertToVersionView, SetFeaturedBlogView, BlogDetailView
+from .views import blog_versions, blog_version_preview, GetBlogStatusView, BlogPreviewView, schedule_publication, RevertToVersionView, SetFeaturedBlogView, BlogDetailView, DeleteBlog
 
 app_name = "manage"
 
@@ -24,7 +24,7 @@ urlpatterns = [
     path("create/blog/", views.CreateBlog.as_view(), name="create_blog"),
     path("create/category/", views.CreateCategory.as_view(), name="create_category"),
 
-    path("delete/blog/<int:id>/", views.DeleteBlog.as_view(), name="delete_blog"),
+    path("delete/blog/<int:id>/", DeleteBlog.as_view(), name="delete_blog"),
     path("delete/category/<int:id>", views.DeleteCategory.as_view(), name="delete_category"),
     path("delete/comment/<int:id>", views.DeleteComment.as_view(), name="delete_comment"),
 

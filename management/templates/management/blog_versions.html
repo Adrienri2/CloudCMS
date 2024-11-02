@@ -11,7 +11,7 @@
         <ul>
             {% for version in versions %}
             <li onclick="window.location.href='{% url 'manage:blog_version_preview' version.id %}'">
-                <h3>ID del Blog: {{ version.blog.id }}</h3>
+                <h3>N° de versión: {{ version.version_count }}</h3>
                 <p><strong>Nombre:</strong> {{ version.title }}</p>
                 <p><strong>Modificado por:</strong> {{ version.modified_by.username }}</p>
                 <p><strong>Fecha de modificación:</strong> {{ version.created_at }}</p>
