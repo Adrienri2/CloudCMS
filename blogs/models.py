@@ -253,11 +253,26 @@ class BlogVersion(models.Model):
     modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     modified_by_role = models.CharField(max_length=50)
     return_comment = models.TextField(null=True, blank=True)  # Añadido campo para comentario de devolución
+    version_count = models.PositiveIntegerField(default=0)  # Añadir campo para contador de versiones
+
 
     def __str__(self):
         return f"Versión de {self.blog.title} creada el {self.created_at}"
 
+    #vamos a probar hacer aqui el contador:
+    def save(self, *args, **kwargs):
+        if not self.pk:  # Si la instancia es nueva
+            last_version = BlogVersion.objects.filter(blog=self.blog).order_by('-version_count').first()
+            if last_version:
+                self.version_count = last_version.version_count + 1
+            else:
+                self.version_count = 1
+        super(BlogVersion, self).save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        # Disminuir el contador de versiones de las versiones posteriores
+        BlogVersion.objects.filter(blog=self.blog, version_count__gt=self.version_count).update(version_count=models.F('version_count') - 1)
+        super(BlogVersion, self).delete(*args, **kwargs)
 
 
 

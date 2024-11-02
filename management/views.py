@@ -144,7 +144,7 @@ class CreateBlog(View):
         blog_version.save()
 
         messages.success(request, "Artículo creado")
-        return redirect("manage:blog")
+        return redirect("manage:kanban")
    
 
 @method_decorator(role_required(['admin']), name='dispatch')
@@ -347,7 +347,7 @@ class EditBlog(View):
         messages.success(request, "Cambios guardados")
 
         # Redirige al usuario a la página de gestión de blogs
-        return redirect("manage:blog")
+        return redirect("manage:kanban")
 
 
 
@@ -390,16 +390,22 @@ def schedule_publication(request, blog_id):
 #solo el admin y el autor pueden eliminar un blog
 @method_decorator(permission_required('accounts.can_delete_blog', raise_exception=True), name='dispatch')
 class DeleteBlog(View):
-    def get(self, request, id):
-        blog = Blog.objects.filter(id=id, creator=request.user).first()
+    def post(self, request, id):
+        print(f"Intentando eliminar el blog con ID: {id} por el usuario: {request.user}")
+        
+        blog = Blog.objects.filter(id=id).first()
         if blog is None:
+            print(f"El blog con ID: {id} no existe en absoluto")
             messages.warning(request, "El artículo no existe")
         else:
+            print(f"El blog con ID: {id} existe. Verificando el creador y el estado.")
+            print(f"El usuario: {request.user} marcó el blog con ID: {id} como inactivo.")
             blog.is_active = False
             blog.save()
             messages.info(request, "Artículo eliminado")
+            print(f"El blog con ID: {id} fue marcado como inactivo y guardado.")
 
-        return redirect("manage:blog")
+        return JsonResponse({'success': True})
 
 class EditCategory(View):
     def get(self, request, id):
