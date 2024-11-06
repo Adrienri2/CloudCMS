@@ -6,11 +6,13 @@ from django.views import View
 from django.db.models import F
 from django.urls import reverse
 from django.db.models import Q
-
+from django.conf import settings
 from accounts.models import DatosTarjeta
 from .models import *
 from .models import Notification, Category, FavoriteCategory, Blog, Rating
 from django.http import HttpResponseRedirect, JsonResponse
+import stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 """
 Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.
@@ -265,65 +267,81 @@ class PagoView(View):
                 'fecha_vencimiento': request.user.datos_tarjeta.fecha_vencimiento,
                 'codigo_seguridad': request.user.datos_tarjeta.codigo_seguridad,
             }
-        return render(request, 'blogs/pago.html', {'category': category, 'datos_tarjeta': datos_tarjeta})
+        return render(request, 'blogs/pago.html', {'category': category, 'datos_tarjeta': datos_tarjeta, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
+
+
+class CreateCheckoutSessionView(View):
+    def post(self, request, category_id, *args , **kwargs):
+        category = get_object_or_404(Category, id=category_id)
+        YOUR_DOMAIN = "http://127.0.0.1:8000/"
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[
+                {
+                        'price_data': {
+                            'currency': 'pyg',
+                            'product_data': {
+                                'name': category.category,
+                                'description': category.desc,
+                            },
+                            'unit_amount': category.costo_membresia
+                        },
+                        'quantity': 1,
+                    },
+                ],
+                mode='payment',
+                success_url=YOUR_DOMAIN + reverse('blogs:success', kwargs={'category_id': category_id}),
+                cancel_url=YOUR_DOMAIN + reverse('blogs:cancel', kwargs={'category_id': category_id}),
+            )
+            return redirect(checkout_session.url, code=303)
+        except Exception as e:
+            return str(e)
+        
+
+class SuccessView(View):
+    def get(self, request, category_id):
+        category = get_object_or_404(Category, id=category_id)
+        return render(request, 'blogs/success.html', {'category': category})
     
+class CancelView(View):
+    def get(self, request, category_id):
+        category = get_object_or_404(Category, id=category_id)
+        return redirect('index')
+
 
 @method_decorator(login_required, name='dispatch')
-class ProcesarPagoView(View):
-    def post(self, request, category_id):
+class IrACategoriaView(View):
+    def get(self, request, category_id):
         category = get_object_or_404(Category, id=category_id)
 
          # Verificar si el usuario ya tiene una membresía para esta categoría
         if PaidMembership.objects.filter(user=request.user, category=category).exists():
             messages.success(request, "Ya tienes una membresía para esta categoría. Ve y disfruta de los Artículos.")
-            return redirect('blogs:pago', category_id=category_id)
-        
-
-        nombre_tarjeta = request.POST.get('nombreTarjeta')
-        numero_tarjeta = request.POST.get('numeroTarjeta').replace(' ', '')  # Eliminar espacios
-        vencimiento = request.POST.get('vencimiento')
-        cvc = request.POST.get('cvc')
-        recordar_tarjeta = request.POST.get('recordarTarjeta')  # Obtener el valor de recordar_tarjeta
-
-
-        # Guardar los datos de la tarjeta si el usuario eligió "Sí"
-        if recordar_tarjeta == 'si':
-            DatosTarjeta.objects.update_or_create(
-                usuario=request.user,
-                defaults={
-                    'nombre_tarjeta': nombre_tarjeta,
-                    'numero_tarjeta': numero_tarjeta,
-                    'fecha_vencimiento': vencimiento,
-                    'codigo_seguridad': cvc
-                }
+           
+        else:
+            # Guardar la membresía pagada
+            PaidMembership.objects.create(
+                user=request.user,
+                category=category,
+                category_desc=category.desc,
+                category_type=category.category_type,
+                subcategory_type=category.subcategory_type,
+                membership_cost=category.costo_membresia
             )
 
-        # Guardar la membresía pagada
-        PaidMembership.objects.create(
-            user=request.user,
-            category=category,
-            category_desc=category.desc,
-            category_type=category.category_type,
-            subcategory_type=category.subcategory_type,
-            membership_cost=category.costo_membresia
-        )
+            # Guardar el registro de pago de la membresía
+            MembershipPayment.objects.create(
+                user=request.user,
+                category=category,
+                category_type=category.category_type,
+                membership_cost=category.costo_membresia
+            )
+            messages.success(request, "Tu membresía ha sido activada. Ahora puedes disfrutar de los Artículos.")
 
-        # Guardar el registro de pago de la membresía
-        MembershipPayment.objects.create(
-            user=request.user,
-            category=category,
-            category_type=category.category_type,
-            membership_cost=category.costo_membresia
-        )
-
-
-        # Redirigir a una página de éxito o de confirmación
-        return redirect('blogs:success', category_id=category_id)
+        # Redirigir a la pagina de la categoria
+        return redirect('get_category', slug=category.slug)
     
-class SuccessView(View):
-    def get(self, request, category_id):
-        category = get_object_or_404(Category, id=category_id)
-        return render(request, 'blogs/success.html', {'category': category})
     
 
 @method_decorator(login_required, name='dispatch')
@@ -410,3 +428,5 @@ class RateBlogView(View):
 
         blog.save()
         return redirect('manage:blog_detail', id=blog.id)
+    
+
