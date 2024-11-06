@@ -9,5 +9,6 @@ drf-yasg==1.21.7
 celery
 redis
 stripe
+openpyxl
 dj-database-url
 whitenoise
