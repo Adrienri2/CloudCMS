@@ -9,13 +9,23 @@
   <div class="row mb-3">
     <div class="col-md-12">
       <div>
-        <p>Filtrar:</p>
+        <p>Filtrar por Usuario, Categoría, Tipo de Categoría, Costo de membresía :</p>
       </div>
       <form method="get" action="{% url 'blogs:all_membership_payments' %}">
-        <div class="input-group">
+        <div class="input-group mb-3">
           <input type="text" name="q" class="form-control" placeholder="Buscar..." value="{{ request.GET.q }}">
-          <button class="btn btn-primary" type="submit">Buscar</button>
         </div>
+        <p>Filtrar por fechas:</p>
+        <div class="input-group mb-3">
+          <label for="start_date" class="form-label">Fecha de inicio: </label>
+          <input type="date" name="start_date" class="form-control" value="{{ request.GET.start_date }}">
+        </div>
+        <div class="input-group mb-3">
+          <label for="end_date" class="form-label">Fecha de fin: </label>
+          <input type="date" name="end_date" class="form-control" value="{{ request.GET.end_date }}">
+        </div>
+          <button class="btn btn-primary" type="submit">Buscar</button>
+          <button type="button" class="btn btn-secondary" onclick="clearForm()">Limpiar</button>
       </form>
     </div>
   </div>
@@ -29,7 +39,9 @@
             <th>Categoría</th>
             <th>Tipo de Categoría</th>
             <th>Costo de la Membresía</th>
+            <th>Tipo de Pago</th>
             <th>Fecha de Pago</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -39,6 +51,7 @@
             <td>{{ payment.category.category }}</td>
             <td>{{ payment.category_type }}</td>
             <td>Gs. {{ payment.membership_cost }}</td>
+            <td>TC/TD</td>
             <td>{{ payment.payment_date|date:"d M, Y H:i:s" }}</td>
             <td>
               <form method="post" action="{% url 'blogs:all_membership_payments' %}">
@@ -53,5 +66,21 @@
       </table>
     </div>
   </div>
+  <div class="mt-3">
+    <h5>Total General de Pagados Recibidos: Gs. {{ total_paid }}</h5>
+  </div>
+  <div class="mt-3">
+    <a href="{% url 'blogs:estadisticas' %}" class="btn btn-success">Analizar</a>
+  </div>
 </div>
+
+<script>
+  function clearForm() {
+    document.querySelector('input[name="q"]').value = '';
+    document.querySelector('input[name="start_date"]').value = '';
+    document.querySelector('input[name="end_date"]').value = '';
+    window.location.href = window.location.pathname;  // Recargar la página
+  }
+</script>
+
 {% endblock %}

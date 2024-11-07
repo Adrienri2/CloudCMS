@@ -31,60 +31,20 @@
         <!-- Aside para el formulario de pago -->
         <aside class="col-md-6 payment-aside">
           <!-- Formulario de Pago -->
-          <form method="post" action="{% url 'blogs:procesar_pago' category.id %}">
+          <form id="payment-form" method="post" action="{% url 'blogs:create_checkout_session' category.id %}">
             {% csrf_token %}
             <div class="mb-3 position-relative">
-              <label for="tipoPago" class="form-label">Tipo de Pago:</label>
-              <input type="text" class="form-control" id="tipoPago" value="Tarjeta Crédito/Débito" readonly>
-              <!-- Iconos de las tarjetas -->
-              <div class="input-icons">
-                <i class="fab fa-cc-visa" style="font-size: 1.5rem; color: #1a1f71;"></i>
-                <i class="fab fa-cc-mastercard" style="font-size: 1.5rem; color: #eb001b;"></i>
-                <i class="fab fa-cc-amex" style="font-size: 1.5rem; color: #007bc1;"></i>
+              <label for="card-element" class="form-label">Tarjeta de crédito o débito:</label>
+              <div id="card-element">
+                <!-- Elemento de Stripe -->
               </div>
+              <div id="card-errors" role="alert"></div>
             </div>
-            <div class="mb-3">
-              <label for="nombreTarjeta" class="form-label">Nombre del titular de la tarjeta:</label>
-              <input type="text" class="form-control" id="nombreTarjeta" name="nombreTarjeta" required>
-            </div>
-            <div class="mb-3 position-relative">
-              <label for="numeroTarjeta" class="form-label">Número de la tarjeta:</label>
-              <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required>
-              <!-- Icono de tarjeta -->
-              <div class="card-icon">
-                <i class="fas fa-credit-card" style="font-size: 1.5rem; color: #6c757d;"></i>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="vencimiento" class="form-label">Vencimiento:</label>
-              <input type="text" class="form-control" id="vencimiento" name="vencimiento" placeholder="mm/aa" maxlength="5" required>
-            </div>
-            <div class="mb-3 position-relative">
-              <label for="cvc" class="form-label">CVC:</label>
-              <input type="text" class="form-control" id="cvc" name="cvc" maxlength="3" required>
-              <!-- Icono de CVC -->
-              <div class="cvc-icon">
-                <i class="fas fa-credit-card" style="font-size: 1.5rem; color: #6c757d;"></i>
-              </div>
-            </div>
-            <div class="mb-3 position-relative">
-              <label for="pais" class="form-label">País o región:</label>
-              <input type="text" class="form-control" id="pais" value="Paraguay" readonly>
-              <!-- Icono de la bandera de Paraguay -->
-              <div class="flag-icon">
-                <span class="flag-icon flag-icon-py" style="font-size: 1.5rem;"></span>
-              </div>
-            </div>
-            {% if not datos_tarjeta %}
-              <div class="mb-3">
-                <label for="recordarTarjeta" class="form-label">¿Desea recordar los datos de su tarjeta para pagos futuros?</label>
-                <select class="form-control" id="recordarTarjeta" name="recordarTarjeta" required>
-                  <option value="si">Sí</option>
-                  <option value="no">No</option>
-                </select>
-              </div>
-            {% endif %}
-            <button type="submit" class="btn btn-primary">Comprar membresía</button>
+            <button type="submit" class="btn btn-primary" id="submit">
+              <div class="spinner hidden" id="spinner"></div>
+              <span id="button-text">Comprar membresía</span>
+            </button>
+            <div id="payment-message" class="hidden"></div>
           </form>
         </aside>
       </div>
@@ -162,39 +122,170 @@
   .ticket p strong {
     color: #000;
   }
+
+  .hidden {
+    display: none;
+  }
+
+  #payment-message {
+    color: rgb(105, 115, 134);
+    font-size: 16px;
+    line-height: 20px;
+    padding-top: 12px;
+    text-align: center;
+  }
+
+  #payment-element {
+    margin-bottom: 24px;
+  }
+
+  button {
+    background: #0055DE;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    border-radius: 4px;
+    border: 0;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: block;
+    transition: all 0.2s ease;
+    box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+    width: 100%;
+  }
+  button:hover {
+    filter: contrast(115%);
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .spinner,
+  .spinner:before,
+  .spinner:after {
+    border-radius: 50%;
+  }
+  .spinner {
+    color: #ffffff;
+    font-size: 22px;
+    text-indent: -99999px;
+    margin: 0px auto;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    box-shadow: inset 0 0 0 2px;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  .spinner:before,
+  .spinner:after {
+    position: absolute;
+    content: "";
+  }
+  .spinner:before {
+    width: 10.4px;
+    height: 20.4px;
+    background: #0055DE;
+    border-radius: 20.4px 0 0 20.4px;
+    top: -0.2px;
+    left: -0.2px;
+    -webkit-transform-origin: 10.4px 10.2px;
+    transform-origin: 10.4px 10.2px;
+    -webkit-animation: loading 2s infinite ease 1.5s;
+    animation: loading 2s infinite ease 1.5s;
+  }
+  .spinner:after {
+    width: 10.4px;
+    height: 10.2px;
+    background: #0055DE;
+    border-radius: 0 10.2px 10.2px 0;
+    top: -0.1px;
+    left: 10.2px;
+    -webkit-transform-origin: 0px 10.2px;
+    transform-origin: 0px 10.2px;
+    -webkit-animation: loading 2s infinite ease;
+    animation: loading 2s infinite ease;
+  }
+
+  @-webkit-keyframes loading {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loading {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
 </style>
 
+<script src="https://js.stripe.com/v3/"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const numeroTarjetaInput = document.getElementById('numeroTarjeta');
-    const vencimientoInput = document.getElementById('vencimiento');
+    const stripe = Stripe('{{ stripe_publishable_key }}');
+    const elements = stripe.elements();
+    const card = elements.create('card');
+    card.mount('#payment-element');
 
-    // Formatear el número de la tarjeta en grupos de 4 dígitos
-    numeroTarjetaInput.addEventListener('input', function(e) {
-      let value = e.target.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
-      value = value.match(/.{1,4}/g)?.join(' ') || value; // Agrupar en bloques de 4
-      e.target.value = value;
-    });
-
-    // Agregar automáticamente una barra después de los primeros dos dígitos en el campo de vencimiento
-    vencimientoInput.addEventListener('input', function(e) {
-      let value = e.target.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
-      if (value.length > 2) {
-        value = value.slice(0, 2) + '/' + value.slice(2);
+    card.addEventListener('change', function(event) {
+      const displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
       }
-      e.target.value = value;
     });
-  
 
-  // Rellenar automáticamente los campos si los datos de la tarjeta están guardados
-  const datosTarjeta = {{ datos_tarjeta|safe }};
-  if (datosTarjeta) {
-    document.getElementById('nombreTarjeta').value = datosTarjeta.nombre_tarjeta;
-    document.getElementById('numeroTarjeta').value = datosTarjeta.numero_tarjeta.match(/.{1,4}/g).join(' ');
-    document.getElementById('vencimiento').value = datosTarjeta.fecha_vencimiento;
-    document.getElementById('cvc').value = datosTarjeta.codigo_seguridad;
-  }
-});
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      setLoading(true);
 
+      stripe.createToken(card).then(function(result) {
+        if (result.error) {
+          const errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+          setLoading(false);
+        } else {
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
+
+    function stripeTokenHandler(token) {
+      const form = document.getElementById('payment-form');
+      const hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'stripeToken');
+      hiddenInput.setAttribute('value', token.id);
+      form.appendChild(hiddenInput);
+      form.submit();
+    }
+
+    function setLoading(isLoading) {
+      if (isLoading) {
+        document.querySelector("#submit").disabled = true;
+        document.querySelector("#spinner").classList.remove("hidden");
+        document.querySelector("#button-text").classList.add("hidden");
+      } else {
+        document.querySelector("#submit").disabled = false;
+        document.querySelector("#spinner").classList.add("hidden");
+        document.querySelector("#button-text").classList.remove("hidden");
+      }
+    }
+  });
 </script>
 {% endblock %}

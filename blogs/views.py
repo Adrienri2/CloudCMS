@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect, get_object_or_404
@@ -5,12 +6,22 @@ from django.contrib import messages
 from django.views import View
 from django.db.models import F
 from django.urls import reverse
-from django.db.models import Q
-
+from django.db.models import Q, Sum
+from django.conf import settings
 from accounts.models import DatosTarjeta
+from django.utils.timezone import make_aware,localtime, is_naive
+from datetime import datetime, timedelta
 from .models import *
-from .models import Notification, Category, FavoriteCategory
-from django.http import HttpResponseRedirect, JsonResponse
+from .models import Notification, Category, FavoriteCategory, Blog, Rating
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+import openpyxl
+from openpyxl.styles import Font, Alignment, Border, Side
+from openpyxl.drawing.image import Image
+from PIL import Image as PILImage
+import base64
+from io import BytesIO
+import stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 """
 Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.
@@ -265,77 +276,121 @@ class PagoView(View):
                 'fecha_vencimiento': request.user.datos_tarjeta.fecha_vencimiento,
                 'codigo_seguridad': request.user.datos_tarjeta.codigo_seguridad,
             }
-        return render(request, 'blogs/pago.html', {'category': category, 'datos_tarjeta': datos_tarjeta})
-    
+        return render(request, 'blogs/pago.html', {'category': category, 'datos_tarjeta': datos_tarjeta, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
 
-@method_decorator(login_required, name='dispatch')
-class ProcesarPagoView(View):
-    def post(self, request, category_id):
+
+class CreateCheckoutSessionView(View):
+    def post(self, request, category_id, *args , **kwargs):
         category = get_object_or_404(Category, id=category_id)
-
-         # Verificar si el usuario ya tiene una membresía para esta categoría
-        if PaidMembership.objects.filter(user=request.user, category=category).exists():
-            messages.success(request, "Ya tienes una membresía para esta categoría. Ve y disfruta de los Artículos.")
-            return redirect('blogs:pago', category_id=category_id)
+        YOUR_DOMAIN = "http://127.0.0.1:8000/"
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[
+                {
+                        'price_data': {
+                            'currency': 'pyg',
+                            'product_data': {
+                                'name': category.category,
+                                'description': category.desc,
+                            },
+                            'unit_amount': category.costo_membresia
+                        },
+                        'quantity': 1,
+                    },
+                ],
+                mode='payment',
+                success_url=YOUR_DOMAIN + reverse('blogs:success', kwargs={'category_id': category_id}),
+                cancel_url=YOUR_DOMAIN + reverse('blogs:cancel', kwargs={'category_id': category_id}),
+            )
+            return redirect(checkout_session.url, code=303)
+        except Exception as e:
+            return str(e)
         
 
-        nombre_tarjeta = request.POST.get('nombreTarjeta')
-        numero_tarjeta = request.POST.get('numeroTarjeta').replace(' ', '')  # Eliminar espacios
-        vencimiento = request.POST.get('vencimiento')
-        cvc = request.POST.get('cvc')
-        recordar_tarjeta = request.POST.get('recordarTarjeta')  # Obtener el valor de recordar_tarjeta
-
-
-        # Guardar los datos de la tarjeta si el usuario eligió "Sí"
-        if recordar_tarjeta == 'si':
-            DatosTarjeta.objects.update_or_create(
-                usuario=request.user,
-                defaults={
-                    'nombre_tarjeta': nombre_tarjeta,
-                    'numero_tarjeta': numero_tarjeta,
-                    'fecha_vencimiento': vencimiento,
-                    'codigo_seguridad': cvc
-                }
-            )
-
-        # Guardar la membresía pagada
-        PaidMembership.objects.create(
-            user=request.user,
-            category=category,
-            category_desc=category.desc,
-            category_type=category.category_type,
-            subcategory_type=category.subcategory_type,
-            membership_cost=category.costo_membresia
-        )
-
-        # Guardar el registro de pago de la membresía
-        MembershipPayment.objects.create(
-            user=request.user,
-            category=category,
-            category_type=category.category_type,
-            membership_cost=category.costo_membresia
-        )
-
-
-        # Redirigir a una página de éxito o de confirmación
-        return redirect('blogs:success', category_id=category_id)
-    
 class SuccessView(View):
     def get(self, request, category_id):
         category = get_object_or_404(Category, id=category_id)
         return render(request, 'blogs/success.html', {'category': category})
     
+class CancelView(View):
+    def get(self, request, category_id):
+        category = get_object_or_404(Category, id=category_id)
+        return redirect('index')
+
+
+@method_decorator(login_required, name='dispatch')
+class IrACategoriaView(View):
+    def get(self, request, category_id):
+        category = get_object_or_404(Category, id=category_id)
+
+         # Verificar si el usuario ya tiene una membresía para esta categoría
+        if PaidMembership.objects.filter(user=request.user, category=category).exists():
+            messages.success(request, "Ya tienes una membresía para esta categoría. Ve y disfruta de los Artículos.")
+           
+        else:
+            # Guardar la membresía pagada
+            PaidMembership.objects.create(
+                user=request.user,
+                category=category,
+                category_desc=category.desc,
+                category_type=category.category_type,
+                subcategory_type=category.subcategory_type,
+                membership_cost=category.costo_membresia
+            )
+
+            # Guardar el registro de pago de la membresía
+            MembershipPayment.objects.create(
+                user=request.user,
+                category=category,
+                category_type=category.category_type,
+                membership_cost=category.costo_membresia
+            )
+            messages.success(request, "Tu membresía ha sido activada. Ahora puedes disfrutar de los Artículos.")
+
+        # Redirigir a la pagina de la categoria
+        return redirect('get_category', slug=category.slug)
+    
+    
 
 @method_decorator(login_required, name='dispatch')
 class MembershipsView(View):
     def get(self, request):
+        query = request.GET.get('q')
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
         memberships = PaidMembership.objects.filter(user=request.user).order_by('-payment_date')
-        return render(request, 'blogs/memberships.html', {'memberships': memberships})
+
+        if query:
+            memberships = memberships.filter(
+                Q(category__category__icontains=query) |
+                Q(category_desc__icontains=query) |
+                Q(category_type__iexact=query) |
+                Q(membership_cost__icontains=query)
+            )
+
+        if start_date:
+            start_date = make_aware(datetime.strptime(start_date, '%Y-%m-%d'))
+            if end_date:
+                end_date = make_aware(datetime.strptime(end_date, '%Y-%m-%d')  + timedelta(days=1)) - timedelta(microseconds=1)
+                memberships = memberships.filter(payment_date__range=[start_date, end_date])
+            else:
+                memberships = memberships.filter(payment_date__gte=start_date)
+
+             # Si no se encuentran pagos en el rango de fechas, ajustar start_date a la fecha del primer pago
+            if not memberships.exists():
+                first_payment = PaidMembership.objects.filter(user=request.user).order_by('payment_date').first()
+                if first_payment:
+                    start_date = first_payment.payment_date
+                    memberships = PaidMembership.objects.filter(user=request.user, payment_date__gte=start_date)            
+
+        total_paid = memberships.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
+
+        return render(request, 'blogs/memberships.html', {'memberships': memberships, 'total_paid': total_paid})
     
 
-@method_decorator(login_required, name='dispatch')
-class DeleteMembershipView(View):
-    def post(self, request, membership_id):
+    def post(self, request):
+        membership_id = request.POST.get('membership_id')
         membership = get_object_or_404(PaidMembership, id=membership_id, user=request.user)
         
          # Eliminar el registro correspondiente en MembershipPayment
@@ -344,13 +399,135 @@ class DeleteMembershipView(View):
         # Eliminar la membresía
         membership.delete()
 
+        # Recalcular el total pagado
+        memberships = PaidMembership.objects.filter(user=request.user)
+        total_paid = memberships.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
+
         return redirect('blogs:memberships')
     
+
+@method_decorator(login_required, name='dispatch')
+class ExportMembershipsView(View):
+    def get(self, request):
+        query = request.GET.get('q')
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+        total_paid = request.GET.get('total_paid')
+        memberships = PaidMembership.objects.filter(user=request.user).order_by('-payment_date')
+
+        if query:
+            memberships = memberships.filter(
+                Q(category__category__icontains=query) |
+                Q(category_desc__icontains=query) |
+                Q(category_type__iexact=query) |
+                Q(subcategory_type__iexact=query) |
+                Q(membership_cost__icontains=query)
+            )
+
+        if start_date:
+            start_date = make_aware(datetime.strptime(start_date, '%Y-%m-%d'))
+            if end_date:
+                end_date = make_aware(datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)) - timedelta(microseconds=1)
+                memberships = memberships.filter(payment_date__range=[start_date, end_date])
+            else:
+                memberships = memberships.filter(payment_date__gte=start_date)
+
+        # Crear el archivo Excel
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Membresías"
+
+        # Establecer el título
+        ws.merge_cells('A1:G1')
+        title_cell = ws['A1']
+        title_cell.value = "CLOUDCMS"
+        title_cell.font = Font(size=20, bold=True)
+        title_cell.alignment = Alignment(horizontal='center')
+        
+        # Información del usuario
+        user_info = [
+            ("Usuario:", request.user.username),
+            ("Nombre:", request.user.get_full_name()),
+            ("Correo:", request.user.email),
+        ]
+
+        row = 3
+        for label, value in user_info:
+            ws[f'A{row}'] = label
+            ws[f'A{row}'].font = Font(bold=True)  # Aplicar negrita a las etiquetas
+            ws[f'B{row}'] = value
+            row += 1
+
+         # Espacio entre la información del usuario y la tabla de membresías
+        row += 1
+
+        ws.append([])
+        ws.append(["Membresías Pagadas en CloudCMS:"])
+        ws['A' + str(ws.max_row)].font = Font(bold=True)
+        ws.append([])
+
+        # Escribir los encabezados
+        headers = ["Nombre de la Categoría", "Descripción", "Tipo", "Subcategoría", "Costo (Gs.)","Tipo de Pago", "Fecha de Pago"]
+        ws.append(headers)
+
+        # Aplicar el estilo de negrita a los encabezados
+        for cell in ws[ws.max_row]:
+            cell.font = Font(bold=True)
+
+       # Ajustar el ancho de las columnas
+        column_widths = [25, 30, 15, 20, 10, 15, 20]
+        for i, width in enumerate(column_widths, 1):
+            ws.column_dimensions[openpyxl.utils.get_column_letter(i)].width = width
+ 
+        
+        # Definir el estilo de borde
+        thin_border = Border(
+            left=Side(style='thin'),
+            right=Side(style='thin'),
+            top=Side(style='thin'),
+            bottom=Side(style='thin')
+        )
+
+        # Aplicar el estilo de borde a los encabezados
+        for cell in ws[ws.max_row]:
+            cell.border = thin_border
+
+
+        # Escribir los datos
+        for membership in memberships:
+            row = [
+                membership.category.category,
+                membership.category_desc,
+                membership.category_type,
+                membership.subcategory_type,
+                membership.membership_cost,
+                "TC/TD",
+                membership.payment_date.strftime("%d %b, %Y %H:%M:%S")
+            ]
+            ws.append(row)
+            for cell in ws[ws.max_row]:
+                cell.border = thin_border
+
+
+        # Escribir el total pagado
+        ws.append([])
+        ws.append(["Total General Pagado:", f"Gs. {total_paid}"])
+        for cell in ws[ws.max_row]:
+            cell.border = thin_border
+
+        # Preparar la respuesta HTTP
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        filename = f"Membresias_{request.user.username}.xlsx"
+        response['Content-Disposition'] = f'attachment; filename={filename}'
+        wb.save(response)
+        return response
 
 @method_decorator(permission_required('accounts.can_view_membership_payments', raise_exception=True), name='dispatch')
 class AllMembershipPaymentsView(View):
     def get(self, request):
         query = request.GET.get('q')
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
         payments = MembershipPayment.objects.all().order_by('-payment_date')
         
     
@@ -359,11 +536,28 @@ class AllMembershipPaymentsView(View):
                     Q(user__username__icontains=query) |
                     Q(category__category__icontains=query) |
                     Q(category_type__iexact=query) |
-                    Q(membership_cost__icontains=query) |
-                    Q(payment_date__icontains=query)
+                    Q(membership_cost__icontains=query)
                 )
 
-        return render(request, 'blogs/all_membership_payments.html', {'payments': payments})
+        if start_date:
+            start_date = make_aware(datetime.strptime(start_date, '%Y-%m-%d'))
+            if end_date:
+                end_date = make_aware(datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)) - timedelta(microseconds=1)
+                payments = payments.filter(payment_date__range=[start_date, end_date])
+            else:
+                payments = payments.filter(payment_date__gte=start_date)
+
+        
+            # Si no se encuentran pagos en el rango de fechas, ajustar start_date a la fecha del primer pago
+            if not payments.exists():
+                first_payment = MembershipPayment.objects.order_by('payment_date').first()
+                if first_payment:
+                    start_date = first_payment.payment_date
+                    payments = MembershipPayment.objects.filter(payment_date__gte=start_date)        
+
+        total_paid = payments.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
+
+        return render(request, 'blogs/all_membership_payments.html', {'payments': payments, 'total_paid': total_paid})
     
     def post(self, request):
         payment_id = request.POST.get('payment_id')
@@ -374,5 +568,206 @@ class AllMembershipPaymentsView(View):
         
         # Eliminar el registro en MembershipPayment
         payment.delete()
+
+        # Recalcular el total pagado
+        payments = MembershipPayment.objects.all()
+        total_paid = payments.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
+        
         
         return redirect('blogs:all_membership_payments')
+    
+
+@method_decorator(login_required, name='dispatch')
+class StatisticsView(View):
+    def get(self, request):
+        # Obtener los datos de las categorías y los totales comprados por cada categoría
+        categories = MembershipPayment.objects.values('category__category').annotate(total=Sum('membership_cost')).order_by('-total')
+        
+
+        # Preparar los datos para el gráfico
+        labels = [category['category__category'] for category in categories]
+        data = [category['total'] for category in categories]
+
+        # Obtener los pagos agrupados por fecha
+        payments_by_date = MembershipPayment.objects.values('payment_date__date').annotate(total=Sum('membership_cost')).order_by('payment_date__date')
+
+        # Preparar los datos para el gráfico de línea de tiempo
+        dates = [payment['payment_date__date'].strftime("%Y-%m-%d") for payment in payments_by_date]
+        totals = [payment['total'] for payment in payments_by_date]
+
+        # Obtener los pagos agrupados por fecha y categoría
+        payments_by_date_and_category = MembershipPayment.objects.values('payment_date__date', 'category__category').annotate(total=Sum('membership_cost')).order_by('payment_date__date')
+
+        # Preparar los datos para el gráfico de línea de tiempo con múltiples categorías
+        # Preparar los datos para el gráfico de línea de tiempo por categoría
+        category_data = {}
+        for payment in payments_by_date_and_category:
+            category = payment['category__category']
+            date = payment['payment_date__date'].strftime("%Y-%m-%d")
+            total = payment['total']
+            if category not in category_data:
+                category_data[category] = []
+            category_data[category].append({'x': date, 'y': total})
+
+        
+        context = {
+            'labels': json.dumps(labels),
+            'data': json.dumps(data),
+            'dates': json.dumps(dates),
+            'totals': json.dumps(totals),
+            'category_data': json.dumps(category_data),
+        }
+        
+        return render(request, 'blogs/estadisticas.html', context)
+
+@method_decorator(login_required, name='dispatch')
+class ExportStatisticsView(View):
+    def post(self, request):
+        # Obtener los datos de los gráficos desde el formulario
+        pie_chart = request.POST.get('pie_chart')
+        bar_chart = request.POST.get('bar_chart')
+        line_chart = request.POST.get('line_chart')
+
+        # Mensajes de depuración
+        print("Pie Chart Data:", pie_chart[:100])  # Mostrar los primeros 100 caracteres
+        print("Bar Chart Data:", bar_chart[:100])  # Mostrar los primeros 100 caracteres
+        print("Line Chart Data:", line_chart[:100])  # Mostrar los primeros 100 caracteres
+
+
+        # Crear un nuevo libro de trabajo
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Análisis General de Membresías"
+
+        # Establecer el título
+        ws.merge_cells('A1:G1')
+        title_cell = ws['A1']
+        title_cell.value = "CLOUDCMS"
+        title_cell.font = Font(size=20, bold=True)
+        title_cell.alignment = Alignment(horizontal='center')
+
+        # Espacio entre el título y la tabla de membresías
+        ws.append([])
+        ws.append(["Todas las Membresías Pagadas en CloudCMS:"])
+        ws['A' + str(ws.max_row)].font = Font(bold=True)
+        ws.append([])
+
+        # Escribir los encabezados
+        headers = ["Usuario", "Nombre de la Categoría", "Tipo", "Costo (Gs.)", "Tipo de Pago", "Fecha de Pago"]
+        ws.append(headers)
+
+        # Aplicar el estilo de negrita a los encabezados
+        for cell in ws[ws.max_row]:
+            cell.font = Font(bold=True)
+
+        # Ajustar el ancho de las columnas
+        column_widths = [25, 30, 15, 20, 15, 20]
+        for i, width in enumerate(column_widths, 1):
+            ws.column_dimensions[openpyxl.utils.get_column_letter(i)].width = width
+
+        # Definir el estilo de borde
+        thin_border = Border(
+            left=Side(style='thin'),
+            right=Side(style='thin'),
+            top=Side(style='thin'),
+            bottom=Side(style='thin')
+        )
+
+        # Aplicar el estilo de borde a los encabezados
+        for cell in ws[ws.max_row]:
+            cell.border = thin_border
+
+        # Escribir los datos de todas las membresías pagadas
+        payments = MembershipPayment.objects.all().order_by('-payment_date')
+        for payment in payments:
+            payment_date = payment.payment_date
+            if is_naive(payment_date):
+                payment_date = make_aware(payment_date)
+            row = [
+                payment.user.username,
+                payment.category.category,
+                payment.category_type,
+                f"Gs. {payment.membership_cost}",
+                "TC/TD",  # Asumiendo que el tipo de pago es siempre TC/TD
+                localtime(payment.payment_date).strftime("%d %b, %Y %H:%M:%S")
+            ]
+            ws.append(row)
+            for cell in ws[ws.max_row]:
+                cell.border = thin_border
+
+         # Calcular el total pagado
+        total_paid = payments.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
+
+         # Escribir el total pagado
+        ws.append([])
+        ws.append(["Total General Pagado:", f"Gs. {total_paid}"])
+        for cell in ws[ws.max_row]:
+            cell.border = thin_border
+        
+
+
+        # Añadir los gráficos al archivo Excel
+        if pie_chart:
+            pie_image = self.base64_to_image(pie_chart)
+            ws.add_image(pie_image, 'I3')
+            
+
+        if bar_chart:
+            bar_image = self.base64_to_image(bar_chart)
+            ws.add_image(bar_image, 'I40')
+            
+
+        if line_chart:
+            line_image = self.base64_to_image(line_chart)
+            ws.add_image(line_image, 'I70')
+            
+
+        # Preparar la respuesta HTTP
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=estadisticas_membresias.xlsx'
+        wb.save(response)
+        return response
+
+    def base64_to_image(self, base64_string):
+        image_data = base64.b64decode(base64_string.split(',')[1])
+        image = PILImage.open(BytesIO(image_data))
+        image_io = BytesIO()
+        image.save(image_io, format='PNG')
+        image_io.seek(0)
+        return Image(image_io)
+    
+
+class RateBlogView(View):
+    def post(self, request, blog_id):
+        blog = get_object_or_404(Blog, id=blog_id)
+        rating_value = int(request.POST.get('rating'))
+        user = request.user
+
+        # Obtener la calificación existente del usuario si existe
+        rating, created = Rating.objects.get_or_create(user=user, blog=blog, defaults={'rating': rating_value})
+
+        # Descontar la calificación anterior
+        if not created:
+            if rating.rating == 1:
+                blog.one_star_ratings -= 1
+            elif rating.rating == 2:
+                blog.two_star_ratings -= 1
+            elif rating.rating == 3:
+                blog.three_star_ratings -= 1
+
+        # Actualizar la calificación con la nueva
+        rating.rating = rating_value
+        rating.save()
+
+        # Incrementar la nueva calificación
+        if rating_value == 1:
+            blog.one_star_ratings += 1
+        elif rating_value == 2:
+            blog.two_star_ratings += 1
+        elif rating_value == 3:
+            blog.three_star_ratings += 1
+
+        blog.save()
+        return redirect('manage:blog_detail', id=blog.id)
+    
+

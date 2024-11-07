@@ -4,14 +4,14 @@
 {% block ogdescription %}{{ version.desc }}{% endblock %}
 {% block ogimage %}{{ version.thumbnail.url }}{% endblock %}
 
-{% block title %}Vista Previa de la Versión del Blog{% endblock %}
+{% block title %}Vista Previa del Blog{% endblock %}
 
 {% block body %}
 {% load static %}
 <div class="container mt-5 mb-5">
   <div class="row">
     <h2>
-      {{ version.title }}
+      {{ version.title }} . Versión N°:  {{ version.version_count }}
     </h2>
   </div>
   <div class="row">
