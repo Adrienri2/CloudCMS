@@ -31,6 +31,7 @@ urlpatterns = [
      path('export_memberships/', views.ExportMembershipsView.as_view(), name='export_memberships'), # Vista para exportar membresías
     path('all_membership_payments/', views.AllMembershipPaymentsView.as_view(), name='all_membership_payments'),  # Vista para ver todas las membresías pagadas
     path('estadisticas/', views.StatisticsView.as_view(), name='estadisticas'), # Vista para ver las estadísticas
+    path('export_statistics/', views.ExportStatisticsView.as_view(), name='export_statistics'),
     path("create/like/", login_required(views.CreateLike.as_view()), name="create_like"),
     path("<slug:slug>/", views.BlogView.as_view(), name="blog"),
     path('notifications/', notifications, name='notifications'),

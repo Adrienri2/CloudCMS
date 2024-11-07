@@ -4,40 +4,100 @@
 
 {% block body %}
 <div class="container mt-5">
-    <h2>Estadísticas de Membresías</h2>
-    <div class="row">
-      <div class="col-md-12">
-        <div style="width: 30%; margin: auto;">
-          <canvas id="myChart"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-5">
-      <div class="col-md-12">
-        <div style="width: 60%; margin: auto;">
-          <canvas id="timelineChart"></canvas>
-        </div>
+  <h2>Análisis General de Membresías</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <div style="width: 30%; margin: auto;">
+        <canvas id="myChart"></canvas>
       </div>
     </div>
   </div>
   <div class="row mt-5">
     <div class="col-md-12">
       <div style="width: 60%; margin: auto;">
-        <canvas id="categoryTimelineChart"></canvas>
+        <canvas id="timelineChart"></canvas>
       </div>
     </div>
   </div>
 </div>
+<div class="row mt-5">
+  <div class="col-md-12">
+    <div style="width: 60%; margin: auto;">
+      <canvas id="categoryTimelineChart"></canvas>
+    </div>
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col-md-12 text-center">
+    <form id="exportForm" method="post" action="{% url 'blogs:export_statistics' %}">
+      {% csrf_token %}
+      <input type="hidden" name="pie_chart" id="pieChartInput">
+      <input type="hidden" name="bar_chart" id="barChartInput">
+      <input type="hidden" name="line_chart" id="lineChartInput">
+      <button type="submit" class="btn btn-primary">Exportar Análisis</button>
+    </form>
+  </div>
+</div>
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script>
-  var ctx = document.getElementById('myChart').getContext('2d');
-  var myChart = new Chart(ctx, {
+  var pieChart = new Chart(document.getElementById('myChart').getContext('2d'), {
     type: 'pie',
     data: {
-      labels: {{ labels|safe }},
-      datasets: [{
-        data: {{ data|safe }},
+        labels: {{ labels|safe }},
+        datasets: [{
+            data: {{ data|safe }},
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'Totales Comprados por Categoría' },
+            datalabels: {
+              color: '#000',
+              formatter: (value, context) => {
+                return value;
+              },
+              font: {
+                weight: 'bold'
+              }
+            } 
+        }
+    },
+    plugins: [ChartDataLabels]
+});
+
+var timelineCtx = document.getElementById('timelineChart').getContext('2d');
+var timelineChart = new Chart(timelineCtx, {
+  type: 'bar',
+  data: {
+    labels: {{ dates|safe }},
+    datasets: [
+      {
+        type: 'bar',
+        label: 'Pagos Totales por Fecha',
+        data: {{ totals|safe }},
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -55,133 +115,113 @@
           'rgba(255, 159, 64, 1)'
         ],
         borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        title: {
-          display: true,
-          text: 'Totales Comprados por Categoría'
-        }
-      }
-    }
-  });
-
-  
-  var ctx = document.getElementById('timelineChart').getContext('2d');
-  var ctx = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: {{ dates|safe }},
-      datasets: [{
-        type: 'bar',
-        label: 'Pagos Totales por Fecha',
-        data: {{ totals|safe }},
-        backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-        borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1
       },
       {
         type: 'line',
-        label: 'Pagos Totales por Fecha',
+        label: 'Pagos Totales por Fecha (Línea)',
         data: {{ totals|safe }},
-        backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-        borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2
       }
-      ]
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Pagos Totales Registrados por Fecha de Pago' },
+      datalabels: {
+        color: '#000',
+        formatter: (value, context) => {
+          return value;
+        },
+        font: {
+          weight: 'bold'
+        }
+      }
+    }
+  },
+  plugins: [ChartDataLabels]
+});
+
+
+    // Obtener el contexto del gráfico para "Pagos Totales por Categoría en Línea de Tiempo"
+var categoryTimelineCtx = document.getElementById('categoryTimelineChart').getContext('2d');
+
+// Decodificar `category_data` desde JSON para asegurarse de que esté en formato de objeto de JavaScript
+var categoryData = {{ category_data|safe }};
+
+// Prepara los datasets para cada categoría con colores únicos
+var datasets = Object.keys(categoryData).map(category => {
+    return {
+        label: category,
+        data: categoryData[category], // aqui se edito
+        borderColor: getRandomColor(),
+        backgroundColor: 'rgba(0, 0, 0, 0)',  // Fondo transparente
+        borderWidth: 2,
+        tension: 0.4
+    };
+});
+
+// Inicialización del gráfico de líneas y asignación a una variable
+var categoryTimelineChart = new Chart(categoryTimelineCtx, {
+    type: 'line',
+    data: {
+      datasets: datasets
     },
     options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        title: {
-          display: true,
-          text: 'Pagos Totales Registrados por Fecha de Pago'
-        }
-      }
-    }
-  });
-
-
-    var ctx3 = document.getElementById('categoryTimelineChart').getContext('2d');
-    // Decodifica `category_data` desde JSON, asegurándote de que esté en formato de objeto de JavaScript
-    var categoryData = {{ category_data|safe }};
-    // Prepara los datasets para cada categoría con sus datos y colores únicos
-    var datasets = Object.keys(categoryData).map(category => {
-        return {
-            label: category,
-            data: categoryData[category],
-            borderColor: getRandomColor(),
-            backgroundColor: 'rgba(0, 0, 0, 0)',  // Fondo transparente
-            borderWidth: 2,
-            tension: 0.4
-        };
-    });
-    // Inicialización del gráfico de líneas
-    new Chart(ctx3, {
-        type: 'line',
-        data: {
-            datasets: datasets
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Pagos Totales por Categoría en Línea de Tiempo'
+            },
+            datalabels: {
+                color: '#000',
+                formatter: (value, context) => {
+                    return value.y; // Mostrar el valor de y en la etiqueta
                 },
-                title: {
-                    display: true,
-                    text: 'Pagos Totales por Categoría en Línea de Tiempo'
+                font: {
+                    weight: 'bold'
                 }
             }
-            
         }
-    });
-  
-    // Función para generar un color aleatorio
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
+    },
+    plugins: [ChartDataLabels]
+});
+
+// Función para generar un color aleatorio
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;
+}
+
   
+    
+  // Asignar las variables correctamente para exportación
+  var pieChart = pieChart;
+  var barChart = timelineChart;
+  var lineChart = categoryTimelineChart;
+    
+    // Función para exportar los gráficos
+    document.getElementById('exportForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+    
+      document.getElementById('pieChartInput').value = pieChart.toBase64Image();
+      document.getElementById('barChartInput').value = barChart.toBase64Image();
+      document.getElementById('lineChartInput').value = lineChart.toBase64Image();
+    
+      this.submit();
+    });
+    
+
 </script>
 {% endblock %}

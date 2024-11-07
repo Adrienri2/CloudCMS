@@ -9,13 +9,17 @@ from django.urls import reverse
 from django.db.models import Q, Sum
 from django.conf import settings
 from accounts.models import DatosTarjeta
-from django.utils.timezone import make_aware
+from django.utils.timezone import make_aware,localtime, is_naive
 from datetime import datetime, timedelta
 from .models import *
 from .models import Notification, Category, FavoriteCategory, Blog, Rating
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import openpyxl
 from openpyxl.styles import Font, Alignment, Border, Side
+from openpyxl.drawing.image import Image
+from PIL import Image as PILImage
+import base64
+from io import BytesIO
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -579,8 +583,6 @@ class StatisticsView(View):
         # Obtener los datos de las categorías y los totales comprados por cada categoría
         categories = MembershipPayment.objects.values('category__category').annotate(total=Sum('membership_cost')).order_by('-total')
         
-        # Mensajes de depuración
-        print("Categorías y totales:", categories)
 
         # Preparar los datos para el gráfico
         labels = [category['category__category'] for category in categories]
@@ -607,12 +609,6 @@ class StatisticsView(View):
                 category_data[category] = []
             category_data[category].append({'x': date, 'y': total})
 
-        # Más mensajes de depuración
-        print("Labels:", labels)
-        print("Data:", data)
-        print("Dates:", dates)
-        print("Totals:", totals)
-        print("Category Data:", category_data)
         
         context = {
             'labels': json.dumps(labels),
@@ -624,6 +620,122 @@ class StatisticsView(View):
         
         return render(request, 'blogs/estadisticas.html', context)
 
+@method_decorator(login_required, name='dispatch')
+class ExportStatisticsView(View):
+    def post(self, request):
+        # Obtener los datos de los gráficos desde el formulario
+        pie_chart = request.POST.get('pie_chart')
+        bar_chart = request.POST.get('bar_chart')
+        line_chart = request.POST.get('line_chart')
+
+        # Mensajes de depuración
+        print("Pie Chart Data:", pie_chart[:100])  # Mostrar los primeros 100 caracteres
+        print("Bar Chart Data:", bar_chart[:100])  # Mostrar los primeros 100 caracteres
+        print("Line Chart Data:", line_chart[:100])  # Mostrar los primeros 100 caracteres
+
+
+        # Crear un nuevo libro de trabajo
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Análisis General de Membresías"
+
+        # Establecer el título
+        ws.merge_cells('A1:G1')
+        title_cell = ws['A1']
+        title_cell.value = "CLOUDCMS"
+        title_cell.font = Font(size=20, bold=True)
+        title_cell.alignment = Alignment(horizontal='center')
+
+        # Espacio entre el título y la tabla de membresías
+        ws.append([])
+        ws.append(["Todas las Membresías Pagadas en CloudCMS:"])
+        ws['A' + str(ws.max_row)].font = Font(bold=True)
+        ws.append([])
+
+        # Escribir los encabezados
+        headers = ["Usuario", "Nombre de la Categoría", "Tipo", "Costo (Gs.)", "Tipo de Pago", "Fecha de Pago"]
+        ws.append(headers)
+
+        # Aplicar el estilo de negrita a los encabezados
+        for cell in ws[ws.max_row]:
+            cell.font = Font(bold=True)
+
+        # Ajustar el ancho de las columnas
+        column_widths = [25, 30, 15, 20, 15, 20]
+        for i, width in enumerate(column_widths, 1):
+            ws.column_dimensions[openpyxl.utils.get_column_letter(i)].width = width
+
+        # Definir el estilo de borde
+        thin_border = Border(
+            left=Side(style='thin'),
+            right=Side(style='thin'),
+            top=Side(style='thin'),
+            bottom=Side(style='thin')
+        )
+
+        # Aplicar el estilo de borde a los encabezados
+        for cell in ws[ws.max_row]:
+            cell.border = thin_border
+
+        # Escribir los datos de todas las membresías pagadas
+        payments = MembershipPayment.objects.all().order_by('-payment_date')
+        for payment in payments:
+            payment_date = payment.payment_date
+            if is_naive(payment_date):
+                payment_date = make_aware(payment_date)
+            row = [
+                payment.user.username,
+                payment.category.category,
+                payment.category_type,
+                f"Gs. {payment.membership_cost}",
+                "TC/TD",  # Asumiendo que el tipo de pago es siempre TC/TD
+                localtime(payment.payment_date).strftime("%d %b, %Y %H:%M:%S")
+            ]
+            ws.append(row)
+            for cell in ws[ws.max_row]:
+                cell.border = thin_border
+
+         # Calcular el total pagado
+        total_paid = payments.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
+
+         # Escribir el total pagado
+        ws.append([])
+        ws.append(["Total General Pagado:", f"Gs. {total_paid}"])
+        for cell in ws[ws.max_row]:
+            cell.border = thin_border
+        
+
+
+        # Añadir los gráficos al archivo Excel
+        if pie_chart:
+            pie_image = self.base64_to_image(pie_chart)
+            ws.add_image(pie_image, 'I3')
+            
+
+        if bar_chart:
+            bar_image = self.base64_to_image(bar_chart)
+            ws.add_image(bar_image, 'I40')
+            
+
+        if line_chart:
+            line_image = self.base64_to_image(line_chart)
+            ws.add_image(line_image, 'I70')
+            
+
+        # Preparar la respuesta HTTP
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=estadisticas_membresias.xlsx'
+        wb.save(response)
+        return response
+
+    def base64_to_image(self, base64_string):
+        image_data = base64.b64decode(base64_string.split(',')[1])
+        image = PILImage.open(BytesIO(image_data))
+        image_io = BytesIO()
+        image.save(image_io, format='PNG')
+        image_io.seek(0)
+        return Image(image_io)
+    
 
 class RateBlogView(View):
     def post(self, request, blog_id):
