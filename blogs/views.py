@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect, get_object_or_404
@@ -379,7 +380,7 @@ class MembershipsView(View):
                     start_date = first_payment.payment_date
                     memberships = PaidMembership.objects.filter(user=request.user, payment_date__gte=start_date)            
 
-        total_paid = memberships.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0['membership_cost__sum'] or 0
+        total_paid = memberships.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
 
         return render(request, 'blogs/memberships.html', {'memberships': memberships, 'total_paid': total_paid})
     
@@ -398,7 +399,7 @@ class MembershipsView(View):
         memberships = PaidMembership.objects.filter(user=request.user)
         total_paid = memberships.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
 
-        return redirect('blogs:memberships', {'memberships': memberships, 'total_paid': total_paid})
+        return redirect('blogs:memberships')
     
 
 @method_decorator(login_required, name='dispatch')
@@ -433,7 +434,7 @@ class ExportMembershipsView(View):
         ws.title = "Membresías"
 
         # Establecer el título
-        ws.merge_cells('A1:F1')
+        ws.merge_cells('A1:G1')
         title_cell = ws['A1']
         title_cell.value = "CLOUDCMS"
         title_cell.font = Font(size=20, bold=True)
@@ -449,6 +450,7 @@ class ExportMembershipsView(View):
         row = 3
         for label, value in user_info:
             ws[f'A{row}'] = label
+            ws[f'A{row}'].font = Font(bold=True)  # Aplicar negrita a las etiquetas
             ws[f'B{row}'] = value
             row += 1
 
@@ -461,7 +463,7 @@ class ExportMembershipsView(View):
         ws.append([])
 
         # Escribir los encabezados
-        headers = ["Nombre de la Categoría", "Descripción", "Tipo", "Subcategoría", "Costo (Gs.)", "Fecha de Pago"]
+        headers = ["Nombre de la Categoría", "Descripción", "Tipo", "Subcategoría", "Costo (Gs.)","Tipo de Pago", "Fecha de Pago"]
         ws.append(headers)
 
         # Aplicar el estilo de negrita a los encabezados
@@ -469,7 +471,7 @@ class ExportMembershipsView(View):
             cell.font = Font(bold=True)
 
        # Ajustar el ancho de las columnas
-        column_widths = [25, 30, 15, 20, 10, 20]
+        column_widths = [25, 30, 15, 20, 10, 15, 20]
         for i, width in enumerate(column_widths, 1):
             ws.column_dimensions[openpyxl.utils.get_column_letter(i)].width = width
  
@@ -495,6 +497,7 @@ class ExportMembershipsView(View):
                 membership.category_type,
                 membership.subcategory_type,
                 membership.membership_cost,
+                "TC/TD",
                 membership.payment_date.strftime("%d %b, %Y %H:%M:%S")
             ]
             ws.append(row)
@@ -510,11 +513,10 @@ class ExportMembershipsView(View):
 
         # Preparar la respuesta HTTP
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=membresias.xlsx'
+        filename = f"Membresias_{request.user.username}.xlsx"
+        response['Content-Disposition'] = f'attachment; filename={filename}'
         wb.save(response)
         return response
-
-
 
 @method_decorator(permission_required('accounts.can_view_membership_payments', raise_exception=True), name='dispatch')
 class AllMembershipPaymentsView(View):
@@ -570,6 +572,58 @@ class AllMembershipPaymentsView(View):
         
         return redirect('blogs:all_membership_payments')
     
+
+@method_decorator(login_required, name='dispatch')
+class StatisticsView(View):
+    def get(self, request):
+        # Obtener los datos de las categorías y los totales comprados por cada categoría
+        categories = MembershipPayment.objects.values('category__category').annotate(total=Sum('membership_cost')).order_by('-total')
+        
+        # Mensajes de depuración
+        print("Categorías y totales:", categories)
+
+        # Preparar los datos para el gráfico
+        labels = [category['category__category'] for category in categories]
+        data = [category['total'] for category in categories]
+
+        # Obtener los pagos agrupados por fecha
+        payments_by_date = MembershipPayment.objects.values('payment_date__date').annotate(total=Sum('membership_cost')).order_by('payment_date__date')
+
+        # Preparar los datos para el gráfico de línea de tiempo
+        dates = [payment['payment_date__date'].strftime("%Y-%m-%d") for payment in payments_by_date]
+        totals = [payment['total'] for payment in payments_by_date]
+
+        # Obtener los pagos agrupados por fecha y categoría
+        payments_by_date_and_category = MembershipPayment.objects.values('payment_date__date', 'category__category').annotate(total=Sum('membership_cost')).order_by('payment_date__date')
+
+        # Preparar los datos para el gráfico de línea de tiempo con múltiples categorías
+        # Preparar los datos para el gráfico de línea de tiempo por categoría
+        category_data = {}
+        for payment in payments_by_date_and_category:
+            category = payment['category__category']
+            date = payment['payment_date__date'].strftime("%Y-%m-%d")
+            total = payment['total']
+            if category not in category_data:
+                category_data[category] = []
+            category_data[category].append({'x': date, 'y': total})
+
+        # Más mensajes de depuración
+        print("Labels:", labels)
+        print("Data:", data)
+        print("Dates:", dates)
+        print("Totals:", totals)
+        print("Category Data:", category_data)
+        
+        context = {
+            'labels': json.dumps(labels),
+            'data': json.dumps(data),
+            'dates': json.dumps(dates),
+            'totals': json.dumps(totals),
+            'category_data': json.dumps(category_data),
+        }
+        
+        return render(request, 'blogs/estadisticas.html', context)
+
 
 class RateBlogView(View):
     def post(self, request, blog_id):

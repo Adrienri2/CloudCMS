@@ -1,0 +1,187 @@
+{% extends 'layout.html' %}
+
+{% block title %}Estadísticas de Membresías{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2>Estadísticas de Membresías</h2>
+    <div class="row">
+      <div class="col-md-12">
+        <div style="width: 30%; margin: auto;">
+          <canvas id="myChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <div style="width: 60%; margin: auto;">
+          <canvas id="timelineChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <div style="width: 60%; margin: auto;">
+        <canvas id="categoryTimelineChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: {{ labels|safe }},
+      datasets: [{
+        data: {{ data|safe }},
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Totales Comprados por Categoría'
+        }
+      }
+    }
+  });
+
+  
+  var ctx = document.getElementById('timelineChart').getContext('2d');
+  var ctx = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {{ dates|safe }},
+      datasets: [{
+        type: 'bar',
+        label: 'Pagos Totales por Fecha',
+        data: {{ totals|safe }},
+        backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+        borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+      },
+      {
+        type: 'line',
+        label: 'Pagos Totales por Fecha',
+        data: {{ totals|safe }},
+        backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+        borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+      }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Pagos Totales Registrados por Fecha de Pago'
+        }
+      }
+    }
+  });
+
+
+    var ctx3 = document.getElementById('categoryTimelineChart').getContext('2d');
+    // Decodifica `category_data` desde JSON, asegurándote de que esté en formato de objeto de JavaScript
+    var categoryData = {{ category_data|safe }};
+    // Prepara los datasets para cada categoría con sus datos y colores únicos
+    var datasets = Object.keys(categoryData).map(category => {
+        return {
+            label: category,
+            data: categoryData[category],
+            borderColor: getRandomColor(),
+            backgroundColor: 'rgba(0, 0, 0, 0)',  // Fondo transparente
+            borderWidth: 2,
+            tension: 0.4
+        };
+    });
+    // Inicialización del gráfico de líneas
+    new Chart(ctx3, {
+        type: 'line',
+        data: {
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Pagos Totales por Categoría en Línea de Tiempo'
+                }
+            }
+            
+        }
+    });
+  
+    // Función para generar un color aleatorio
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+  
+</script>
+{% endblock %}
