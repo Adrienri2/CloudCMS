@@ -822,6 +822,7 @@ class ChangeBlogStatusView(View):
             data = json.loads(request.body)  # Cargar el cuerpo de la solicitud como JSON
             new_status = data.get('new_status')  # Obtener new_status del JSON
             previous_status = data.get('previous_status')  # Obtener estado previo del JSON
+            Comment = None 
 
             print(f"Data received: new_status={new_status}, previous_status={previous_status}")
 

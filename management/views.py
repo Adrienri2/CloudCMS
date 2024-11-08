@@ -368,13 +368,16 @@ def schedule_publication(request, blog_id):
             # Convertir la fecha y hora local a UTC
             utc_scheduled_date = local_scheduled_date.astimezone(pytz.UTC)
             
-            # Convertir la fecha de caducidad a un objeto datetime
-            local_expiry_date = timezone.datetime.strptime(expiry_date, '%Y-%m-%dT%H:%M')
-            local_expiry_date = timezone.make_aware(local_expiry_date, timezone.get_current_timezone())
-            utc_expiry_date = local_expiry_date.astimezone(pytz.UTC)
+            if expiry_date:
+                # Convertir la fecha de caducidad a un objeto datetime
+                local_expiry_date = timezone.datetime.strptime(expiry_date, '%Y-%m-%dT%H:%M')
+                local_expiry_date = timezone.make_aware(local_expiry_date, timezone.get_current_timezone())
+                utc_expiry_date = local_expiry_date.astimezone(pytz.UTC)
+            else:
+                utc_expiry_date = None
             
 
-            if utc_scheduled_date > timezone.now() and utc_expiry_date > utc_scheduled_date:
+            if utc_scheduled_date > timezone.now() and (utc_expiry_date is None or utc_expiry_date > utc_scheduled_date):
                 blog.scheduled_date = utc_scheduled_date # Guardar la fecha programada
                 blog.expiry_date = utc_expiry_date  # Guardar la fecha de caducidad
                 blog.status = 2  # En espera
