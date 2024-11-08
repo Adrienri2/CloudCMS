@@ -45,6 +45,12 @@
 
 <script>
     document.getElementById('enviarRevisionBtn').addEventListener('click', function() {
+
+      const button = this;
+      button.disabled = true;  // Deshabilitar el botón
+      button.textContent = 'Enviando...';  // Cambiar el texto del botón
+
+
       const blogId = {{ blog.id }};
       fetch(`/blogs/change_status/${blogId}/`, {
         method: 'POST',
