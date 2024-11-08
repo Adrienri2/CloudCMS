@@ -103,7 +103,7 @@
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
 <span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
 <span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">View</span>
-<span class="kn">from</span> <span class="nn">blogs.models</span> <span class="kn">import</span> <span class="n">BlogVersion</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Blog</span><span class="p">,</span> <span class="n">Comment</span>
+<span class="kn">from</span> <span class="nn">blogs.models</span> <span class="kn">import</span> <span class="n">BlogVersion</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Blog</span><span class="p">,</span> <span class="n">Comment</span><span class="p">,</span> <span class="n">PaidMembership</span>
 <span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
 <span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">CKEditorForm</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
@@ -265,8 +265,21 @@
         <span class="n">blog</span><span class="o">.</span><span class="n">slug</span> <span class="o">=</span> <span class="n">blog</span><span class="o">.</span><span class="n">id</span>
         <span class="n">blog</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
+        <span class="c1"># Crear y guardar una versión del blog</span>
+        <span class="n">blog_version</span> <span class="o">=</span> <span class="n">BlogVersion</span><span class="p">(</span>
+            <span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+            <span class="n">desc</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
+            <span class="n">thumbnail</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+            <span class="n">modified_by</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>  <span class="c1"># Asignar el usuario que creó la versión</span>
+            <span class="n">modified_by_role</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span>  <span class="c1"># Asignar el rol del usuario que creó la versión</span>
+        <span class="p">)</span>
+        <span class="n">blog_version</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
         <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Artículo creado&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage:blog&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage:kanban&quot;</span><span class="p">)</span></div>
 </div>
 
    
@@ -453,12 +466,41 @@
         <span class="c1"># Guarda el blog con los cambios realizados</span>
         <span class="n">blog</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
+        <span class="c1"># Obtener la última versión del blog</span>
+        <span class="n">last_version</span> <span class="o">=</span> <span class="n">BlogVersion</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created_at&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+        <span class="c1"># Comparar el contenido del blog actual con la última versión</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">last_version</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">title</span> <span class="o">!=</span> <span class="n">last_version</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">desc</span> <span class="o">!=</span> <span class="n">last_version</span><span class="o">.</span><span class="n">desc</span> <span class="ow">or</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">content</span> <span class="o">!=</span> <span class="n">last_version</span><span class="o">.</span><span class="n">content</span> <span class="ow">or</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">!=</span> <span class="n">last_version</span><span class="o">.</span><span class="n">thumbnail</span> <span class="ow">or</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">category</span> <span class="o">!=</span> <span class="n">last_version</span><span class="o">.</span><span class="n">category</span>
+        <span class="p">):</span>
+            <span class="c1"># Si hay cambios, se formatea blog.status_comments para que sea None</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">status_comments</span><span class="o">=</span><span class="kc">None</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AL MODIFICAR EL BLOG, SE FORMATEA EL COMENTARIO DE DEVOLUCIÓN&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
+
+            <span class="c1"># Si hay cambios, crear una nueva versión del blog</span>
+            <span class="n">BlogVersion</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+                <span class="n">desc</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span>
+                <span class="n">content</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
+                <span class="n">thumbnail</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+                <span class="n">modified_by</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+                <span class="n">modified_by_role</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span><span class="p">,</span>
+                <span class="n">return_comment</span><span class="o">=</span> <span class="n">blog</span><span class="o">.</span><span class="n">status_comments</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AL MODIFICAR EL BLOG, SE CREA UNA NUEVA VERSION&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
 
         <span class="c1"># Muestra un mensaje de éxito indicando que los cambios se han guardado</span>
         <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Cambios guardados&quot;</span><span class="p">)</span>
 
         <span class="c1"># Redirige al usuario a la página de gestión de blogs</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage:blog&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage:kanban&quot;</span><span class="p">)</span></div>
 </div>
 
 
@@ -483,13 +525,16 @@
             <span class="c1"># Convertir la fecha y hora local a UTC</span>
             <span class="n">utc_scheduled_date</span> <span class="o">=</span> <span class="n">local_scheduled_date</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">UTC</span><span class="p">)</span>
             
-            <span class="c1"># Convertir la fecha de caducidad a un objeto datetime</span>
-            <span class="n">local_expiry_date</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">expiry_date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M&#39;</span><span class="p">)</span>
-            <span class="n">local_expiry_date</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">make_aware</span><span class="p">(</span><span class="n">local_expiry_date</span><span class="p">,</span> <span class="n">timezone</span><span class="o">.</span><span class="n">get_current_timezone</span><span class="p">())</span>
-            <span class="n">utc_expiry_date</span> <span class="o">=</span> <span class="n">local_expiry_date</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">UTC</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">expiry_date</span><span class="p">:</span>
+                <span class="c1"># Convertir la fecha de caducidad a un objeto datetime</span>
+                <span class="n">local_expiry_date</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">expiry_date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M&#39;</span><span class="p">)</span>
+                <span class="n">local_expiry_date</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">make_aware</span><span class="p">(</span><span class="n">local_expiry_date</span><span class="p">,</span> <span class="n">timezone</span><span class="o">.</span><span class="n">get_current_timezone</span><span class="p">())</span>
+                <span class="n">utc_expiry_date</span> <span class="o">=</span> <span class="n">local_expiry_date</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">UTC</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">utc_expiry_date</span> <span class="o">=</span> <span class="kc">None</span>
             
 
-            <span class="k">if</span> <span class="n">utc_scheduled_date</span> <span class="o">&gt;</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="ow">and</span> <span class="n">utc_expiry_date</span> <span class="o">&gt;</span> <span class="n">utc_scheduled_date</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">utc_scheduled_date</span> <span class="o">&gt;</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">utc_expiry_date</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">utc_expiry_date</span> <span class="o">&gt;</span> <span class="n">utc_scheduled_date</span><span class="p">):</span>
                 <span class="n">blog</span><span class="o">.</span><span class="n">scheduled_date</span> <span class="o">=</span> <span class="n">utc_scheduled_date</span> <span class="c1"># Guardar la fecha programada</span>
                 <span class="n">blog</span><span class="o">.</span><span class="n">expiry_date</span> <span class="o">=</span> <span class="n">utc_expiry_date</span>  <span class="c1"># Guardar la fecha de caducidad</span>
                 <span class="n">blog</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># En espera</span>
@@ -508,18 +553,24 @@
 <a class="viewcode-back" href="../../management_views.html#management.views.DeleteBlog">[documentos]</a>
 <span class="nd">@method_decorator</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;accounts.can_delete_blog&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dispatch&#39;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">DeleteBlog</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
-<div class="viewcode-block" id="DeleteBlog.get">
-<a class="viewcode-back" href="../../management_views.html#management.views.DeleteBlog.get">[documentos]</a>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
-        <span class="n">blog</span> <span class="o">=</span> <span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">creator</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<div class="viewcode-block" id="DeleteBlog.post">
+<a class="viewcode-back" href="../../management_views.html#management.views.DeleteBlog.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Intentando eliminar el blog con ID: </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> por el usuario: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">blog</span> <span class="o">=</span> <span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">blog</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;El blog con ID: </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> no existe en absoluto&quot;</span><span class="p">)</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;El artículo no existe&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;El blog con ID: </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> existe. Verificando el creador y el estado.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;El usuario: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="si">}</span><span class="s2"> marcó el blog con ID: </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> como inactivo.&quot;</span><span class="p">)</span>
             <span class="n">blog</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">blog</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Artículo eliminado&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;El blog con ID: </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> fue marcado como inactivo y guardado.&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;manage:blog&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span></div>
 </div>
 
 
@@ -742,6 +793,7 @@
                             <span class="n">modified_by</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
                             <span class="n">modified_by_role</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span>
                         <span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;VERSION CREADA PUNTO 1. Hubo cambios&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="c1"># Si no hay cambios, eliminar el comentario return_comment</span>
                         <span class="n">new_version</span> <span class="o">=</span> <span class="n">BlogVersion</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
@@ -755,8 +807,11 @@
                             <span class="n">modified_by_role</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span><span class="p">,</span>
                             <span class="n">return_comment</span><span class="o">=</span> <span class="kc">None</span>
                         <span class="p">)</span>
-
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;VERSION CREADA PUNTO 2&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
                         <span class="c1"># Comparar la nueva versión con la versión anterior</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Si no hay cambios, eliminar el comentario return_comment&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
+                        <span class="c1"># Comparar la nueva versión con la versión anterior</span>
+                        
                         <span class="k">if</span> <span class="n">last_version</span> <span class="ow">and</span> <span class="p">(</span>
                             <span class="n">new_version</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="n">last_version</span><span class="o">.</span><span class="n">title</span> <span class="ow">and</span>
                             <span class="n">new_version</span><span class="o">.</span><span class="n">desc</span> <span class="o">==</span> <span class="n">last_version</span><span class="o">.</span><span class="n">desc</span> <span class="ow">and</span>
@@ -765,15 +820,13 @@
                             <span class="n">new_version</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">last_version</span><span class="o">.</span><span class="n">category</span> <span class="ow">and</span>
                             <span class="n">new_version</span><span class="o">.</span><span class="n">return_comment</span> <span class="o">==</span> <span class="n">last_version</span><span class="o">.</span><span class="n">return_comment</span>
                         <span class="p">):</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Se creó una nueva version&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
                             <span class="c1"># Si son idénticas, eliminar la nueva versión</span>
                             <span class="n">new_version</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nueva versión eliminada&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
-                
-
-
-
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nueva versión eliminada, identica a la anterior &quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
                 <span class="k">else</span><span class="p">:</span>
                         <span class="c1"># Crear una versión del blog al retroceder en el flujo</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SE RETROCEDE EN EL FLUJO &quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
                         <span class="n">BlogVersion</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
                             <span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">,</span>
                             <span class="n">title</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
@@ -785,6 +838,7 @@
                             <span class="n">modified_by_role</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span><span class="p">,</span>
                             <span class="n">return_comment</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">status_comments</span> <span class="k">if</span> <span class="n">blog</span><span class="o">.</span><span class="n">previous_status</span> <span class="o">&gt;</span> <span class="n">blog</span><span class="o">.</span><span class="n">status</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># Guardar el comentario de devolución</span>
                         <span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Se creó una nueva versión &quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
 
 
                 <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
@@ -799,9 +853,6 @@
             <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)})</span></div>
 </div>
 
-                
-
-
 
 <div class="viewcode-block" id="BlogPreviewView">
 <a class="viewcode-back" href="../../management_views.html#management.views.BlogPreviewView">[documentos]</a>
@@ -814,6 +865,113 @@
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;management/blog_preview.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;blog&#39;</span><span class="p">:</span> <span class="n">blog</span><span class="p">,</span> <span class="s1">&#39;last_version&#39;</span><span class="p">:</span> <span class="n">last_version</span><span class="p">})</span></div>
 </div>
 
+    
+
+<div class="viewcode-block" id="RevertToVersionView">
+<a class="viewcode-back" href="../../management_views.html#management.views.RevertToVersionView">[documentos]</a>
+<span class="k">class</span> <span class="nc">RevertToVersionView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<div class="viewcode-block" id="RevertToVersionView.dispatch">
+<a class="viewcode-back" href="../../management_views.html#management.views.RevertToVersionView.dispatch">[documentos]</a>
+    <span class="nd">@method_decorator</span><span class="p">(</span><span class="n">csrf_exempt</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RevertToVersionView.post">
+<a class="viewcode-back" href="../../management_views.html#management.views.RevertToVersionView.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RevertToVersionView POST request received&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data received: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
+
+            <span class="n">blog_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;blog_id&#39;</span><span class="p">)</span>
+            <span class="n">version_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version_id&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">blog_id</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">version_id</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Faltan blog_id o version_id&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
+                <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Faltan blog_id o version_id&#39;</span><span class="p">})</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Blog ID: </span><span class="si">{</span><span class="n">blog_id</span><span class="si">}</span><span class="s2">, Version ID: </span><span class="si">{</span><span class="n">version_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
+
+
+            <span class="n">blog</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Blog</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">blog_id</span><span class="p">)</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">BlogVersion</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">version_id</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Blog encontrado: </span><span class="si">{</span><span class="n">blog</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">, Versión encontrada: </span><span class="si">{</span><span class="n">version</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
+
+
+            <span class="c1"># Crear una nueva versión idéntica a la versión en cuestión</span>
+            <span class="n">new_version</span> <span class="o">=</span> <span class="n">BlogVersion</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="n">version</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+                <span class="n">desc</span><span class="o">=</span><span class="n">version</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span>
+                <span class="n">content</span><span class="o">=</span><span class="n">version</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
+                <span class="n">thumbnail</span><span class="o">=</span><span class="n">version</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="n">version</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+                <span class="n">modified_by</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+                <span class="n">modified_by_role</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">role</span><span class="p">,</span>
+                <span class="n">return_comment</span><span class="o">=</span><span class="kc">None</span>
+            <span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nueva versión creada: </span><span class="si">{</span><span class="n">new_version</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
+
+
+            <span class="c1"># Actualizar el contenido del modelo Blog</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">title</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">desc</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">content</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">thumbnail</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">category</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">status_comments</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Eliminar comentario de devolución</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Blog actualizado: </span><span class="si">{</span><span class="n">blog</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
+
+
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error al revertir a la versión :c: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Mensaje de depuración</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)})</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SetFeaturedBlogView">
+<a class="viewcode-back" href="../../management_views.html#management.views.SetFeaturedBlogView">[documentos]</a>
+<span class="nd">@method_decorator</span><span class="p">(</span><span class="n">role_required</span><span class="p">([</span><span class="s1">&#39;admin&#39;</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dispatch&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SetFeaturedBlogView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<div class="viewcode-block" id="SetFeaturedBlogView.post">
+<a class="viewcode-back" href="../../management_views.html#management.views.SetFeaturedBlogView.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">blog_id</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">blog</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Blog</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">blog_id</span><span class="p">,</span> <span class="n">is_published</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">is_featured</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">blog</span><span class="o">.</span><span class="n">is_featured</span>  <span class="c1"># Alternar el estado de destacado</span>
+            <span class="k">if</span> <span class="n">blog</span><span class="o">.</span><span class="n">is_featured</span><span class="p">:</span>
+                <span class="n">blog</span><span class="o">.</span><span class="n">featured_at</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>  <span class="c1"># Establecer la fecha y hora actual</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">blog</span><span class="o">.</span><span class="n">featured_at</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Eliminar la fecha y hora si se quita de destacados</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;is_featured&#39;</span><span class="p">:</span> <span class="n">blog</span><span class="o">.</span><span class="n">is_featured</span><span class="p">})</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)})</span></div>
+</div>
+
+        
+
+
+
+<div class="viewcode-block" id="BlogDetailView">
+<a class="viewcode-back" href="../../management_views.html#management.views.BlogDetailView">[documentos]</a>
+<span class="k">class</span> <span class="nc">BlogDetailView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<div class="viewcode-block" id="BlogDetailView.get">
+<a class="viewcode-back" href="../../management_views.html#management.views.BlogDetailView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="n">blog</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Blog</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;blogs/blog.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;blog&#39;</span><span class="p">:</span> <span class="n">blog</span><span class="p">})</span></div>
+</div>
+
+    
 </pre></div>
 
            </div>

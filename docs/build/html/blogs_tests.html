@@ -79,6 +79,19 @@
 <li class="toctree-l3"><a class="reference internal" href="#blogs.tests.CreateLikeTests.test_remove_like_success"><code class="docutils literal notranslate"><span class="pre">CreateLikeTests.test_remove_like_success()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.tests.MarkAsReadViewTests"><code class="docutils literal notranslate"><span class="pre">MarkAsReadViewTests</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.tests.MarkAsReadViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">MarkAsReadViewTests.setUp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.tests.MarkAsReadViewTests.test_mark_as_read"><code class="docutils literal notranslate"><span class="pre">MarkAsReadViewTests.test_mark_as_read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.tests.MarkAsReadViewTests.test_mark_as_read_requires_login"><code class="docutils literal notranslate"><span class="pre">MarkAsReadViewTests.test_mark_as_read_requires_login()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.tests.ToggleFavoriteCategoryViewTests"><code class="docutils literal notranslate"><span class="pre">ToggleFavoriteCategoryViewTests</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.tests.ToggleFavoriteCategoryViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">ToggleFavoriteCategoryViewTests.setUp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.tests.ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_add"><code class="docutils literal notranslate"><span class="pre">ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_add()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.tests.ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_remove"><code class="docutils literal notranslate"><span class="pre">ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_remove()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.tests.ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_requires_login"><code class="docutils literal notranslate"><span class="pre">ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_requires_login()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blogs_urls.html">URLs del módulo blogs</a></li>
@@ -198,6 +211,60 @@
 <dt class="sig sig-object py" id="blogs.tests.CreateLikeTests.test_remove_like_success">
 <span class="sig-name descname"><span class="pre">test_remove_like_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/tests.html#CreateLikeTests.test_remove_like_success"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.tests.CreateLikeTests.test_remove_like_success" title="Link to this definition"></a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.tests.MarkAsReadViewTests">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.tests.</span></span><span class="sig-name descname"><span class="pre">MarkAsReadViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/tests.html#MarkAsReadViewTests"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.tests.MarkAsReadViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.tests.MarkAsReadViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/tests.html#MarkAsReadViewTests.setUp"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.tests.MarkAsReadViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.tests.MarkAsReadViewTests.test_mark_as_read">
+<span class="sig-name descname"><span class="pre">test_mark_as_read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/tests.html#MarkAsReadViewTests.test_mark_as_read"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.tests.MarkAsReadViewTests.test_mark_as_read" title="Link to this definition"></a></dt>
+<dd><p>Verifica que la notificación se marque como leída correctamente.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.tests.MarkAsReadViewTests.test_mark_as_read_requires_login">
+<span class="sig-name descname"><span class="pre">test_mark_as_read_requires_login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/tests.html#MarkAsReadViewTests.test_mark_as_read_requires_login"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.tests.MarkAsReadViewTests.test_mark_as_read_requires_login" title="Link to this definition"></a></dt>
+<dd><p>Verifica que la vista requiera que el usuario esté autenticado.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.tests.ToggleFavoriteCategoryViewTests">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.tests.</span></span><span class="sig-name descname"><span class="pre">ToggleFavoriteCategoryViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/tests.html#ToggleFavoriteCategoryViewTests"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.tests.ToggleFavoriteCategoryViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.tests.ToggleFavoriteCategoryViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/tests.html#ToggleFavoriteCategoryViewTests.setUp"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.tests.ToggleFavoriteCategoryViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.tests.ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_add">
+<span class="sig-name descname"><span class="pre">test_toggle_favorite_category_add</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/tests.html#ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_add"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.tests.ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_add" title="Link to this definition"></a></dt>
+<dd><p>Verifica que la categoría se añada a las favoritas del usuario.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.tests.ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_remove">
+<span class="sig-name descname"><span class="pre">test_toggle_favorite_category_remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/tests.html#ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_remove"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.tests.ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_remove" title="Link to this definition"></a></dt>
+<dd><p>Verifica que la categoría se elimine de las favoritas del usuario si ya está añadida.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.tests.ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_requires_login">
+<span class="sig-name descname"><span class="pre">test_toggle_favorite_category_requires_login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/tests.html#ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_requires_login"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.tests.ToggleFavoriteCategoryViewTests.test_toggle_favorite_category_requires_login" title="Link to this definition"></a></dt>
+<dd><p>Verifica que la vista requiera que el usuario esté autenticado.</p>
+</dd></dl>
 
 </dd></dl>
 

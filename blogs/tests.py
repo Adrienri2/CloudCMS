@@ -1,7 +1,7 @@
 from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from .models import Blog, Bookmark, BlogLike, Notification, Category, FavoriteCategory
+from .models import Blog, Bookmark, BlogLike, Notification, Category, FavoriteCategory, Report
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 from unittest.mock import patch 
@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.shortcuts import render
 from blogs.views import notifications
 from django.test import TransactionTestCase, RequestFactory
+from unittest.mock import patch, MagicMock
 
 
 User = get_user_model()
@@ -282,4 +283,52 @@ class ToggleFavoriteCategoryViewTests(TestCase):
             print("El usuario no autenticado no fue redirigido correctamente")
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith(reverse('accounts:login')))
+
+
+
+class PagoViewTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.category = Category.objects.create(
+            category='Categoría de Prueba',
+            slug='categoria-prueba',
+            desc='Descripción de prueba',
+            is_active=True,
+            category_type='moderada',
+            subcategory_type='publica',
+            costo_membresia=100
+        )
+        self.client.login(username='testuser', password='12345')
+
+    def test_pago_view_get(self):
+        """
+        Verifica que la vista PagoView maneje correctamente una solicitud GET.
+        """
+        url = reverse('blogs:pago', args=[self.category.id])
+        response = self.client.get(url)
+        templates_used = [template.name for template in response.templates]
+        
+        if (
+            response.status_code == 200 and
+            'blogs/pago.html' in templates_used and
+            'category' in response.context and
+            'datos_tarjeta' in response.context and
+            'stripe_publishable_key' in response.context
+        ):
+            print(f"El usuario '{self.user.username}' pudo acceder a la página de pago correctamente.")
+        else:
+            print(f"El usuario '{self.user.username}' no pudo acceder a la página de pago como se esperaba.")
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blogs/pago.html')
+        self.assertIn('category', response.context)
+        self.assertIn('datos_tarjeta', response.context)
+        self.assertIn('stripe_publishable_key', response.context)
+
+
+
+
+
+
 
