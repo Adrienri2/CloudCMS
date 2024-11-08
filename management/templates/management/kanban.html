@@ -209,8 +209,8 @@
           </div>
           <!--  Añadir campo para la fecha de caducidad -->
           <div class="mb-3">
-            <label for="expiryDate" class="form-label">Activo hasta:</label>
-            <input type="datetime-local" class="form-control" id="expiryDate" name="expiry_date" required>
+            <label for="expiryDate" class="form-label">Activo hasta (Opcional):</label>
+            <input type="datetime-local" class="form-control" id="expiryDate" name="expiry_date">
           </div>
           <button type="submit" class="btn btn-primary">Programar</button>
         </form>
@@ -442,7 +442,7 @@ document.addEventListener('DOMContentLoaded', function() {
         confirmarInactivacion.style.display = 'none';
       }
 
-      // NO ESTOY PUDIENDO IMPLEMENTAR EL BOTON INACTIVAR, NI PARA EL AUTOR NI PARA EL ADMIN
+      
 
 
       if (newStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') {
@@ -557,7 +557,7 @@ schedulePublicationForm.addEventListener('submit', function(event) {
   event.preventDefault();
   const scheduledDate = document.getElementById('scheduledDate').value; // Obtener la fecha y hora de publicación
   const expiryDate = document.getElementById('expiryDate').value; // Obtener la fecha de caducidad
-  if (scheduledDate && expiryDate) {
+  if (scheduledDate) {
     // Enviar la solicitud para programar la publicación
     fetch(`/manage/schedule_publication/${selectedBlogId}/`, {
       method: 'POST',
@@ -581,7 +581,7 @@ schedulePublicationForm.addEventListener('submit', function(event) {
       alert('Error al programar la publicación');
     });
   } else {
-    alert('Por favor, complete ambas fechas.');
+    alert('Por favor, complete la fecha de publicación.');
   }
 });
 

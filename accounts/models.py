@@ -10,12 +10,10 @@ class User(AbstractUser):
     Modelo de usuario personalizado que extiende el modelo de usuario abstracto de Django.
 
     Atributos:
-
         is_author (bool): Indica si el usuario es un autor.
-
-
         avatar (ImageField): Imagen de avatar del usuario.
         gender (str): Género del usuario.
+        role (str): Rol del usuario.
     """
 
     GENDER_CHOICES = [
@@ -122,8 +120,17 @@ class User(AbstractUser):
             super().save(*args, **kwargs)
 
 
-
 class DatosTarjeta(models.Model):
+    """
+    Modelo que representa los datos de una tarjeta de crédito o débito.
+
+    Atributos:
+        nombre_tarjeta (str): Nombre del titular de la tarjeta.
+        numero_tarjeta (str): Número de la tarjeta.
+        fecha_vencimiento (str): Fecha de vencimiento de la tarjeta en formato "mm/aa".
+        codigo_seguridad (str): Código de seguridad de la tarjeta.
+        usuario (User): Usuario al que pertenece la tarjeta.
+    """
     nombre_tarjeta = models.CharField(max_length=100)
     numero_tarjeta = models.CharField(max_length=16)
     fecha_vencimiento = models.CharField(max_length=5)  # Formato "mm/aa"
@@ -131,4 +138,10 @@ class DatosTarjeta(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='datos_tarjeta')
 
     def __str__(self):
+        """
+        Devuelve una representación en cadena de los datos de la tarjeta.
+
+        Returns:
+            str: Nombre del titular y número de la tarjeta.
+        """
         return f"{self.nombre_tarjeta} - {self.numero_tarjeta}"

@@ -74,6 +74,10 @@
 <li class="toctree-l1"><a class="reference internal" href="management_tests.html">Pruebas para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="management_urls.html">URLs para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Vistas para la Aplicación CloudCMS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.BlogDetailView"><code class="docutils literal notranslate"><span class="pre">BlogDetailView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.BlogDetailView.get"><code class="docutils literal notranslate"><span class="pre">BlogDetailView.get()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#management.views.BlogPreviewView"><code class="docutils literal notranslate"><span class="pre">BlogPreviewView</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#management.views.BlogPreviewView.get"><code class="docutils literal notranslate"><span class="pre">BlogPreviewView.get()</span></code></a></li>
 </ul>
@@ -97,7 +101,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#management.views.DeleteBlog"><code class="docutils literal notranslate"><span class="pre">DeleteBlog</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#management.views.DeleteBlog.dispatch"><code class="docutils literal notranslate"><span class="pre">DeleteBlog.dispatch()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#management.views.DeleteBlog.get"><code class="docutils literal notranslate"><span class="pre">DeleteBlog.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.DeleteBlog.post"><code class="docutils literal notranslate"><span class="pre">DeleteBlog.post()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#management.views.DeleteCategory"><code class="docutils literal notranslate"><span class="pre">DeleteCategory</span></code></a><ul>
@@ -140,6 +144,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#management.views.ManageComment.get"><code class="docutils literal notranslate"><span class="pre">ManageComment.get()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.RevertToVersionView"><code class="docutils literal notranslate"><span class="pre">RevertToVersionView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.RevertToVersionView.dispatch"><code class="docutils literal notranslate"><span class="pre">RevertToVersionView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.RevertToVersionView.post"><code class="docutils literal notranslate"><span class="pre">RevertToVersionView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#management.views.SetFeaturedBlogView"><code class="docutils literal notranslate"><span class="pre">SetFeaturedBlogView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.SetFeaturedBlogView.dispatch"><code class="docutils literal notranslate"><span class="pre">SetFeaturedBlogView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management.views.SetFeaturedBlogView.post"><code class="docutils literal notranslate"><span class="pre">SetFeaturedBlogView.post()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#management.views.blog_version_preview"><code class="docutils literal notranslate"><span class="pre">blog_version_preview()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#management.views.blog_versions"><code class="docutils literal notranslate"><span class="pre">blog_versions()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#management.views.create_blog_version"><code class="docutils literal notranslate"><span class="pre">create_blog_version()</span></code></a></li>
@@ -174,6 +188,17 @@
              
   <section id="module-management.views">
 <span id="vistas-para-la-aplicacion-cloudcms"></span><h1>Vistas para la Aplicación CloudCMS<a class="headerlink" href="#module-management.views" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.BlogDetailView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">BlogDetailView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#BlogDetailView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.BlogDetailView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.BlogDetailView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#BlogDetailView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.BlogDetailView.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="management.views.BlogPreviewView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">BlogPreviewView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#BlogPreviewView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.BlogPreviewView" title="Link to this definition"></a></dt>
@@ -253,8 +278,8 @@
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="management.views.DeleteBlog.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#DeleteBlog.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.DeleteBlog.get" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="management.views.DeleteBlog.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#DeleteBlog.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.DeleteBlog.post" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -374,6 +399,38 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="management.views.ManageComment.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#ManageComment.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.ManageComment.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.RevertToVersionView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">RevertToVersionView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#RevertToVersionView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.RevertToVersionView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.RevertToVersionView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#RevertToVersionView.dispatch"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.RevertToVersionView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.RevertToVersionView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#RevertToVersionView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.RevertToVersionView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="management.views.SetFeaturedBlogView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">management.views.</span></span><span class="sig-name descname"><span class="pre">SetFeaturedBlogView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#SetFeaturedBlogView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.SetFeaturedBlogView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.SetFeaturedBlogView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#management.views.SetFeaturedBlogView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="management.views.SetFeaturedBlogView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blog_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/management/views.html#SetFeaturedBlogView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#management.views.SetFeaturedBlogView.post" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
