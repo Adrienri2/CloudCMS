@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block title %}Blogs Reportados{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+  <h2 class="mb-4">Blogs Reportados</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Fecha</th>
+        <th>ID</th>
+        <th>Blog</th>
+        <th>Motivo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for report in reports %}
+      <tr>
+        <td>{{ report.user.username }}</td>
+        <td>{{ report.created_at }}</td>
+        <td>{{ report.blog.id }}</td>
+        <td>{{ report.blog.title }}</td>
+        <td>{{ report.reason }}</td>
+        <td>
+            <a href="{% url 'blogs:verificar_reporte' report.id %}" class="btn btn-success btn-sm">Verificar</a>
+            <a href="{% url 'blogs:ignorar_reporte' report.id %}" class="btn btn-danger btn-sm">Ignorar</a>
+          </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" class="text-center">No hay reportes</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

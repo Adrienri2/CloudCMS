@@ -11,12 +11,14 @@ from django.conf import settings
 from accounts.models import DatosTarjeta
 from django.utils.timezone import make_aware,localtime, is_naive
 from datetime import datetime, timedelta
+from django.utils import timezone
 from .models import *
 from .models import Notification, Category, FavoriteCategory, Blog, Rating
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import openpyxl
 from openpyxl.styles import Font, Alignment, Border, Side
 from openpyxl.drawing.image import Image
+from django.views.decorators.csrf import csrf_exempt
 from PIL import Image as PILImage
 import base64
 from io import BytesIO
@@ -778,3 +780,75 @@ class RateBlogView(View):
         return redirect('manage:blog_detail', id=blog.id)
     
 
+
+class ReportBlogView(View):
+    def post(self, request, id):
+        blog = get_object_or_404(Blog, id=id)
+        report_reason = request.POST.get('report_reason')
+        Report.objects.create(blog=blog, user=request.user, reason=report_reason)
+        return redirect('blogs:blog', slug=blog.slug)
+    
+
+class ReportedBlogsView(View):
+    def get(self, request):
+        reports = Report.objects.all().order_by('-created_at')
+        return render(request, 'blogs/blogs_reportados.html', {'reports': reports})
+    
+
+
+class VerificarReporteView(View):
+    def get(self, request, id):
+        report = get_object_or_404(Report, id=id)
+        blog = report.blog
+        return render(request, 'blogs/verificar_blog_reportado.html', {'blog': blog, 'report': report})
+
+
+class ChangeBlogStatusView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, blog_id):
+        try:
+            print(f"Request received for blog_id: {blog_id}")
+            blog = Blog.objects.get(id=blog_id)
+            data = json.loads(request.body)  # Cargar el cuerpo de la solicitud como JSON
+            new_status = data.get('new_status')  # Obtener new_status del JSON
+            previous_status = data.get('previous_status')  # Obtener estado previo del JSON
+
+            print(f"Data received: new_status={new_status}, previous_status={previous_status}")
+
+            if new_status is None:
+                print("new_status es None")
+                return JsonResponse({'success': False, 'error': 'new_status es None'})
+
+            new_status = int(new_status)
+
+            if new_status == 2:  # Estado "En edición"
+                blog.previous_status = blog.status  # Guardar el estado anterior
+                blog.status = new_status
+                blog.is_published = False  # Establecer is_published a False
+                
+                blog.save()
+
+                # Eliminar todos los reportes del blog
+                Report.objects.filter(blog=blog).delete()
+                print("Blog status updated and reports deleted successfully")
+                
+                return JsonResponse({'success': True})
+            else:
+                print(f"Estado no válido: {new_status}")
+                return JsonResponse({'success': False, 'error': 'Estado no válido.'})
+        except Blog.DoesNotExist:
+            print(f"Blog no encontrado: {blog_id}")
+            return JsonResponse({'success': False, 'error': 'Blog no encontrado.'})
+        except Exception as e:
+            print(f"Error al cambiar el estado del blog: {str(e)}")
+            return JsonResponse({'success': False, 'error': str(e)})
+
+
+class IgnorarReporteView(View):
+    def get(self, request, id):
+        report = get_object_or_404(Report, id=id)
+        report.delete()
+        return redirect('blogs:blogs_reportados')
