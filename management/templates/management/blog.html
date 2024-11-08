@@ -9,12 +9,20 @@
       Administrar Artículos
     </h1>
   </div>
-  {% if perms.accounts.can_create_blog %}
+  {% if request.user.role == 'author' %}
   <a role="button" class="btn btn-secondary btn-sm round-btn" href='{% url 'manage:create_blog' %}'>
     <i class="bi bi-plus-lg"></i>
     Crear Artículo
   </a>
   {% endif %}
+
+  {% if request.user.role == 'admin' or request.user.role == 'publisher' %}
+  <a role="button" class="btn btn-danger btn-sm round-btn" href='{% url 'blogs:blogs_reportados' %}'>
+    <i class="bi bi-exclamation-triangle"></i>
+    Artículos Reportados
+  </a>
+  {% endif %}
+
   <div class="row">
     {% include 'management/blog_table.html' with blogs=blogs %}
   </div>

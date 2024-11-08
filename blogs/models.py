@@ -234,6 +234,16 @@ class Blog(models.Model):
         return "Editar"
 
 
+class Report(models.Model):
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='reports')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Reporte de {self.user.username} sobre {self.blog.title}"
+
+
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)

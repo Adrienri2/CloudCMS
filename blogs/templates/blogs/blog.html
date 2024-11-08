@@ -117,7 +117,12 @@
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary mt-2">Enviar Calificación</button>
+          <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary mt-2">Enviar Calificación</button>
+            {% if blog.category.category_type == "moderada" %}
+            <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#reportModal">Reportar Artículo</button>
+            {% endif %}
+          </div>
         </form>
      </div> 
     </div>
@@ -190,6 +195,28 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-primary" id="confirmFeaturedButton">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para Reportar Artículo -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLabel">Reportar Artículo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="reportForm" action="{% url 'blogs:report_blog' blog.id %}" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="reportReason" class="form-label">Motivo del Reporte</label>
+            <textarea class="form-control" id="reportReason" name="report_reason" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-danger">Enviar Reporte</button>
+        </form>
       </div>
     </div>
   </div>
@@ -330,4 +357,4 @@
   color: #333;
 }
 </style>
-{% endblock %}  
+{% endblock %}

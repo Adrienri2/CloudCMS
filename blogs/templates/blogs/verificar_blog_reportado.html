@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+
+{% block ogtitle %}{{ blog.title }}{% endblock %}
+{% block ogdescription %}{{ blog.desc }}{% endblock %}
+{% block ogimage %}{{ blog.thumbnail.url }}{% endblock %}
+
+{% block title %}Verificación de Blog Reportado{% endblock %}
+
+{% block body %}
+{% load static %}
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <h2>
+      {{ blog.title }}
+    </h2>
+  </div>
+  <div class="row">
+    <p>Autor: {{ blog.creator }} | Estado actual: {% if blog.status == 0 %}Borrador{% elif blog.status == 1 %}En edición{% elif blog.status == 2 %}En espera{% elif blog.status == 3 %}Publicado{% endif %} | Actualizado: hace {{ blog.published_on|timesince }}</p>
+  </div>
+ 
+  <div class="row mb-3">
+      {% if blog.category.is_active %}
+      <div class="col">
+        <p>Categoria: <span style="font-weight: bold; color: #007bff;">{{ blog.category.category }}</span></p>
+      </div>
+      {% endif %}
+  </div>
+
+  <div class="row mt-3">
+    <div class="col">
+      <button class="btn btn-warning" id="enviarRevisionBtn">Enviar a Revisión</button>
+      <a href="{% url 'blogs:ignorar_reporte' report.id %}" class="btn btn-danger">Ignorar</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="ratio ratio-16x9">
+      <img src="{{ blog.thumbnail.url }}" class="img-fluid rounded mx-auto d-block" alt="miniatura del blog">
+    </div>
+    <p>
+      {{ blog.content|safe }}
+    </p>
+  </div>
+</div>
+
+<script>
+    document.getElementById('enviarRevisionBtn').addEventListener('click', function() {
+      const blogId = {{ blog.id }};
+      fetch(`/blogs/change_status/${blogId}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+          new_status: 2,  // Estado "En espera"
+          previous_status: {{ blog.status }}
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = "{% url 'manage:kanban' %}";
+        } else {
+          alert('Error al cambiar el estado del blog.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error al cambiar el estado del blog.');
+      });
+    });
+  </script>
+
+{% endblock %}
