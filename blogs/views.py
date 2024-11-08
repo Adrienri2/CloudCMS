@@ -53,6 +53,18 @@ class BlogView(View):
         """
         queryset = Blog.objects.filter(is_active=True, slug=slug)
         blog = get_object_or_404(queryset)
+      
+
+        category = blog.category
+
+        if category.subcategory_type == "paga":
+            if request.user.is_authenticated:
+                has_membership = PaidMembership.objects.filter(user=request.user, category=category).exists()
+                if not has_membership:
+                    return redirect('get_category', slug=category.slug)
+            else:
+                return redirect('get_category', slug=category.slug)
+
         blog.views = F("views") + 1
         blog.save()
         blog.refresh_from_db()
@@ -627,11 +639,6 @@ class ExportStatisticsView(View):
         pie_chart = request.POST.get('pie_chart')
         bar_chart = request.POST.get('bar_chart')
         line_chart = request.POST.get('line_chart')
-
-        # Mensajes de depuración
-        print("Pie Chart Data:", pie_chart[:100])  # Mostrar los primeros 100 caracteres
-        print("Bar Chart Data:", bar_chart[:100])  # Mostrar los primeros 100 caracteres
-        print("Line Chart Data:", line_chart[:100])  # Mostrar los primeros 100 caracteres
 
 
         # Crear un nuevo libro de trabajo
