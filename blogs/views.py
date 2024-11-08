@@ -385,18 +385,25 @@ class MembershipsView(View):
 
         if start_date:
             start_date = make_aware(datetime.strptime(start_date, '%Y-%m-%d'))
-            if end_date:
-                end_date = make_aware(datetime.strptime(end_date, '%Y-%m-%d')  + timedelta(days=1)) - timedelta(microseconds=1)
+        else:
+            start_date = None
+
+        if end_date:
+            end_date = make_aware(datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)) - timedelta(microseconds=1)
+            if start_date:
                 memberships = memberships.filter(payment_date__range=[start_date, end_date])
             else:
-                memberships = memberships.filter(payment_date__gte=start_date)
+                memberships = memberships.filter(payment_date__lte=end_date)
+        elif start_date:
+            memberships = memberships.filter(payment_date__gte=start_date)
 
-             # Si no se encuentran pagos en el rango de fechas, ajustar start_date a la fecha del primer pago
-            if not memberships.exists():
-                first_payment = PaidMembership.objects.filter(user=request.user).order_by('payment_date').first()
-                if first_payment:
-                    start_date = first_payment.payment_date
-                    memberships = PaidMembership.objects.filter(user=request.user, payment_date__gte=start_date)            
+        # Si no se encuentran pagos en el rango de fechas, ajustar start_date a la fecha del primer pago
+        if not memberships.exists() and not start_date:
+            first_payment = PaidMembership.objects.filter(user=request.user).order_by('payment_date').first()
+            if first_payment:
+                start_date = first_payment.payment_date
+                memberships = PaidMembership.objects.filter(user=request.user, payment_date__gte=start_date)
+ 
 
         total_paid = memberships.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
 
