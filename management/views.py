@@ -2,7 +2,7 @@ import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views import View
-from blogs.models import BlogVersion, Category, Blog, Comment
+from blogs.models import BlogVersion, Category, Blog, Comment, PaidMembership
 from django.utils import timezone
 from .forms import CKEditorForm
 from django.contrib.auth.models import User
@@ -730,7 +730,9 @@ class SetFeaturedBlogView(View):
         
 
 
+
 class BlogDetailView(View):
     def get(self, request, id):
         blog = get_object_or_404(Blog, id=id)
         return render(request, 'blogs/blog.html', {'blog': blog})
+    

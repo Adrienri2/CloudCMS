@@ -17,7 +17,11 @@
       {% endif %}
     </div>
     <div class="card-body">
-      <h5 class="card-title">{{ blog.title }}</h5>
+      <h5 class="card-title">{{ blog.title }} 
+        {% if blog.category.subcategory_type == "paga" %}
+          <i class="bi bi-currency-dollar text-danger fw-bold"></i>
+          {% endif %}
+      </h5>
       <p class="card-text">{{ blog.desc|truncatechars:100 }}</p>
     </div>
     <div class="row justify-content-evenly mb-1">
