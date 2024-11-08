@@ -7,6 +7,7 @@ from django.views import View
 from django.db.models import F
 from django.urls import reverse
 from django.db.models import Q, Sum
+from django.views.generic import TemplateView
 from django.conf import settings
 from accounts.models import DatosTarjeta
 from django.utils.timezone import make_aware,localtime, is_naive
@@ -543,46 +544,48 @@ class ExportMembershipsView(View):
         wb.save(response)
         return response
 
+def filter_payments(query, start_date, end_date):
+    payments = MembershipPayment.objects.all().order_by('-payment_date')
+    
+    if query:
+        payments = payments.filter(
+            Q(user__username__icontains=query) |
+            Q(category__category__icontains=query) |
+            Q(category_type__iexact=query) |
+            Q(membership_cost__icontains=query)
+        )
+
+    if start_date:
+        start_date = make_aware(datetime.strptime(start_date, '%Y-%m-%d'))
+    else:
+        start_date = None
+
+    if end_date:
+        end_date = make_aware(datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)) - timedelta(microseconds=1)
+        if start_date:
+            payments = payments.filter(payment_date__range=[start_date, end_date])
+        else:
+            payments = payments.filter(payment_date__lte=end_date)
+    elif start_date:
+        payments = payments.filter(payment_date__gte=start_date)
+
+    # Si no se encuentran pagos en el rango de fechas, ajustar start_date a la fecha del primer pago
+    if not payments.exists() and not start_date:
+        first_payment = MembershipPayment.objects.order_by('payment_date').first()
+        if first_payment:
+            start_date = first_payment.payment_date
+            payments = MembershipPayment.objects.filter(payment_date__gte=start_date)
+
+    return payments
+
 @method_decorator(permission_required('accounts.can_view_membership_payments', raise_exception=True), name='dispatch')
 class AllMembershipPaymentsView(View):
     def get(self, request):
         query = request.GET.get('q')
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
-        payments = MembershipPayment.objects.all().order_by('-payment_date')
+        payments = filter_payments(query, start_date, end_date)
         
-    
-        if query:
-                payments = payments.filter(
-                    Q(user__username__icontains=query) |
-                    Q(category__category__icontains=query) |
-                    Q(category_type__iexact=query) |
-                    Q(membership_cost__icontains=query)
-                )
-
-        if start_date:
-            start_date = make_aware(datetime.strptime(start_date, '%Y-%m-%d'))
-        else:
-            start_date = None
-
-        if end_date:
-            end_date = make_aware(datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)) - timedelta(microseconds=1)
-            if start_date:
-                payments = payments.filter(payment_date__range=[start_date, end_date])
-            else:
-                payments = payments.filter(payment_date__lte=end_date)
-        elif start_date:
-            payments = payments.filter(payment_date__gte=start_date)
-        
-        
-        # Si no se encuentran pagos en el rango de fechas, ajustar start_date a la fecha del primer pago
-        if not payments.exists() and not start_date:
-            first_payment = MembershipPayment.objects.order_by('payment_date').first()
-            if first_payment:
-                start_date = first_payment.payment_date
-                payments = MembershipPayment.objects.filter(payment_date__gte=start_date)
-     
-
         total_paid = payments.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
 
         return render(request, 'blogs/all_membership_payments.html', {'payments': payments, 'total_paid': total_paid})
@@ -606,27 +609,37 @@ class AllMembershipPaymentsView(View):
     
 
 @method_decorator(login_required, name='dispatch')
-class StatisticsView(View):
-    def get(self, request):
-        # Obtener los datos de las categorías y los totales comprados por cada categoría
-        categories = MembershipPayment.objects.values('category__category').annotate(total=Sum('membership_cost')).order_by('-total')
+class StatisticsView(TemplateView):
+    template_name = 'blogs/estadisticas.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         
+        # Obtener los parámetros de filtro desde el request
+        query = self.request.GET.get('q')
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        
+        # Aplicar el filtro en los pagos
+        payments = filter_payments(query, start_date, end_date)
 
-        # Preparar los datos para el gráfico
+        # Obtener los datos de las categorías y los totales comprados por cada categoría
+        categories = payments.values('category__category').annotate(total=Sum('membership_cost')).order_by('-total')
+
+        # Preparar los datos para el gráfico de pie
         labels = [category['category__category'] for category in categories]
         data = [category['total'] for category in categories]
 
         # Obtener los pagos agrupados por fecha
-        payments_by_date = MembershipPayment.objects.values('payment_date__date').annotate(total=Sum('membership_cost')).order_by('payment_date__date')
+        payments_by_date = payments.values('payment_date__date').annotate(total=Sum('membership_cost')).order_by('payment_date__date')
 
-        # Preparar los datos para el gráfico de línea de tiempo
+        # Preparar los datos para el gráfico de barra/linea de tiempo
         dates = [payment['payment_date__date'].strftime("%Y-%m-%d") for payment in payments_by_date]
         totals = [payment['total'] for payment in payments_by_date]
 
         # Obtener los pagos agrupados por fecha y categoría
-        payments_by_date_and_category = MembershipPayment.objects.values('payment_date__date', 'category__category').annotate(total=Sum('membership_cost')).order_by('payment_date__date')
+        payments_by_date_and_category = payments.values('payment_date__date', 'category__category').annotate(total=Sum('membership_cost')).order_by('payment_date__date')
 
-        # Preparar los datos para el gráfico de línea de tiempo con múltiples categorías
         # Preparar los datos para el gráfico de línea de tiempo por categoría
         category_data = {}
         for payment in payments_by_date_and_category:
@@ -637,16 +650,14 @@ class StatisticsView(View):
                 category_data[category] = []
             category_data[category].append({'x': date, 'y': total})
 
+        # Pasar los datos al contexto
+        context['labels'] = json.dumps(labels)
+        context['data'] = json.dumps(data)
+        context['dates'] = json.dumps(dates)
+        context['totals'] = json.dumps(totals)
+        context['category_data'] = json.dumps(category_data)
         
-        context = {
-            'labels': json.dumps(labels),
-            'data': json.dumps(data),
-            'dates': json.dumps(dates),
-            'totals': json.dumps(totals),
-            'category_data': json.dumps(category_data),
-        }
-        
-        return render(request, 'blogs/estadisticas.html', context)
+        return context
 
 @method_decorator(login_required, name='dispatch')
 class ExportStatisticsView(View):
