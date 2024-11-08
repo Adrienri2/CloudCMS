@@ -668,6 +668,14 @@ class ExportStatisticsView(View):
         line_chart = request.POST.get('line_chart')
 
 
+        # Obtener los filtros de `query`, `start_date`, y `end_date` desde el request
+        query = request.POST.get('q')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+
+        # Filtrar los pagos utilizando la función `filter_payments`
+        payments = filter_payments(query, start_date, end_date)
+
         # Crear un nuevo libro de trabajo
         wb = openpyxl.Workbook()
         ws = wb.active
@@ -712,7 +720,6 @@ class ExportStatisticsView(View):
             cell.border = thin_border
 
         # Escribir los datos de todas las membresías pagadas
-        payments = MembershipPayment.objects.all().order_by('-payment_date')
         for payment in payments:
             payment_date = payment.payment_date
             if is_naive(payment_date):
