@@ -7,6 +7,7 @@ app_name = "manage"
 
 urlpatterns = [
     path("blog/", views.ManageBlog.as_view(), name="blog"),
+    path('blogs/<int:id>/', BlogDetailView.as_view(), name='blog_detail'),
     path("category/", views.ManageCategory.as_view(), name="category"),
     path("comment/", views.ManageComment.as_view(), name="comment"),
 
@@ -34,7 +35,7 @@ urlpatterns = [
     path('edit/<int:user_id>/', EditUserView.as_view(), name='edit_user'),
     path('schedule_publication/<int:blog_id>/', schedule_publication, name='schedule_publication'),
     path('set_featured_blog/<int:blog_id>/', SetFeaturedBlogView.as_view(), name='set_featured_blog'),
-    path('blogs/<int:id>/', BlogDetailView.as_view(), name='blog_detail'),
+
 
 
 
