@@ -1,5 +1,6 @@
 import json
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -123,6 +124,44 @@ class CreateLike(View):
             messages.success(request, "Me gusta este blog")
         return redirect('blogs:blog', slug=blog.slug)
     
+@method_decorator(csrf_exempt, name='dispatch')
+class IncrementShareCountView(View):
+    def post(self, request, blog_id):
+        try:
+            print(f"Solicitud recibida para incrementar el contador de compartidos para blog_id: {blog_id}")
+            blog = Blog.objects.get(id=blog_id)
+            print(f"Blog encontrado: {blog.title} con share_count actual: {blog.share_count}")
+            blog.share_count = F('share_count') + 1
+            blog.save()
+            blog.refresh_from_db()  # Refrescar el objeto para obtener el valor actualizado
+            print(f"Nuevo share_count para blog_id {blog_id}: {blog.share_count}")
+            # Llamar a la vista para ajustar el contador
+            return redirect('blogs:adjust_share_count', blog_id=blog_id)
+        except Blog.DoesNotExist:
+            print(f"Blog con id {blog_id} no encontrado")
+            return JsonResponse({'success': False, 'error': 'Blog no encontrado'})
+        except Exception as e:
+            print(f"Ocurrió un error: {str(e)}")
+            return JsonResponse({'success': False, 'error': str(e)})
+        
+@method_decorator(csrf_exempt, name='dispatch')
+class AdjustShareCountView(View):
+    def get(self, request, blog_id):
+        try:
+            blog = Blog.objects.get(id=blog_id)
+            # Restar 1 al contador si se incrementó dos veces
+            if blog.share_count % 2 == 0:
+                blog.share_count = F('share_count') - 1
+                blog.save()
+                blog.refresh_from_db()
+            print(f"Contador ajustado para blog_id {blog_id}: {blog.share_count}")
+            return JsonResponse({'success': True})
+        except Blog.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Blog no encontrado'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+
 class CreateComment(View):
     """
     Vista para crear un comentario en un blog.
@@ -834,6 +873,14 @@ class ExportStatisticsView(View):
         line_chart = request.POST.get('line_chart')
 
 
+        # Obtener los filtros de `query`, `start_date`, y `end_date` desde el request
+        query = request.POST.get('q')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+
+        # Filtrar los pagos utilizando la función `filter_payments`
+        payments = filter_payments(query, start_date, end_date)
+
         # Crear un nuevo libro de trabajo
         wb = openpyxl.Workbook()
         ws = wb.active
@@ -878,7 +925,6 @@ class ExportStatisticsView(View):
             cell.border = thin_border
 
         # Escribir los datos de todas las membresías pagadas
-        payments = MembershipPayment.objects.all().order_by('-payment_date')
         for payment in payments:
             payment_date = payment.payment_date
             if is_naive(payment_date):

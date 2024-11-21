@@ -140,7 +140,7 @@ class Blog(models.Model):
     one_star_ratings = models.IntegerField(default=0)
     two_star_ratings = models.IntegerField(default=0)
     three_star_ratings = models.IntegerField(default=0)
-    
+    share_count = models.IntegerField(default=0)  
     
     
 

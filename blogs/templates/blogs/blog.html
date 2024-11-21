@@ -66,7 +66,7 @@
       </form>
     </div>
     <div class="col">
-      <button class="text-primary float-end" style="background:none!important;border:none;padding:0!important;" data-bs-toggle="modal" data-bs-target="#shareModal">
+      <button id="shareButton" class="text-primary float-end" style="background:none!important;border:none;padding:0!important;" data-bs-toggle="modal" data-bs-target="#shareModal">
         <i class="bi bi-box-arrow-up"></i>
       </button>
     </div>
@@ -281,14 +281,35 @@
 </script>
 
 <script>
-  function copyUrl() {
-    const url = "{{ request.build_absolute_uri }}";
-    navigator.clipboard.writeText(url).then(function() {
-      alert('URL copiada al portapapeles');
-    }, function(err) {
-      console.error('Error al copiar la URL: ', err);
+ 
+  document.addEventListener('DOMContentLoaded', function() {
+    const shareButton = document.getElementById('shareButton');
+    shareButton.addEventListener('click', function() {
+      incrementShareCount({{ blog.id }});
+    });
+  });
+
+  function incrementShareCount(blogId) {
+    fetch(`/blogs/increment_share_count/${blogId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}',
+         
+      },
+      body: JSON.stringify({ 'blog_id': blogId })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.success) {
+        console.error('Error incrementando el contador de compartidos:', data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error incrementando el contador de compartidos:', error);
     });
   }
+
   
   </script>
 
