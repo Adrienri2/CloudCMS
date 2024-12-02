@@ -140,6 +140,7 @@
     python manage.py test blogs.tests.CreateLikeTests
     python manage.py test blogs.tests.MarkAsReadViewTests
     python manage.py test blogs.tests.ToggleFavoriteCategoryViewTests
+    python manage.py test blogs.tests.PagoViewTests
 
     python manage.py test management.tests.KanbanViewTest
     ```

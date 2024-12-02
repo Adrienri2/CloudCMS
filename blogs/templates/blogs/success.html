@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block title %}Éxito{% endblock %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Pago Exitoso</h2>
+      <p>Tu pago ha sido procesado exitosamente y tu membresía ha sido activada.</p>
+      <a href="{% url 'blogs:ir_a_categoria' category.id %}" class="btn btn-primary">Ir a la Categoría</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

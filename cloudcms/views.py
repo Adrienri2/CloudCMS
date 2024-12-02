@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.db.models import Q
 from django.views.generic import ListView
-from blogs.models import Blog, Bookmark, Category, FavoriteCategory
+from blogs.models import Blog, Bookmark, Category, FavoriteCategory, Notification, PaidMembership
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 
@@ -25,6 +25,8 @@ class Index(View):
             blog_list = Blog.objects.filter(is_active=True, is_published=True, category__in=public_categories).order_by("-published_on")
 
         
+        featured_blogs = Blog.objects.filter(is_featured=True, is_published=True, is_active=True).order_by('-featured_at')[:4]  # Limitar a los 6 más recientes
+        
         page = request.GET.get('page', 1)
         paginator = Paginator(blog_list, 9)
 
@@ -36,7 +38,8 @@ class Index(View):
             blogs = paginator.page(paginator.num_pages)
 
         context = {
-            'blogs': blogs
+            'blogs': blogs,
+            'featured_blogs': featured_blogs
         }
         return render(request, 'index.html', context)
 
@@ -146,13 +149,17 @@ class GetCategory(View):
         blogs = category.blogs.filter(is_active=True, is_published=True).order_by("-published_on")
         costo_membresia = category.costo_membresia if category else None
         is_favorite = False
+        has_membership = False
         if request.user.is_authenticated:
             is_favorite = FavoriteCategory.objects.filter(user=request.user, category=category).exists()
+            has_membership = PaidMembership.objects.filter(user=request.user, category=category).exists()
         return render(request, 'get_category.html', {
             'category': category,  # Pasar la categoría al contexto
             'blogs': blogs,  # Pasar los blogs al contexto
             'costo_membresia': costo_membresia,  # Pasar el costo de la membresía al contexto
-            'is_favorite': is_favorite  # Pasar el estado de favorito al contexto
+            'is_favorite': is_favorite,  # Pasar el estado de favorito al contexto
+            'has_membership': has_membership  # Pasar el estado de membresía al contexto
+        
         })
 
 class TermsAndConditions(View):

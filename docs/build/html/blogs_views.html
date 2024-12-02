@@ -61,12 +61,31 @@
 <li class="toctree-l1"><a class="reference internal" href="blogs_tests.html">Pruebas para la Aplicación de Blogs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="blogs_urls.html">URLs del módulo blogs</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Vistas para la Aplicación de Blogs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.AllMembershipPaymentsView"><code class="docutils literal notranslate"><span class="pre">AllMembershipPaymentsView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.AllMembershipPaymentsView.dispatch"><code class="docutils literal notranslate"><span class="pre">AllMembershipPaymentsView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.AllMembershipPaymentsView.get"><code class="docutils literal notranslate"><span class="pre">AllMembershipPaymentsView.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.AllMembershipPaymentsView.post"><code class="docutils literal notranslate"><span class="pre">AllMembershipPaymentsView.post()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#blogs.views.BlogView"><code class="docutils literal notranslate"><span class="pre">BlogView</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.views.BlogView.get"><code class="docutils literal notranslate"><span class="pre">BlogView.get()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.CancelView"><code class="docutils literal notranslate"><span class="pre">CancelView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.CancelView.get"><code class="docutils literal notranslate"><span class="pre">CancelView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.ChangeBlogStatusView"><code class="docutils literal notranslate"><span class="pre">ChangeBlogStatusView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.ChangeBlogStatusView.dispatch"><code class="docutils literal notranslate"><span class="pre">ChangeBlogStatusView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.ChangeBlogStatusView.post"><code class="docutils literal notranslate"><span class="pre">ChangeBlogStatusView.post()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#blogs.views.CreateBookmark"><code class="docutils literal notranslate"><span class="pre">CreateBookmark</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.views.CreateBookmark.post"><code class="docutils literal notranslate"><span class="pre">CreateBookmark.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.CreateCheckoutSessionView"><code class="docutils literal notranslate"><span class="pre">CreateCheckoutSessionView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.CreateCheckoutSessionView.post"><code class="docutils literal notranslate"><span class="pre">CreateCheckoutSessionView.post()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#blogs.views.CreateComment"><code class="docutils literal notranslate"><span class="pre">CreateComment</span></code></a><ul>
@@ -79,6 +98,61 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#blogs.views.CreateReply"><code class="docutils literal notranslate"><span class="pre">CreateReply</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#blogs.views.CreateReply.post"><code class="docutils literal notranslate"><span class="pre">CreateReply.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.ExportMembershipsView"><code class="docutils literal notranslate"><span class="pre">ExportMembershipsView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.ExportMembershipsView.dispatch"><code class="docutils literal notranslate"><span class="pre">ExportMembershipsView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.ExportMembershipsView.get"><code class="docutils literal notranslate"><span class="pre">ExportMembershipsView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.ExportStatisticsView"><code class="docutils literal notranslate"><span class="pre">ExportStatisticsView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.ExportStatisticsView.base64_to_image"><code class="docutils literal notranslate"><span class="pre">ExportStatisticsView.base64_to_image()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.ExportStatisticsView.dispatch"><code class="docutils literal notranslate"><span class="pre">ExportStatisticsView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.ExportStatisticsView.post"><code class="docutils literal notranslate"><span class="pre">ExportStatisticsView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.IgnorarReporteView"><code class="docutils literal notranslate"><span class="pre">IgnorarReporteView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.IgnorarReporteView.get"><code class="docutils literal notranslate"><span class="pre">IgnorarReporteView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.IrACategoriaView"><code class="docutils literal notranslate"><span class="pre">IrACategoriaView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.IrACategoriaView.dispatch"><code class="docutils literal notranslate"><span class="pre">IrACategoriaView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.IrACategoriaView.get"><code class="docutils literal notranslate"><span class="pre">IrACategoriaView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.MembershipsView"><code class="docutils literal notranslate"><span class="pre">MembershipsView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.MembershipsView.dispatch"><code class="docutils literal notranslate"><span class="pre">MembershipsView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.MembershipsView.get"><code class="docutils literal notranslate"><span class="pre">MembershipsView.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.MembershipsView.post"><code class="docutils literal notranslate"><span class="pre">MembershipsView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.PagoView"><code class="docutils literal notranslate"><span class="pre">PagoView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.PagoView.get"><code class="docutils literal notranslate"><span class="pre">PagoView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.RateBlogView"><code class="docutils literal notranslate"><span class="pre">RateBlogView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.RateBlogView.post"><code class="docutils literal notranslate"><span class="pre">RateBlogView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.ReportBlogView"><code class="docutils literal notranslate"><span class="pre">ReportBlogView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.ReportBlogView.post"><code class="docutils literal notranslate"><span class="pre">ReportBlogView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.ReportedBlogsView"><code class="docutils literal notranslate"><span class="pre">ReportedBlogsView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.ReportedBlogsView.get"><code class="docutils literal notranslate"><span class="pre">ReportedBlogsView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.StatisticsView"><code class="docutils literal notranslate"><span class="pre">StatisticsView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.StatisticsView.dispatch"><code class="docutils literal notranslate"><span class="pre">StatisticsView.dispatch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.StatisticsView.get"><code class="docutils literal notranslate"><span class="pre">StatisticsView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.SuccessView"><code class="docutils literal notranslate"><span class="pre">SuccessView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.SuccessView.get"><code class="docutils literal notranslate"><span class="pre">SuccessView.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blogs.views.VerificarReporteView"><code class="docutils literal notranslate"><span class="pre">VerificarReporteView</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blogs.views.VerificarReporteView.get"><code class="docutils literal notranslate"><span class="pre">VerificarReporteView.get()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#blogs.views.favorite_categories"><code class="docutils literal notranslate"><span class="pre">favorite_categories()</span></code></a></li>
@@ -132,6 +206,53 @@
   <section id="module-blogs.views">
 <span id="vistas-para-la-aplicacion-de-blogs"></span><h1>Vistas para la Aplicación de Blogs<a class="headerlink" href="#module-blogs.views" title="Link to this heading"></a></h1>
 <dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.AllMembershipPaymentsView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">AllMembershipPaymentsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#AllMembershipPaymentsView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.AllMembershipPaymentsView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para gestionar y visualizar todos los pagos de membresías.</p>
+<p>Requiere el permiso “accounts.can_view_membership_payments”.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.AllMembershipPaymentsView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.views.AllMembershipPaymentsView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.AllMembershipPaymentsView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#AllMembershipPaymentsView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.AllMembershipPaymentsView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para mostrar todos los pagos de membresías con opciones de filtrado.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Renderiza la plantilla “blogs/all_membership_payments.html” con los pagos filtrados y el total pagado.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.AllMembershipPaymentsView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#AllMembershipPaymentsView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.AllMembershipPaymentsView.post" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud POST para eliminar un pago de membresía.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Redirige al usuario a la página de todos los pagos de membresías después de la eliminación.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="blogs.views.BlogView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">BlogView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#BlogView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.BlogView" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
@@ -145,6 +266,90 @@
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.CancelView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">CancelView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#CancelView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.CancelView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para manejar la cancelación de un pago.</p>
+<dl class="simple">
+<dt>Método:</dt><dd><dl class="simple">
+<dt>get(request, category_id):</dt><dd><p>Procesa la solicitud GET para redirigir al usuario tras la cancelación.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.CancelView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#CancelView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.CancelView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para redirigir al usuario después de la cancelación del pago.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p></li>
+<li><p><strong>category_id</strong> (<em>int</em>) – ID de la categoría para la cual se intentó el pago.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Redirige al usuario a la página de inicio.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.ChangeBlogStatusView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">ChangeBlogStatusView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ChangeBlogStatusView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ChangeBlogStatusView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para cambiar el estado de un blog.</p>
+<p>Permite actualizar el estado de un blog específico y gestionar las acciones asociadas al cambio de estado.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.ChangeBlogStatusView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ChangeBlogStatusView.dispatch"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ChangeBlogStatusView.dispatch" title="Link to this definition"></a></dt>
+<dd><p>Sobrescribe el método dispatch para eximir de la verificación CSRF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> – Argumentos posicionales.</p></li>
+<li><p><strong>**kwargs</strong> – Argumentos de palabra clave.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Respuesta de la superclase dispatch.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.ChangeBlogStatusView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blog_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ChangeBlogStatusView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ChangeBlogStatusView.post" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud POST para cambiar el estado de un blog.</p>
+<p>Obtiene el nuevo estado desde la solicitud, actualiza el estado del blog, elimina reportes si es necesario
+y retorna una respuesta JSON indicando el resultado de la operación.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p></li>
+<li><p><strong>blog_id</strong> (<em>int</em>) – ID del blog que se va a actualizar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Respuesta JSON indicando éxito o error de la operación.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JsonResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="blogs.views.CreateBookmark">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">CreateBookmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#CreateBookmark"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.CreateBookmark" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
@@ -153,6 +358,43 @@
 <dt class="sig sig-object py" id="blogs.views.CreateBookmark.post">
 <span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#CreateBookmark.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.CreateBookmark.post" title="Link to this definition"></a></dt>
 <dd><p>Maneja las solicitudes POST para crear o eliminar un marcador en un blog.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.CreateCheckoutSessionView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">CreateCheckoutSessionView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#CreateCheckoutSessionView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.CreateCheckoutSessionView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para crear una sesión de pago con Stripe.</p>
+<dl class="simple">
+<dt>Método:</dt><dd><dl class="simple">
+<dt>post(request, category_id, <a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs):</dt><dd><p>Procesa la solicitud POST para crear una sesión de pago.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.CreateCheckoutSessionView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#CreateCheckoutSessionView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.CreateCheckoutSessionView.post" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud POST para crear una sesión de pago mediante Stripe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p></li>
+<li><p><strong>category_id</strong> (<em>int</em>) – ID de la categoría para el pago.</p></li>
+<li><p><strong>*args</strong> – Argumentos adicionales.</p></li>
+<li><p><strong>**kwargs</strong> – Argumentos de palabra clave adicionales.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Redirige al usuario a la URL de la sesión de pago.
+str: Retorna el error en caso de excepción.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -192,6 +434,405 @@
 <dt class="sig sig-object py" id="blogs.views.CreateReply.post">
 <span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#CreateReply.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.CreateReply.post" title="Link to this definition"></a></dt>
 <dd><p>Maneja las solicitudes POST para crear una respuesta a un comentario.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.ExportMembershipsView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">ExportMembershipsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ExportMembershipsView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ExportMembershipsView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para exportar las membresías pagadas del usuario a un archivo Excel.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.ExportMembershipsView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.views.ExportMembershipsView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.ExportMembershipsView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ExportMembershipsView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ExportMembershipsView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para generar y descargar un archivo Excel con las membresías pagadas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Respuesta HTTP con el archivo Excel adjunto.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.ExportStatisticsView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">ExportStatisticsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ExportStatisticsView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ExportStatisticsView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para exportar las estadísticas de membresías a un archivo Excel.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.ExportStatisticsView.base64_to_image">
+<span class="sig-name descname"><span class="pre">base64_to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base64_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ExportStatisticsView.base64_to_image"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ExportStatisticsView.base64_to_image" title="Link to this definition"></a></dt>
+<dd><p>Convierte una cadena en base64 a un objeto de imagen compatible con openpyxl.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>base64_string</strong> (<em>str</em>) – Cadena de imagen codificada en base64.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Objeto de imagen para insertar en el archivo Excel.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>openpyxl.drawing.image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.ExportStatisticsView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.views.ExportStatisticsView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.ExportStatisticsView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ExportStatisticsView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ExportStatisticsView.post" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud POST para generar y descargar un archivo Excel con las estadísticas de membresías.</p>
+<p>Obtiene los gráficos desde el formulario, crea un archivo Excel con los datos de las membresías pagadas,
+añade los gráficos al archivo y prepara la respuesta HTTP para la descarga.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Respuesta HTTP con el archivo Excel adjunto.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.IgnorarReporteView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">IgnorarReporteView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#IgnorarReporteView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.IgnorarReporteView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para ignorar y eliminar un reporte de un blog.</p>
+<p>Permite a los administradores eliminar un reporte específico hecho por un usuario sobre un blog.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.IgnorarReporteView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#IgnorarReporteView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.IgnorarReporteView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para ignorar y eliminar un reporte de un blog.</p>
+<p>Recupera el reporte por su ID, lo elimina y redirige a la lista de reportes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p></li>
+<li><p><strong>id</strong> (<em>int</em>) – ID del reporte que se va a ignorar y eliminar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Redirige a la página de todos los reportes de blogs.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.IrACategoriaView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">IrACategoriaView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#IrACategoriaView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.IrACategoriaView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para redirigir al usuario a una categoría específica y gestionar la membresía.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.IrACategoriaView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.views.IrACategoriaView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.IrACategoriaView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#IrACategoriaView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.IrACategoriaView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para redirigir al usuario a la categoría seleccionada.
+Verifica si el usuario ya tiene una membresía para la categoría y actúa en consecuencia.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p></li>
+<li><p><strong>category_id</strong> (<em>int</em>) – ID de la categoría a la que se redirige.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Redirige al usuario a la página de la categoría o muestra un mensaje de éxito.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.MembershipsView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">MembershipsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#MembershipsView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.MembershipsView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para gestionar las membresías pagadas del usuario.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.MembershipsView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.views.MembershipsView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.MembershipsView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#MembershipsView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.MembershipsView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para mostrar las membresías del usuario con opciones de filtrado.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Renderiza la plantilla “blogs/memberships.html” con las membresías filtradas y el total pagado.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.MembershipsView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#MembershipsView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.MembershipsView.post" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud POST para eliminar una membresía del usuario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Redirige al usuario a la página de membresías después de la eliminación.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.PagoView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">PagoView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#PagoView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.PagoView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para manejar el pago de una categoría específica.</p>
+<dl class="simple">
+<dt>Método:</dt><dd><dl class="simple">
+<dt>get(request, category_id):</dt><dd><p>Procesa la solicitud GET para mostrar la página de pago.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.PagoView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#PagoView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.PagoView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para mostrar el formulario de pago.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p></li>
+<li><p><strong>category_id</strong> (<em>int</em>) – ID de la categoría para el pago.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Renderiza la plantilla “blogs/pago.html” con los datos necesarios.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.RateBlogView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">RateBlogView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#RateBlogView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.RateBlogView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para gestionar la calificación de un blog por parte de un usuario.</p>
+<p>Permite a un usuario calificar un blog y actualiza las estadísticas de calificaciones correspondientes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.RateBlogView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blog_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#RateBlogView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.RateBlogView.post" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud POST para calificar un blog.</p>
+<p>Obtiene la calificación enviada por el usuario, actualiza la calificación del blog y redirige al detalle del blog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p></li>
+<li><p><strong>blog_id</strong> (<em>int</em>) – ID del blog que se va a calificar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Redirige a la página de detalle del blog.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.ReportBlogView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">ReportBlogView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ReportBlogView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ReportBlogView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para gestionar el reporte de un blog por parte de un usuario.</p>
+<p>Permite a un usuario reportar un blog proporcionando una razón para el reporte.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.ReportBlogView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ReportBlogView.post"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ReportBlogView.post" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud POST para reportar un blog.</p>
+<p>Obtiene la razón del reporte enviada por el usuario, crea un nuevo registro de reporte
+y redirige al detalle del blog reportado.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p></li>
+<li><p><strong>id</strong> (<em>int</em>) – ID del blog que se va a reportar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Redirige a la página de detalle del blog.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponseRedirect</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.ReportedBlogsView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">ReportedBlogsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ReportedBlogsView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ReportedBlogsView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para visualizar todos los reportes de blogs.</p>
+<p>Permite a los administradores ver una lista de todos los reportes realizados sobre los blogs.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.ReportedBlogsView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#ReportedBlogsView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.ReportedBlogsView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para mostrar todos los reportes de blogs.</p>
+<p>Recupera todos los reportes ordenados por fecha de creación descendente y renderiza
+la plantilla correspondiente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Renderiza la plantilla “blogs/blogs_reportados.html” con los reportes.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.StatisticsView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">StatisticsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#StatisticsView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.StatisticsView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para mostrar estadísticas de los pagos de membresías.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.StatisticsView.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blogs.views.StatisticsView.dispatch" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.StatisticsView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#StatisticsView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.StatisticsView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para generar y mostrar estadísticas de pagos de membresías.</p>
+<p>Obtiene datos agregados de las membresías pagadas por categoría y por fecha,
+prepara los datos para visualización en gráficos y renderiza la plantilla correspondiente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Renderiza la plantilla “blogs/estadisticas.html” con los datos de estadísticas.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.SuccessView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">SuccessView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#SuccessView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.SuccessView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para manejar la página de éxito después de un pago exitoso.</p>
+<dl class="simple">
+<dt>Método:</dt><dd><dl class="simple">
+<dt>get(request, category_id):</dt><dd><p>Procesa la solicitud GET para mostrar la página de éxito.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.SuccessView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#SuccessView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.SuccessView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para mostrar la página de éxito de pago.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p></li>
+<li><p><strong>category_id</strong> (<em>int</em>) – ID de la categoría para la cual se realizó el pago.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Renderiza la plantilla “blogs/success.html” con los datos necesarios.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blogs.views.VerificarReporteView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blogs.views.</span></span><span class="sig-name descname"><span class="pre">VerificarReporteView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#VerificarReporteView"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.VerificarReporteView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></p>
+<p>Vista para verificar un reporte específico de un blog.</p>
+<p>Permite a los administradores revisar los detalles de un reporte y el blog asociado.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blogs.views.VerificarReporteView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blogs/views.html#VerificarReporteView.get"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#blogs.views.VerificarReporteView.get" title="Link to this definition"></a></dt>
+<dd><p>Maneja la solicitud GET para verificar un reporte específico.</p>
+<p>Recupera el reporte por su ID y el blog asociado, luego renderiza la plantilla correspondiente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HttpRequest</em>) – Objeto de la solicitud HTTP.</p></li>
+<li><p><strong>id</strong> (<em>int</em>) – ID del reporte que se va a verificar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Renderiza la plantilla “blogs/verificar_blog_reportado.html” con el blog y el reporte.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

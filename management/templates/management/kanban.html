@@ -91,6 +91,25 @@
     {% endfor %}
 </div>
 
+<!-- Modal para Inactivar Artículo -->
+<div class="modal fade" id="inactivateArticleModal" tabindex="-1" aria-labelledby="inactivateArticleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inactivateArticleModalLabel">Inactivar Artículo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Seguro que desea inactivar el contenido?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="confirmInactivateButton">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Primer Modal -->
 <div class="modal fade" id="changeStatusModal" tabindex="-1" aria-labelledby="changeStatusModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -124,6 +143,7 @@
           <p id="confirmModalMessage"></p>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-danger" id="confirmarInactivacion">Inactivar</button>
           <button type="button" class="btn btn-warning" id="finalReturnStatus">Devolver</button> 
           <button type="button" class="btn btn-primary" id="finalConfirmChangeStatus" style="display: none;">Avanzar</button>
           <button type="button" class="btn btn-success" id="schedulePublication">Programar Publicación</button>
@@ -189,8 +209,8 @@
           </div>
           <!--  Añadir campo para la fecha de caducidad -->
           <div class="mb-3">
-            <label for="expiryDate" class="form-label">Activo hasta:</label>
-            <input type="datetime-local" class="form-control" id="expiryDate" name="expiry_date" required>
+            <label for="expiryDate" class="form-label">Activo hasta (Opcional):</label>
+            <input type="datetime-local" class="form-control" id="expiryDate" name="expiry_date">
           </div>
           <button type="submit" class="btn btn-primary">Programar</button>
         </form>
@@ -208,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const confirmStatusChangeModal = new bootstrap.Modal(document.getElementById('confirmStatusChangeModal'));
   const commentModal = new bootstrap.Modal(document.getElementById('commentModal'));
   const returnedBlogModal = new bootstrap.Modal(document.getElementById('returnedBlogModal'));
+  const inactivateArticleModal = new bootstrap.Modal(document.getElementById('inactivateArticleModal')); // Modal para inactivar artículo
   const modalMessage = document.getElementById('modalMessage');
   const confirmModalMessage = document.getElementById('confirmModalMessage');
   const confirmChangeStatus = document.getElementById('confirmChangeStatus');
@@ -222,11 +243,17 @@ document.addEventListener('DOMContentLoaded', function() {
   const schedulePublication = document.getElementById('schedulePublication'); // Añadido referencia al botón "Programar Publicación"
   const schedulePublicationModal = new bootstrap.Modal(document.getElementById('schedulePublicationModal'));
   const schedulePublicationForm = document.getElementById('schedulePublicationForm');
+  const confirmInactivateButton = document.getElementById('confirmInactivateButton'); // Botón de confirmación para inactivar artículo
+  const confirmarInactivacion = document.getElementById('confirmarInactivacion'); // Botón de confirmación para inactivar artículo
+  
   
   let selectedBlogId = null;
   let newStatus = null;
   let blogStatus = null; // Añadido para mantener el estado del blog
   let previousStatus = null;
+
+  const userRole = '{{ request.user.role }}'; // Almacenar el rol del usuario en una variable de JavaScript
+
 
   categoryTypeSelect.addEventListener('change', function() {
     const selectedCategoryType = categoryTypeSelect.value;
@@ -251,17 +278,33 @@ document.addEventListener('DOMContentLoaded', function() {
           if (data.previous_status > blogStatus) {
             console.log(`Comentario de devolución para el blog ${selectedBlogId}: ${data.return_comment}`);
             returnCommentText.textContent = data.return_comment;
+
+            
             //Verificar permisos y estado del blog antes de mostrar el cuarto modal
-            if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
-                (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
-                (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
-                (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true')) {
+            if (data.return_comment && (
+              (blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
+              (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
+              (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
+              (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true')
+            )) {
+                  
               console.log('Mostrando el cuarto modal con el comentario de devolución.');
               returnedBlogModal.show();
             } else {
               console.log('No tiene permisos para ver el comentario de devolución.');
+               // Verificar permisos y estado del blog antes de mostrar el primer modal
+              if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
+                  (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
+                  (blogStatus === 2 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') ||
+                  (blogStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true')) { 
+                modalMessage.textContent = 'Seleccione una acción:'; 
+                changeStatusModal.show();
+              } else {
+                console.log('No tiene permisos para cambiar el estado de este blog.');
+              }
             }
-          } else {
+          
+        } else {
             // Verificar permisos y estado del blog antes de mostrar el primer modal
             if ((blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') ||
                 (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') ||
@@ -273,9 +316,73 @@ document.addEventListener('DOMContentLoaded', function() {
               console.log('No tiene permisos para cambiar el estado de este blog.');
             }
           }
+        
+          // Mostrar el modal de inactivación si el usuario es Autor  y el estado del blog es distinto a borrador (0)
+          if (blogStatus !== 0 && userRole === 'author') {
+            console.log('Mostrando el modal de inactivación.');
+            inactivateArticleModal.show();
+          }
+
         });
     });
   });
+
+  
+  confirmarInactivacion.addEventListener('click', function() {
+    if (selectedBlogId) {
+      console.log(`Inactivando el blog con ID: ${selectedBlogId}`);
+      fetch(`/manage/delete/blog/${selectedBlogId}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.reload();
+        } else {
+          alert('Error al inactivar el blog.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error al inactivar el blog.');
+      });
+    } else {
+      console.log('selectedBlogId es nulo');
+    }
+  });  
+
+  confirmInactivateButton.addEventListener('click', function() {
+    if (selectedBlogId) {
+      console.log(`Inactivando el blog con ID: ${selectedBlogId}`);
+      fetch(`/manage/delete/blog/${selectedBlogId}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.reload();
+        } else {
+          alert('Error al inactivar el blog.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error al inactivar el blog.');
+      });
+    } else {
+      console.log('selectedBlogId es nulo');
+    }
+  });  
+
+
 
   acceptReturnComment.addEventListener('click', function() {
     returnedBlogModal.hide();
@@ -322,6 +429,22 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     
 
+      if (blogStatus === 0 && '{{ perms.accounts.can_create_blog|yesno:"true,false" }}' === 'true') {
+        finalReturnStatus.style.display = 'none';
+      } else {
+        finalReturnStatus.style.display = 'inline-block';
+      }
+
+      // Mostrar el botón "Inactivar" solo si el usuario tiene el rol de "admin" o "autor"
+      if (userRole === 'admin' || userRole === 'author') {
+        confirmarInactivacion.style.display = 'inline-block';
+      } else {
+        confirmarInactivacion.style.display = 'none';
+      }
+
+      
+
+
       if (newStatus === 3 && '{{ perms.accounts.can_publish_blog|yesno:"true,false" }}' === 'true') {
         finalConfirmChangeStatus.textContent = 'Publicar';
       } else {
@@ -336,6 +459,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   finalConfirmChangeStatus.addEventListener('click', function() {
     if (selectedBlogId && newStatus !== null) {
+      finalConfirmChangeStatus.disabled = true;
       console.log(`Enviando solicitud para cambiar el estado del blog ${selectedBlogId} a ${newStatus}`);
       fetch(`/manage/change_blog_status/${selectedBlogId}/`, {
         method: 'POST',
@@ -368,6 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const comment = returnComment.value.trim();
     console.log(`Comentario de devolución generado: ${comment}`);
     if (selectedBlogId && comment) {
+      submitReturnComment.disabled = true;
       let returnStatus = null;
       if (blogStatus === 1 && '{{ perms.accounts.can_edit_blog|yesno:"true,false" }}' === 'true') {
         returnStatus = 0; // Devolver a Borrador
@@ -424,6 +549,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Abrir el modal "Programar Publicación" al hacer clic en el botón
 schedulePublication.addEventListener('click', function() {
   schedulePublicationModal.show();
+  confirmStatusChangeModal.hide();
 });
 
 // Manejar el envío del formulario de programación de publicación
@@ -431,7 +557,7 @@ schedulePublicationForm.addEventListener('submit', function(event) {
   event.preventDefault();
   const scheduledDate = document.getElementById('scheduledDate').value; // Obtener la fecha y hora de publicación
   const expiryDate = document.getElementById('expiryDate').value; // Obtener la fecha de caducidad
-  if (scheduledDate && expiryDate) {
+  if (scheduledDate) {
     // Enviar la solicitud para programar la publicación
     fetch(`/manage/schedule_publication/${selectedBlogId}/`, {
       method: 'POST',
@@ -444,7 +570,7 @@ schedulePublicationForm.addEventListener('submit', function(event) {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        schedulePublicationModal.hide();
+        schedulePublicationModal.hide();  
         alert('Publicación programada con éxito');
       } else {
         alert('Error al programar la publicación');
@@ -455,7 +581,7 @@ schedulePublicationForm.addEventListener('submit', function(event) {
       alert('Error al programar la publicación');
     });
   } else {
-    alert('Por favor, complete ambas fechas.');
+    alert('Por favor, complete la fecha de publicación.');
   }
 });
 

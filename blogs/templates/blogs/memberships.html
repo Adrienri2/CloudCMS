@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+
+{% block title %}Mis Membresías{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+  <h2>Mis Suscripciones</h2>
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <div>
+        <p>Filtrar por Categoría, Descripción, Tipo, Costo de Membresía:</p>
+      </div>
+      <form method="get" action="{% url 'blogs:memberships' %}">
+        <div class="input-group mb-3">
+          <input type="text" name="q" class="form-control" placeholder="Buscar..." value="{{ request.GET.q }}">
+        </div>
+        <p>Filtrar por fechas:</p>
+        <div class="input-group mb-3">
+          <label for="start_date" class="form-label">Fecha de inicio: </label>
+          <input type="date" name="start_date" class="form-control" value="{{ request.GET.start_date }}">
+        </div>
+        <div class="input-group mb-3">
+          <label for="end_date" class="form-label">Fecha de fin: </label>
+          <input type="date" name="end_date" class="form-control" value="{{ request.GET.end_date }}">
+        </div>
+          <button class="btn btn-primary" type="submit">Buscar</button>
+          <button type="reset" class="btn btn-secondary" onclick="clearForm()">Limpiar</button>
+      </form>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nombre de la Categoría</th>
+          <th>Descripción</th>
+          <th>Tipo</th>
+          <th>Costo</th>
+          <th>Tipo de Pago</th>
+          <th>Fecha de Pago</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for membership in memberships %}
+          <tr>
+            <td>{{ membership.category.category }}</td>
+            <td>{{ membership.category_desc }}</td>
+            <td>{{ membership.category_type }}</td>
+            <td>Gs. {{ membership.membership_cost }}</td>
+            <td>TC/TD</td>
+            <td>{{ membership.payment_date|date:"d M, Y H:i:s" }}</td>
+            <td>
+              <form method="post" action="{% url 'blogs:memberships' %}">
+                {% csrf_token %}
+                <input type="hidden" name="membership_id" value="{{ membership.id }}">
+                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-3">
+    <h5>Total General Pagado: Gs. {{ total_paid }}</h5>
+    <a href="{% url 'blogs:export_memberships' %}?q={{ request.GET.q }}&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}&total_paid={{ total_paid }}" class="btn btn-success">Exportar</a>
+  </div>
+</div>
+
+
+<script>
+  function clearForm() {
+    document.querySelector('input[name="q"]').value = '';
+    document.querySelector('input[name="start_date"]').value = '';
+    document.querySelector('input[name="end_date"]').value = '';
+    window.location.href = window.location.pathname;  // Recargar la página
+ 
+  }
+</script>
+{% endblock %}

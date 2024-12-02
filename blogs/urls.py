@@ -22,13 +22,36 @@ urlpatterns = [
     path("create/comment/", login_required(views.CreateComment.as_view()), name="create_comment"),
     path("create/reply/", login_required(views.CreateReply.as_view()), name="create_reply"),
     path("create/bookmark/", login_required(views.CreateBookmark.as_view()), name="create_bookmark"),
+    path('pago/<int:category_id>/', views.PagoView.as_view(), name='pago'),
+    path('ir_a_categoria/<int:category_id>/', views.IrACategoriaView.as_view(), name='ir_a_categoria'),
+    path('create-checkout-session/<int:category_id>/', views.CreateCheckoutSessionView.as_view(), name='create_checkout_session'),  # Vista para crear sesión de pago
+    path('success/<int:category_id>/', views.SuccessView.as_view(), name='success'),  # Vista de éxito
+    path('cancel/<int:category_id>/', views.CancelView.as_view(), name='cancel'),  # Vista cancelar
+    path('memberships/', views.MembershipsView.as_view(), name='memberships'),  # Vista de membresías
+    path('export_memberships/', views.ExportMembershipsView.as_view(), name='export_memberships'), # Vista para exportar membresías
+    path('all_membership_payments/', views.AllMembershipPaymentsView.as_view(), name='all_membership_payments'),  # Vista para ver todas las membresías pagadas
+    path('estadisticas/', views.StatisticsView.as_view(), name='estadisticas'), # Vista para ver las estadísticas
+    path('export_statistics/', views.ExportStatisticsView.as_view(), name='export_statistics'),
     path("create/like/", login_required(views.CreateLike.as_view()), name="create_like"),
+    path('increment_share_count/<int:blog_id>/', views.IncrementShareCountView.as_view(), name='increment_share_count'),
+    path('adjust_share_count/<int:blog_id>/', views.AdjustShareCountView.as_view(), name='adjust_share_count'),
+    path('reportados/', views.ReportedBlogsView.as_view(), name='blogs_reportados'),
+    path('verificar_reporte/<int:id>/', views.VerificarReporteView.as_view(), name='verificar_reporte'),
+    path('verificar_reporte/<int:id>/', views.VerificarReporteView.as_view(), name='verificar_reporte'),
+    path('ignorar_reporte/<int:id>/', views.IgnorarReporteView.as_view(), name='ignorar_reporte'),
+    path('change_status/<int:blog_id>/', views.ChangeBlogStatusView.as_view(), name='change_blog_status'),
     path("<slug:slug>/", views.BlogView.as_view(), name="blog"),
+    path('report/<int:id>/', views.ReportBlogView.as_view(), name='report_blog'),
     path('notifications/', notifications, name='notifications'),
     path('notifications/mark_as_read/<int:notification_id>/', mark_as_read, name='mark_as_read'),
     path('notifications/mark_all_as_read/', mark_all_as_read, name='mark_all_as_read'),
     path('toggle_favorite_category/<int:category_id>/', toggle_favorite_category, name='toggle_favorite_category'),
     path('favorite_categories/', favorite_categories, name='favorite_categories'),
+    path('rate_blog/<int:blog_id>/', views.RateBlogView.as_view(), name='rate_blog'),
+    
+
+
+
 
 
 

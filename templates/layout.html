@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/index.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+
     <link rel="stylesheet" href="{% static 'bootstrap-icons/bootstrap-icons.css' %}">
     <title>{% block title %}{% endblock %}</title>
 
@@ -202,6 +204,16 @@
                 Administrar
               </a>
               <ul class="dropdown-menu">
+                
+                {% if request.user.role == 'admin' or request.user.role == 'financiero' %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'blogs:all_membership_payments' %}">
+                    <i class="bi bi-card-list"></i>
+                    Membresías
+                  </a>
+                </li>
+                {% endif %}
+                {% if request.user.role != 'financiero' %}  
                   <li>
                     <a class="dropdown-item" href="{% url 'manage:blog' %}">
                       <i class="bi bi-book"></i>
@@ -238,6 +250,7 @@
                     Kanban
                   </a>
                 </li>
+              {% endif %}
               </ul>
             </li>
           {% endif %}
@@ -292,6 +305,8 @@
 </div>
 
 {% block body %}{% endblock %}
+
+
 
 <br><br><br><br><br><br>
 <!-- Footer -->
@@ -366,6 +381,8 @@
   
   });
   </script>
+
+
 
 <!-- Estilos CSS para submenús -->
 <style>

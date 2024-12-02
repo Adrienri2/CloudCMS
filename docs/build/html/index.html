@@ -135,6 +135,7 @@ documentation for details.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accounts_models.html">Modelo de Usuario</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accounts_models.html#accounts.models.DatosTarjeta"><code class="docutils literal notranslate"><span class="pre">DatosTarjeta</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="accounts_models.html#accounts.models.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a></li>
 </ul>
 </li>
@@ -171,23 +172,45 @@ documentation for details.</p>
 <li class="toctree-l2"><a class="reference internal" href="blogs_models.html#blogs.models.Category"><code class="docutils literal notranslate"><span class="pre">Category</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_models.html#blogs.models.Comment"><code class="docutils literal notranslate"><span class="pre">Comment</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_models.html#blogs.models.FavoriteCategory"><code class="docutils literal notranslate"><span class="pre">FavoriteCategory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_models.html#blogs.models.MembershipPayment"><code class="docutils literal notranslate"><span class="pre">MembershipPayment</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_models.html#blogs.models.Notification"><code class="docutils literal notranslate"><span class="pre">Notification</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_models.html#blogs.models.PaidMembership"><code class="docutils literal notranslate"><span class="pre">PaidMembership</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_models.html#blogs.models.Rating"><code class="docutils literal notranslate"><span class="pre">Rating</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_models.html#blogs.models.Reply"><code class="docutils literal notranslate"><span class="pre">Reply</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_models.html#blogs.models.Report"><code class="docutils literal notranslate"><span class="pre">Report</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blogs_tests.html">Pruebas para la Aplicación de Blogs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blogs_tests.html#blogs.tests.BlogViewTests"><code class="docutils literal notranslate"><span class="pre">BlogViewTests</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_tests.html#blogs.tests.CreateBookmarkTests"><code class="docutils literal notranslate"><span class="pre">CreateBookmarkTests</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_tests.html#blogs.tests.CreateLikeTests"><code class="docutils literal notranslate"><span class="pre">CreateLikeTests</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_tests.html#blogs.tests.MarkAsReadViewTests"><code class="docutils literal notranslate"><span class="pre">MarkAsReadViewTests</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_tests.html#blogs.tests.ToggleFavoriteCategoryViewTests"><code class="docutils literal notranslate"><span class="pre">ToggleFavoriteCategoryViewTests</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blogs_urls.html">URLs del módulo blogs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="blogs_views.html">Vistas para la Aplicación de Blogs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.AllMembershipPaymentsView"><code class="docutils literal notranslate"><span class="pre">AllMembershipPaymentsView</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.BlogView"><code class="docutils literal notranslate"><span class="pre">BlogView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.CancelView"><code class="docutils literal notranslate"><span class="pre">CancelView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.ChangeBlogStatusView"><code class="docutils literal notranslate"><span class="pre">ChangeBlogStatusView</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.CreateBookmark"><code class="docutils literal notranslate"><span class="pre">CreateBookmark</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.CreateCheckoutSessionView"><code class="docutils literal notranslate"><span class="pre">CreateCheckoutSessionView</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.CreateComment"><code class="docutils literal notranslate"><span class="pre">CreateComment</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.CreateLike"><code class="docutils literal notranslate"><span class="pre">CreateLike</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.CreateReply"><code class="docutils literal notranslate"><span class="pre">CreateReply</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.ExportMembershipsView"><code class="docutils literal notranslate"><span class="pre">ExportMembershipsView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.ExportStatisticsView"><code class="docutils literal notranslate"><span class="pre">ExportStatisticsView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.IgnorarReporteView"><code class="docutils literal notranslate"><span class="pre">IgnorarReporteView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.IrACategoriaView"><code class="docutils literal notranslate"><span class="pre">IrACategoriaView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.MembershipsView"><code class="docutils literal notranslate"><span class="pre">MembershipsView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.PagoView"><code class="docutils literal notranslate"><span class="pre">PagoView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.RateBlogView"><code class="docutils literal notranslate"><span class="pre">RateBlogView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.ReportBlogView"><code class="docutils literal notranslate"><span class="pre">ReportBlogView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.ReportedBlogsView"><code class="docutils literal notranslate"><span class="pre">ReportedBlogsView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.StatisticsView"><code class="docutils literal notranslate"><span class="pre">StatisticsView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.SuccessView"><code class="docutils literal notranslate"><span class="pre">SuccessView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.VerificarReporteView"><code class="docutils literal notranslate"><span class="pre">VerificarReporteView</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.favorite_categories"><code class="docutils literal notranslate"><span class="pre">favorite_categories()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.get_blog_url"><code class="docutils literal notranslate"><span class="pre">get_blog_url()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="blogs_views.html#blogs.views.mark_all_as_read"><code class="docutils literal notranslate"><span class="pre">mark_all_as_read()</span></code></a></li>
@@ -235,6 +258,7 @@ documentation for details.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="management_urls.html">URLs para la Aplicación CloudCMS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="management_views.html">Vistas para la Aplicación CloudCMS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.BlogDetailView"><code class="docutils literal notranslate"><span class="pre">BlogDetailView</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.BlogPreviewView"><code class="docutils literal notranslate"><span class="pre">BlogPreviewView</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.ChangeBlogStatusView"><code class="docutils literal notranslate"><span class="pre">ChangeBlogStatusView</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.CreateBlog"><code class="docutils literal notranslate"><span class="pre">CreateBlog</span></code></a></li>
@@ -249,6 +273,8 @@ documentation for details.</p>
 <li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.ManageBlog"><code class="docutils literal notranslate"><span class="pre">ManageBlog</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.ManageCategory"><code class="docutils literal notranslate"><span class="pre">ManageCategory</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.ManageComment"><code class="docutils literal notranslate"><span class="pre">ManageComment</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.RevertToVersionView"><code class="docutils literal notranslate"><span class="pre">RevertToVersionView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.SetFeaturedBlogView"><code class="docutils literal notranslate"><span class="pre">SetFeaturedBlogView</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.blog_version_preview"><code class="docutils literal notranslate"><span class="pre">blog_version_preview()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.blog_versions"><code class="docutils literal notranslate"><span class="pre">blog_versions()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="management_views.html#management.views.create_blog_version"><code class="docutils literal notranslate"><span class="pre">create_blog_version()</span></code></a></li>

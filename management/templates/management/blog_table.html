@@ -32,19 +32,21 @@
             {% endif %}
           </td>
             <td>
-              {% if blog.can_edit_or_verify %}
-                <a class="btn btn-warning" href="{% url 'manage:edit_blog' blog.id %}" role="button">
-                  <i class="bi bi-pencil-square"></i>
-                  {{ blog.button_text }}
-                </a>
-              {% else %}
-                <a class="btn btn-warning disabled" href="#" role="button" aria-disabled="true">
-                  <i class="bi bi-pencil-square"></i>
-                  {{ blog.button_text }}
-                </a>
+              {% if request.user.role != 'admin' %}
+                {% if blog.can_edit_or_verify %}
+                  <a class="btn btn-warning" href="{% url 'manage:edit_blog' blog.id %}" role="button">
+                    <i class="bi bi-pencil-square"></i>
+                    {{ blog.button_text }}
+                  </a>
+                {% else %}
+                  <a class="btn btn-warning disabled" href="#" role="button" aria-disabled="true">
+                    <i class="bi bi-pencil-square"></i>
+                    {{ blog.button_text }}
+                  </a>
+                {% endif %}
               {% endif %}
               
-              {% if perms.accounts.can_create_blog %}
+              {% if request.user.role == 'author' or  request.user.role == 'admin'  %}
                 <a class="btn btn-danger" href="{% url 'manage:delete_blog' blog.id %}" role="button">
                   <i class="bi bi-trash3"></i>
                   Borrar
@@ -90,21 +92,24 @@
           </td>
           <td>
             {% if perms.accounts.can_publish_blog %}
-              <a class="btn btn-warning" href="{% url 'manage:edit_blog' blog.id %}" role="button">
-                <i class="bi bi-pencil-square"></i>
-                {% if perms.accounts.can_publish_blog %}
-                  Verificar
-                {% else %}
-                  Editar
-                {% endif %}
-              </a>
-              {% if perms.accounts.can_create_blog %}
+              {% if request.user.role != 'admin' %}
+                <a class="btn btn-warning" href="{% url 'manage:edit_blog' blog.id %}" role="button">
+                  <i class="bi bi-pencil-square"></i>
+                  {% if perms.accounts.can_publish_blog %}
+                    Verificar
+                  {% else %}
+                    Editar
+                  {% endif %}
+                </a>
+              {% endif %}
+            {% endif %}
+            {% if request.user.role == 'author' or request.user.role == 'admin'  %}
                 <a class="btn btn-danger" href="{% url 'manage:delete_blog' blog.id %}" role="button">
                   <i class="bi bi-trash3"></i>
                   Borrar
                 </a>
-              {% endif %}
             {% endif %}
+            
           </td>
         </tr>
       {% endif %}

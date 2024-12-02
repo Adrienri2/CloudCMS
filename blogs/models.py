@@ -17,6 +17,13 @@ Modelos:
 - Reply: Representa una respuesta a un comentario.
 - Bookmark: Representa un marcador de un blog.
 - BlogLike: Representa un like en un blog.
+- Notification: Representa una notificación.
+- FavoriteCategory: Representa una categoría favorita de un usuario.
+- PaidMembership: Representa una membresía pagada.
+- MembershipPayment: Representa un pago de membresía.
+- Report: Representa un reporte de un blog.
+- Rating: Representa una calificación de un blog.
+- BlogVersion: Representa una versión de un blog.
 """
 
 class Category(models.Model):
@@ -58,6 +65,44 @@ class Category(models.Model):
         """
         return self.category
 
+
+class PaidMembership(models.Model):
+    """
+    Modelo para representar una membresía pagada.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category_desc = models.TextField()
+    category_type = models.CharField(max_length=20)
+    subcategory_type = models.CharField(max_length=20)
+    membership_cost = models.IntegerField()
+    payment_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        """
+        Devuelve una representación en cadena del objeto PaidMembership.
+        """
+        return f"{self.user.username} - {self.category.category}"
+    
+
+
+class MembershipPayment(models.Model):
+    """
+    Modelo para representar un pago de membresía.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category_type = models.CharField(max_length=20)
+    membership_cost = models.IntegerField()
+    payment_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        """
+        Devuelve una representación en cadena del objeto MembershipPayment.
+        """
+        return f"{self.user.username} - {self.category.category} - {self.payment_date}"
+    
+
 class Blog(models.Model):
     """
     Modelo para representar una entrada de blog.
@@ -90,7 +135,12 @@ class Blog(models.Model):
     last_modified_by_role = models.CharField(max_length=50, blank=True, null=True)
     scheduled_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha programada
     expiry_date = models.DateTimeField(null=True, blank=True)  # Agregar campo para fecha de caducidad
-    
+    is_featured = models.BooleanField(default=False)  # Añadido campo para destacar blogs
+    featured_at = models.DateTimeField(null=True, blank=True)  # Añadido campo para fecha de destacado
+    one_star_ratings = models.IntegerField(default=0)
+    two_star_ratings = models.IntegerField(default=0)
+    three_star_ratings = models.IntegerField(default=0)
+    share_count = models.IntegerField(default=0)  
     
     
 
@@ -202,7 +252,35 @@ class Blog(models.Model):
             return "Verificar"
         return "Editar"
 
-    
+
+class Report(models.Model):
+    """
+    Modelo para representar un reporte de un blog.
+    """
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='reports')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reason = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        """
+        Devuelve una representación en cadena del objeto Report.
+        """
+        return f"Reporte de {self.user.username} sobre {self.blog.title}"
+
+
+class Rating(models.Model):
+    """
+    Modelo para representar una calificación de un blog.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+
+    class Meta:
+        unique_together = ('user', 'blog')
+        
+ 
 class BlogVersion(models.Model):
     """
     Modelo para representar una versión de un blog.
@@ -220,11 +298,35 @@ class BlogVersion(models.Model):
     modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     modified_by_role = models.CharField(max_length=50)
     return_comment = models.TextField(null=True, blank=True)  # Añadido campo para comentario de devolución
+    version_count = models.PositiveIntegerField(default=0)  # Añadir campo para contador de versiones
+
 
     def __str__(self):
+        """
+        Devuelve una representación en cadena del objeto BlogVersion.
+        """
         return f"Versión de {self.blog.title} creada el {self.created_at}"
 
+    #vamos a probar hacer aqui el contador:
+    def save(self, *args, **kwargs):
+        """
+        Sobrescribe el método save para incrementar el contador de versiones.
+        """
+        if not self.pk:  # Si la instancia es nueva
+            last_version = BlogVersion.objects.filter(blog=self.blog).order_by('-version_count').first()
+            if last_version:
+                self.version_count = last_version.version_count + 1
+            else:
+                self.version_count = 1
+        super(BlogVersion, self).save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        """
+        Sobrescribe el método delete para disminuir el contador de versiones de las versiones posteriores.
+        """
+        # Disminuir el contador de versiones de las versiones posteriores
+        BlogVersion.objects.filter(blog=self.blog, version_count__gt=self.version_count).update(version_count=models.F('version_count') - 1)
+        super(BlogVersion, self).delete(*args, **kwargs)
 
 
 
@@ -317,4 +419,7 @@ class FavoriteCategory(models.Model):
         unique_together = ('user', 'category')  # Asegura que un usuario no pueda marcar la misma categoría como favorita más de una vez
 
     def __str__(self):
+        """
+        Devuelve una representación en cadena del objeto FavoriteCategory.
+        """
         return f"{self.user.username} - {self.category.category}"

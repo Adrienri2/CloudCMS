@@ -1,0 +1,89 @@
+<style>
+  .aside-featured-blogs {
+    background-color: #f8f9fa; /* Fondo claro */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    margin-bottom: 20px; /* Espaciado inferior */
+  }
+
+  .aside-featured-blogs h3 {
+    font-size: 1.25rem; /* Tamaño de fuente más pequeño */
+    margin-bottom: 15px; /* Espaciado inferior */
+    color: #343a40; /* Color del texto */
+    text-align: center; /* Centrar el texto */
+    font-weight: bold; /* Texto en negrita */
+    text-transform: uppercase; /* Texto en mayúsculas */
+    letter-spacing: 1px; /* Espaciado entre letras */
+  }
+
+  .aside-featured-blogs h3 .fa-star {
+    color: #ffc107; /* Color de la estrella */
+    margin-right: 5px; /* Espaciado a la derecha */
+  }
+
+  .aside-featured-blogs .list-group-item {
+    border: none; /* Sin borde */
+    padding: 10px 0; /* Espaciado interno */
+    background-color: transparent; /* Fondo transparente */
+    transition: background-color 0.3s ease; /* Transición suave */
+  }
+
+  .aside-featured-blogs .list-group-item:hover {
+    background-color: #e9ecef; /* Fondo al pasar el ratón */
+  }
+
+  .aside-featured-blogs .list-group-item a {
+    text-decoration: none; /* Sin subrayado */
+    color: #007bff; /* Color del enlace */
+    font-weight: bold; /* Texto en negrita */
+    display: block; /* Mostrar como bloque */
+    padding: 10px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+  }
+
+  .aside-featured-blogs .list-group-item a:hover {
+    background-color: #007bff; /* Fondo al pasar el ratón */
+    color: #fff; /* Color del texto al pasar el ratón */
+  }
+
+  .aside-featured-blogs .list-group-item a:active {
+    background-color: #0056b3; /* Fondo al hacer clic */
+    color: #fff; /* Color del texto al hacer clic */
+  }
+
+  .aside-featured-blogs .list-group-item a .fa-star {
+    color: #ffc107; /* Color de la estrella */
+    margin-right: 5px; /* Espaciado a la derecha */
+  }
+
+  .aside-featured-blogs .blog-meta {
+    font-size: 0.875rem; /* Tamaño de fuente */
+    color: #6c757d; /* Color del texto */
+    margin-top: 5px; /* Espaciado superior */
+  }
+</style>
+
+<div class="aside-featured-blogs">
+  <h3>Artículos Destacados</h3>
+  {% if featured_blogs %}
+    <ul class="list-group">
+      {% for blog in featured_blogs %}
+        <li class="list-group-item">
+          {% if request.user.is_authenticated or blog.category.subcategory_type == "publica" %}
+            <a href="{% url 'blogs:blog' blog.slug %}"><i class="fas fa-star"></i> {{ blog.title }}</a>
+          {% else %}
+            <a href="#"><i class="fas fa-star"></i> {{ blog.title }}</a>
+          {% endif %}
+          <div class="blog-meta">
+            <span>Categoria: {{ blog.category.category }}</span><br>
+            <span>Autor: {{ blog.creator.username }}</span>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+      <p class="no-featured-blogs"><i class="fas fa-exclamation-triangle"></i> Aún no hay artículos destacados</p>
+  {% endif %}
+</div>
