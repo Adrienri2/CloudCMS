@@ -916,25 +916,27 @@ class BlogStatisticsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
+ 
         # Obtener los parámetros de filtro desde el request
-        query = self.request.GET.get('q')
+        author_id = self.request.GET.get('author')
+        category_id = self.request.GET.get('category')
         start_date = self.request.GET.get('start_date')
         end_date = self.request.GET.get('end_date')
         
         # Filtrar los blogs
         blogs = Blog.objects.filter(is_active=True, is_published=True).order_by('-published_on')
-        if query:
-            blogs = blogs.filter(title__icontains=query)
-        
+        if author_id:
+            blogs = blogs.filter(creator_id=author_id)
+        if category_id:
+            blogs = blogs.filter(category_id=category_id)
         if start_date:
             start_date = make_aware(datetime.strptime(start_date, '%Y-%m-%d'))
             blogs = blogs.filter(published_on__gte=start_date)
-        
         if end_date:
             end_date = make_aware(datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)) - timedelta(microseconds=1)
             blogs = blogs.filter(published_on__lte=end_date)
         
-        # Obtener los datos de los blogs y los totales de compartidos y calificaciones
+        # Obtener los datos de los blogs y los totales de compartidos, calificaciones y visualizaciones
         blog_data = blogs.values('title', 'share_count', 'one_star_ratings', 'two_star_ratings', 'three_star_ratings', 'views')
         
         
@@ -970,4 +972,8 @@ class BlogStatisticsView(TemplateView):
         context['three_star_ratings'] = json.dumps(three_star_ratings)
         context['views'] = json.dumps(views)
         
+        # Pasar los autores y categorías al contexto para los filtros
+        context['authors'] = User.objects.filter(role='author')
+        context['categories'] = Category.objects.all()
+
         return context

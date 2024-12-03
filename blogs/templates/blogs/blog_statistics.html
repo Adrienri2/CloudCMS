@@ -5,6 +5,41 @@
 {% block body %}
 <div class="container mt-5">
   <h2>Estadísticas de Blogs</h2>
+  <form method="get" class="mb-4">
+    <div class="row">
+      <div class="col-md-4">
+        <label for="author">Autor</label>
+        <select id="author" name="author" class="form-control">
+          <option value="">Todos</option>
+          {% for user in authors %}
+          <option value="{{ user.id }}" {% if request.GET.author == user.id|stringformat:"s" %}selected{% endif %}>{{ user.username }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="category">Categoría</label>
+        <select id="category" name="category" class="form-control">
+          <option value="">Todas</option>
+          {% for category in categories %}
+          <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.category }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="start_date">Fecha de Publicación Desde</label>
+        <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request.GET.start_date }}">
+      </div>
+      <div class="col-md-4">
+        <label for="end_date">Fecha de Publicación Hasta</label>
+        <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request.GET.end_date }}">
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+      </div>
+    </div>
+  </form>
   <div class="row">
     <div class="col-md-6 mb-4">
       <div style="width: 80%; margin: auto;">
@@ -72,7 +107,7 @@
             }
         }
     },
-    
+  
 });
 
 var viewsChart = new Chart(document.getElementById('viewsChart').getContext('2d'), {
@@ -91,7 +126,7 @@ var viewsChart = new Chart(document.getElementById('viewsChart').getContext('2d'
     responsive: true,
     plugins: {
       legend: { position: 'top' },
-      title: { display: true, text: 'Visualizaciones de los blogs' },
+      title: { display: true, text: 'Visualizaciones de los Blogs' },
       datalabels: {
         color: '#000',
         formatter: (value, context) => {
@@ -184,7 +219,7 @@ var twoStarChart = new Chart(document.getElementById('twoStarChart').getContext(
         }
     }
   },
-
+  
 });
 
 var threeStarChart = new Chart(document.getElementById('threeStarChart').getContext('2d'), {
@@ -222,7 +257,7 @@ var threeStarChart = new Chart(document.getElementById('threeStarChart').getCont
         }
     }
   },
-  
+
 });
 </script>
 {% endblock %}
