@@ -135,8 +135,7 @@ class IncrementShareCountView(View):
             blog.save()
             blog.refresh_from_db()  # Refrescar el objeto para obtener el valor actualizado
             print(f"Nuevo share_count para blog_id {blog_id}: {blog.share_count}")
-            # Llamar a la vista para ajustar el contador
-            return redirect('blogs:adjust_share_count', blog_id=blog_id)
+            return JsonResponse({'success': True})
         except Blog.DoesNotExist:
             print(f"Blog con id {blog_id} no encontrado")
             return JsonResponse({'success': False, 'error': 'Blog no encontrado'})
@@ -144,23 +143,6 @@ class IncrementShareCountView(View):
             print(f"Ocurrió un error: {str(e)}")
             return JsonResponse({'success': False, 'error': str(e)})
         
-@method_decorator(csrf_exempt, name='dispatch')
-class AdjustShareCountView(View):
-    def get(self, request, blog_id):
-        try:
-            blog = Blog.objects.get(id=blog_id)
-            # Restar 1 al contador si se incrementó dos veces
-            if blog.share_count % 2 == 0:
-                blog.share_count = F('share_count') - 1
-                blog.save()
-                blog.refresh_from_db()
-            print(f"Contador ajustado para blog_id {blog_id}: {blog.share_count}")
-            return JsonResponse({'success': True})
-        except Blog.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Blog no encontrado'})
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)})
-
 
 class CreateComment(View):
     """
@@ -1212,3 +1194,68 @@ class IgnorarReporteView(View):
         report = get_object_or_404(Report, id=id)
         report.delete()
         return redirect('blogs:blogs_reportados')
+    
+
+
+@method_decorator(login_required, name='dispatch')
+class BlogStatisticsView(TemplateView):
+    template_name = 'blogs/blog_statistics.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Obtener los parámetros de filtro desde el request
+        query = self.request.GET.get('q')
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        
+        # Filtrar los blogs
+        blogs = Blog.objects.filter(is_active=True, is_published=True).order_by('-published_on')
+        if query:
+            blogs = blogs.filter(title__icontains=query)
+        
+        if start_date:
+            start_date = make_aware(datetime.strptime(start_date, '%Y-%m-%d'))
+            blogs = blogs.filter(published_on__gte=start_date)
+        
+        if end_date:
+            end_date = make_aware(datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)) - timedelta(microseconds=1)
+            blogs = blogs.filter(published_on__lte=end_date)
+        
+        # Obtener los datos de los blogs y los totales de compartidos y calificaciones
+        blog_data = blogs.values('title', 'share_count', 'one_star_ratings', 'two_star_ratings', 'three_star_ratings', 'views')
+        
+        
+         # Filtrar los datos para cada gráfico
+        one_star_data = [blog for blog in blog_data if blog['one_star_ratings'] > 0]
+        two_star_data = [blog for blog in blog_data if blog['two_star_ratings'] > 0]
+        three_star_data = [blog for blog in blog_data if blog['three_star_ratings'] > 0]
+
+
+        # Preparar los datos para el gráfico de barras
+        labels = [blog['title'] for blog in blog_data]
+        share_counts = [blog['share_count'] for blog in blog_data]
+
+        one_star_labels = [blog['title'] for blog in one_star_data]
+        one_star_ratings = [blog['one_star_ratings'] for blog in blog_data]
+
+        two_star_labels = [blog['title'] for blog in two_star_data]
+        two_star_ratings = [blog['two_star_ratings'] for blog in blog_data]
+
+        three_star_labels = [blog['title'] for blog in three_star_data]
+        three_star_ratings = [blog['three_star_ratings'] for blog in blog_data]
+
+        views = [blog['views'] for blog in blog_data]
+
+        # Pasar los datos al contexto
+        context['labels'] = json.dumps(labels)
+        context['share_counts'] = json.dumps(share_counts)
+        context['one_star_labels'] = json.dumps(one_star_labels)
+        context['one_star_ratings'] = json.dumps(one_star_ratings)
+        context['two_star_labels'] = json.dumps(two_star_labels)
+        context['two_star_ratings'] = json.dumps(two_star_ratings)
+        context['three_star_labels'] = json.dumps(three_star_labels)
+        context['three_star_ratings'] = json.dumps(three_star_ratings)
+        context['views'] = json.dumps(views)
+        
+        return context
