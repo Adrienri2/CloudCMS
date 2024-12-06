@@ -112,15 +112,18 @@ FOR /F "tokens=2 delims= " %%D IN ('railway domain --json ^| findstr /i "https:/
 )
 SET DOMAIN=%DOMAIN:"=%
 
-REM Imprimir el dominio en la consola
-echo Dominio generado: %DOMAIN%
-
 REM Eliminar "https://" del dominio
 SET DOMAIN=%DOMAIN:https://=%
 
-REM Configurar ALLOWED_HOSTS en Railway usando el dominio recuperado
+REM Imprimir el dominio en la consola
+echo Dominio generado: %DOMAIN%
+
+REM Configurar ALLOWED_HOSTS y CSRF_TRUSTED_ORIGINS en Railway usando el dominio recuperado
 echo Configurando ALLOWED_HOSTS con el dominio %DOMAIN%...
 railway variables --set "ALLOWED_HOSTS=127.0.0.1,localhost,%DOMAIN%"
+
+echo Configurando CSRF_TRUSTED_ORIGINS con el dominio https://%DOMAIN%...
+railway variables --set "CSRF_TRUSTED_ORIGINS=https://%DOMAIN%"
 
 REM Desplegar el proyecto en Railway desde la ruta especificada
 echo Realizando despliegue final desde %PROJECT_PATH% en Railway...

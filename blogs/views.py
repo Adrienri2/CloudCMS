@@ -26,6 +26,8 @@ import base64
 from io import BytesIO
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
+import requests
+from django.db.models import Count
 
 """
 Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.
@@ -1199,12 +1201,25 @@ class IgnorarReporteView(View):
 
 @method_decorator(login_required, name='dispatch')
 class BlogStatisticsView(TemplateView):
+    """
+    Vista para mostrar estadísticas detalladas de los blogs.
+
+    Esta vista permite a los usuarios autenticados ver estadísticas como la cantidad de compartidos,
+    calificaciones, visualizaciones y comentarios de los blogs. Además, integra datos de la API de Disqus
+    para obtener información sobre los comentarios y presenta los blogs más comentados.
+
+    Atributos:
+        template_name (str): Nombre de la plantilla utilizada para renderizar la vista.
+
+    Métodos:
+        get_context_data(**kwargs):
+            Obtiene y procesa los datos necesarios para mostrar las estadísticas en la plantilla.
+    """
     template_name = 'blogs/blog_statistics.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
- 
         # Obtener los parámetros de filtro desde el request
         author_id = self.request.GET.get('author')
         category_id = self.request.GET.get('category')
@@ -1227,12 +1242,10 @@ class BlogStatisticsView(TemplateView):
         # Obtener los datos de los blogs y los totales de compartidos, calificaciones y visualizaciones
         blog_data = blogs.values('title', 'share_count', 'one_star_ratings', 'two_star_ratings', 'three_star_ratings', 'views')
         
-        
-         # Filtrar los datos para cada gráfico
+        # Filtrar los datos para cada gráfico
         one_star_data = [blog for blog in blog_data if blog['one_star_ratings'] > 0]
         two_star_data = [blog for blog in blog_data if blog['two_star_ratings'] > 0]
         three_star_data = [blog for blog in blog_data if blog['three_star_ratings'] > 0]
-
 
         # Preparar los datos para el gráfico de barras
         labels = [blog['title'] for blog in blog_data]
@@ -1263,5 +1276,49 @@ class BlogStatisticsView(TemplateView):
         # Pasar los autores y categorías al contexto para los filtros
         context['authors'] = User.objects.filter(role='author')
         context['categories'] = Category.objects.all()
+
+        # Configuración de Disqus
+        DISQUS_SHORTNAME = 'cloudcms'
+        DISQUS_API_KEY = 'CspBCzjGe9AExwI2rz5CsJu43fsw1vExTAfLI09s1W1F0ll5O6Td4G8BAd97TJ7B'
+        DISQUS_API_URL = 'https://disqus.com/api/3.0/threads/list.json'
+
+        total_comments = 0
+        top_5_blogs = []
+
+        try:
+            # Parámetros para la API de Disqus
+            params = {
+                'forum': DISQUS_SHORTNAME,
+                'api_key': DISQUS_API_KEY,
+                'limit': 100,
+                'include': 'open'
+            }
+
+            # Obtener datos de la API
+            response = requests.get(DISQUS_API_URL, params=params)
+            response.raise_for_status()
+            data = response.json()
+            threads = data.get('response', [])
+
+            # Procesar datos de Disqus
+            blogs_data = []
+            for thread in threads:
+                if not thread.get('isDeleted', False):  # Excluir hilos eliminados
+                    title = thread.get('title', 'Título no disponible')
+                    posts = thread.get('posts', 0)
+                    link = thread.get('link', 'Enlace no disponible')
+                    total_comments += posts  # Acumular comentarios
+                    blogs_data.append({'title': title, 'posts': posts, 'link': link})
+
+            # Ordenar por número de comentarios y obtener los 5 más comentados
+            top_5_blogs = sorted(blogs_data, key=lambda x: x['posts'], reverse=True)[:5]
+
+        except Exception as e:
+            total_comments = 'Error al obtener los comentarios'
+            top_5_blogs = []
+
+        # Pasar los datos al contexto
+        context['total_comments'] = total_comments
+        context['top_5_blogs'] = top_5_blogs
 
         return context
