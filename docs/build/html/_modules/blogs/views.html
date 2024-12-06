@@ -99,15 +99,32 @@
            <div itemprop="articleBody">
              
   <h1>Código fuente para blogs.views</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span>
+<span class="kn">from</span> <span class="nn">django.utils.decorators</span> <span class="kn">import</span> <span class="n">method_decorator</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
 <span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
 <span class="kn">from</span> <span class="nn">django.views</span> <span class="kn">import</span> <span class="n">View</span>
 <span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">F</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span><span class="p">,</span> <span class="n">Sum</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">accounts.models</span> <span class="kn">import</span> <span class="n">DatosTarjeta</span>
+<span class="kn">from</span> <span class="nn">django.utils.timezone</span> <span class="kn">import</span> <span class="n">make_aware</span><span class="p">,</span><span class="n">localtime</span><span class="p">,</span> <span class="n">is_naive</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Notification</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">FavoriteCategory</span>
-<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">JsonResponse</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Notification</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">FavoriteCategory</span><span class="p">,</span> <span class="n">Blog</span><span class="p">,</span> <span class="n">Rating</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">JsonResponse</span>
+<span class="kn">import</span> <span class="nn">openpyxl</span>
+<span class="kn">from</span> <span class="nn">openpyxl.styles</span> <span class="kn">import</span> <span class="n">Font</span><span class="p">,</span> <span class="n">Alignment</span><span class="p">,</span> <span class="n">Border</span><span class="p">,</span> <span class="n">Side</span>
+<span class="kn">from</span> <span class="nn">openpyxl.drawing.image</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">django.views.decorators.csrf</span> <span class="kn">import</span> <span class="n">csrf_exempt</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span> <span class="k">as</span> <span class="n">PILImage</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span> <span class="nn">stripe</span>
+<span class="n">stripe</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_SECRET_KEY</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.</span>
@@ -146,6 +163,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">queryset</span> <span class="o">=</span> <span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">slug</span><span class="p">)</span>
         <span class="n">blog</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">queryset</span><span class="p">)</span>
+      
+
+        <span class="n">category</span> <span class="o">=</span> <span class="n">blog</span><span class="o">.</span><span class="n">category</span>
+
+        <span class="k">if</span> <span class="n">category</span><span class="o">.</span><span class="n">subcategory_type</span> <span class="o">==</span> <span class="s2">&quot;paga&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+                <span class="n">has_membership</span> <span class="o">=</span> <span class="n">PaidMembership</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">has_membership</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;get_category&#39;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;get_category&#39;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span>
+
         <span class="n">blog</span><span class="o">.</span><span class="n">views</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="s2">&quot;views&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">blog</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="n">blog</span><span class="o">.</span><span class="n">refresh_from_db</span><span class="p">()</span>
@@ -396,6 +425,994 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">favorites</span> <span class="o">=</span> <span class="n">FavoriteCategory</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;blogs/favorite_categories.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;favorites&#39;</span><span class="p">:</span> <span class="n">favorites</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="PagoView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.PagoView">[documentos]</a>
+<span class="k">class</span> <span class="nc">PagoView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para manejar el pago de una categoría específica.</span>
+
+<span class="sd">    Método:</span>
+<span class="sd">        get(request, category_id):</span>
+<span class="sd">            Procesa la solicitud GET para mostrar la página de pago.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PagoView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.PagoView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para mostrar el formulario de pago.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">            category_id (int): ID de la categoría para el pago.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: Renderiza la plantilla &#39;blogs/pago.html&#39; con los datos necesarios.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">category_id</span><span class="p">)</span>
+        <span class="n">datos_tarjeta</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;datos_tarjeta&#39;</span><span class="p">):</span>
+            <span class="n">datos_tarjeta</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;nombre_tarjeta&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">datos_tarjeta</span><span class="o">.</span><span class="n">nombre_tarjeta</span><span class="p">,</span>
+                <span class="s1">&#39;numero_tarjeta&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">datos_tarjeta</span><span class="o">.</span><span class="n">numero_tarjeta</span><span class="p">,</span>
+                <span class="s1">&#39;fecha_vencimiento&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">datos_tarjeta</span><span class="o">.</span><span class="n">fecha_vencimiento</span><span class="p">,</span>
+                <span class="s1">&#39;codigo_seguridad&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">datos_tarjeta</span><span class="o">.</span><span class="n">codigo_seguridad</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;blogs/pago.html&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+            <span class="s1">&#39;datos_tarjeta&#39;</span><span class="p">:</span> <span class="n">datos_tarjeta</span><span class="p">,</span>
+            <span class="s1">&#39;stripe_publishable_key&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">STRIPE_PUBLISHABLE_KEY</span>
+        <span class="p">})</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CreateCheckoutSessionView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CreateCheckoutSessionView">[documentos]</a>
+<span class="k">class</span> <span class="nc">CreateCheckoutSessionView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para crear una sesión de pago con Stripe.</span>
+
+<span class="sd">    Método:</span>
+<span class="sd">        post(request, category_id, *args, **kwargs):</span>
+<span class="sd">            Procesa la solicitud POST para crear una sesión de pago.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CreateCheckoutSessionView.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CreateCheckoutSessionView.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud POST para crear una sesión de pago mediante Stripe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">            category_id (int): ID de la categoría para el pago.</span>
+<span class="sd">            *args: Argumentos adicionales.</span>
+<span class="sd">            **kwargs: Argumentos de palabra clave adicionales.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponseRedirect: Redirige al usuario a la URL de la sesión de pago.</span>
+<span class="sd">            str: Retorna el error en caso de excepción.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">category_id</span><span class="p">)</span>
+        <span class="n">YOUR_DOMAIN</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:8000/&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">checkout_session</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">checkout</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">payment_method_types</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;card&#39;</span><span class="p">],</span>
+                <span class="n">line_items</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s1">&#39;price_data&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="s1">&#39;pyg&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;product_data&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">category</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+                                <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">category</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span>
+                            <span class="p">},</span>
+                            <span class="s1">&#39;unit_amount&#39;</span><span class="p">:</span> <span class="n">category</span><span class="o">.</span><span class="n">costo_membresia</span>
+                        <span class="p">},</span>
+                        <span class="s1">&#39;quantity&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">],</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;payment&#39;</span><span class="p">,</span>
+                <span class="n">success_url</span><span class="o">=</span><span class="n">YOUR_DOMAIN</span> <span class="o">+</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;blogs:success&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;category_id&#39;</span><span class="p">:</span> <span class="n">category_id</span><span class="p">}),</span>
+                <span class="n">cancel_url</span><span class="o">=</span><span class="n">YOUR_DOMAIN</span> <span class="o">+</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;blogs:cancel&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;category_id&#39;</span><span class="p">:</span> <span class="n">category_id</span><span class="p">}),</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">checkout_session</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="SuccessView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.SuccessView">[documentos]</a>
+<span class="k">class</span> <span class="nc">SuccessView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para manejar la página de éxito después de un pago exitoso.</span>
+
+<span class="sd">    Método:</span>
+<span class="sd">        get(request, category_id):</span>
+<span class="sd">            Procesa la solicitud GET para mostrar la página de éxito.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SuccessView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.SuccessView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para mostrar la página de éxito de pago.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">            category_id (int): ID de la categoría para la cual se realizó el pago.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: Renderiza la plantilla &#39;blogs/success.html&#39; con los datos necesarios.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">category_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;blogs/success.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">})</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CancelView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CancelView">[documentos]</a>
+<span class="k">class</span> <span class="nc">CancelView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para manejar la cancelación de un pago.</span>
+
+<span class="sd">    Método:</span>
+<span class="sd">        get(request, category_id):</span>
+<span class="sd">            Procesa la solicitud GET para redirigir al usuario tras la cancelación.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CancelView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.CancelView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para redirigir al usuario después de la cancelación del pago.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">            category_id (int): ID de la categoría para la cual se intentó el pago.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponseRedirect: Redirige al usuario a la página de inicio.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">category_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="IrACategoriaView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.IrACategoriaView">[documentos]</a>
+<span class="nd">@method_decorator</span><span class="p">(</span><span class="n">login_required</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dispatch&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">IrACategoriaView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para redirigir al usuario a una categoría específica y gestionar la membresía.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="IrACategoriaView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.IrACategoriaView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para redirigir al usuario a la categoría seleccionada.</span>
+<span class="sd">        Verifica si el usuario ya tiene una membresía para la categoría y actúa en consecuencia.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">            category_id (int): ID de la categoría a la que se redirige.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponseRedirect: Redirige al usuario a la página de la categoría o muestra un mensaje de éxito.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">category_id</span><span class="p">)</span>
+
+        <span class="c1"># Verificar si el usuario ya tiene una membresía para esta categoría</span>
+        <span class="k">if</span> <span class="n">PaidMembership</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Ya tienes una membresía para esta categoría. Ve y disfruta de los Artículos.&quot;</span><span class="p">)</span>
+           
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Guardar la membresía pagada</span>
+            <span class="n">PaidMembership</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+                <span class="n">category_desc</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span>
+                <span class="n">category_type</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">category_type</span><span class="p">,</span>
+                <span class="n">subcategory_type</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">subcategory_type</span><span class="p">,</span>
+                <span class="n">membership_cost</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">costo_membresia</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Guardar el registro de pago de la membresía</span>
+            <span class="n">MembershipPayment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+                <span class="n">category_type</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">category_type</span><span class="p">,</span>
+                <span class="n">membership_cost</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">costo_membresia</span>
+            <span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Tu membresía ha sido activada. Ahora puedes disfrutar de los Artículos.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Redirigir a la página de la categoría</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;get_category&#39;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span></div>
+</div>
+
+    
+
+<div class="viewcode-block" id="MembershipsView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.MembershipsView">[documentos]</a>
+<span class="nd">@method_decorator</span><span class="p">(</span><span class="n">login_required</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dispatch&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">MembershipsView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para gestionar las membresías pagadas del usuario.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MembershipsView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.MembershipsView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para mostrar las membresías del usuario con opciones de filtrado.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: Renderiza la plantilla &#39;blogs/memberships.html&#39; con las membresías filtradas y el total pagado.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;start_date&#39;</span><span class="p">)</span>
+        <span class="n">end_date</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;end_date&#39;</span><span class="p">)</span>
+        <span class="n">memberships</span> <span class="o">=</span> <span class="n">PaidMembership</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-payment_date&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">query</span><span class="p">:</span>
+            <span class="n">memberships</span> <span class="o">=</span> <span class="n">memberships</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">category__category__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">category_desc__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">category_type__iexact</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">membership_cost__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">start_date</span><span class="p">:</span>
+            <span class="n">start_date</span> <span class="o">=</span> <span class="n">make_aware</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">end_date</span><span class="p">:</span>
+                <span class="n">end_date</span> <span class="o">=</span> <span class="n">make_aware</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">end_date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">memberships</span> <span class="o">=</span> <span class="n">memberships</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">payment_date__range</span><span class="o">=</span><span class="p">[</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">memberships</span> <span class="o">=</span> <span class="n">memberships</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">payment_date__gte</span><span class="o">=</span><span class="n">start_date</span><span class="p">)</span>
+
+            <span class="c1"># Si no se encuentran pagos en el rango de fechas, ajustar start_date a la fecha del primer pago</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">memberships</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">first_payment</span> <span class="o">=</span> <span class="n">PaidMembership</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;payment_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">first_payment</span><span class="p">:</span>
+                    <span class="n">start_date</span> <span class="o">=</span> <span class="n">first_payment</span><span class="o">.</span><span class="n">payment_date</span>
+                    <span class="n">memberships</span> <span class="o">=</span> <span class="n">PaidMembership</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">payment_date__gte</span><span class="o">=</span><span class="n">start_date</span><span class="p">)</span>            
+
+        <span class="n">total_paid</span> <span class="o">=</span> <span class="n">memberships</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">Sum</span><span class="p">(</span><span class="s1">&#39;membership_cost&#39;</span><span class="p">))[</span><span class="s1">&#39;membership_cost__sum&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;blogs/memberships.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;memberships&#39;</span><span class="p">:</span> <span class="n">memberships</span><span class="p">,</span> <span class="s1">&#39;total_paid&#39;</span><span class="p">:</span> <span class="n">total_paid</span><span class="p">})</span></div>
+
+    
+
+<div class="viewcode-block" id="MembershipsView.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.MembershipsView.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud POST para eliminar una membresía del usuario.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponseRedirect: Redirige al usuario a la página de membresías después de la eliminación.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">membership_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;membership_id&#39;</span><span class="p">)</span>
+        <span class="n">membership</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">PaidMembership</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">membership_id</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        
+        <span class="c1"># Eliminar el registro correspondiente en MembershipPayment</span>
+        <span class="n">MembershipPayment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">membership</span><span class="o">.</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        
+        <span class="c1"># Eliminar la membresía</span>
+        <span class="n">membership</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+        <span class="c1"># Recalcular el total pagado</span>
+        <span class="n">memberships</span> <span class="o">=</span> <span class="n">PaidMembership</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">total_paid</span> <span class="o">=</span> <span class="n">memberships</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">Sum</span><span class="p">(</span><span class="s1">&#39;membership_cost&#39;</span><span class="p">))[</span><span class="s1">&#39;membership_cost__sum&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;blogs:memberships&#39;</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="ExportMembershipsView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ExportMembershipsView">[documentos]</a>
+<span class="nd">@method_decorator</span><span class="p">(</span><span class="n">login_required</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dispatch&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ExportMembershipsView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para exportar las membresías pagadas del usuario a un archivo Excel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ExportMembershipsView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ExportMembershipsView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para generar y descargar un archivo Excel con las membresías pagadas.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: Respuesta HTTP con el archivo Excel adjunto.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;start_date&#39;</span><span class="p">)</span>
+        <span class="n">end_date</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;end_date&#39;</span><span class="p">)</span>
+        <span class="n">total_paid</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;total_paid&#39;</span><span class="p">)</span>
+        <span class="n">memberships</span> <span class="o">=</span> <span class="n">PaidMembership</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-payment_date&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">query</span><span class="p">:</span>
+            <span class="n">memberships</span> <span class="o">=</span> <span class="n">memberships</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">category__category__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">category_desc__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">category_type__iexact</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">subcategory_type__iexact</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">membership_cost__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">start_date</span><span class="p">:</span>
+            <span class="n">start_date</span> <span class="o">=</span> <span class="n">make_aware</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">end_date</span><span class="p">:</span>
+                <span class="n">end_date</span> <span class="o">=</span> <span class="n">make_aware</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">end_date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">memberships</span> <span class="o">=</span> <span class="n">memberships</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">payment_date__range</span><span class="o">=</span><span class="p">[</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">memberships</span> <span class="o">=</span> <span class="n">memberships</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">payment_date__gte</span><span class="o">=</span><span class="n">start_date</span><span class="p">)</span>
+
+        <span class="c1"># Crear el archivo Excel</span>
+        <span class="n">wb</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">Workbook</span><span class="p">()</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">active</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Membresías&quot;</span>
+
+        <span class="c1"># Establecer el título</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">merge_cells</span><span class="p">(</span><span class="s1">&#39;A1:G1&#39;</span><span class="p">)</span>
+        <span class="n">title_cell</span> <span class="o">=</span> <span class="n">ws</span><span class="p">[</span><span class="s1">&#39;A1&#39;</span><span class="p">]</span>
+        <span class="n">title_cell</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;CLOUDCMS&quot;</span>
+        <span class="n">title_cell</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">title_cell</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">(</span><span class="n">horizontal</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Información del usuario</span>
+        <span class="n">user_info</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;Usuario:&quot;</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;Nombre:&quot;</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s2">&quot;Correo:&quot;</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">),</span>
+        <span class="p">]</span>
+
+        <span class="n">row</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">user_info</span><span class="p">:</span>
+            <span class="n">ws</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;A</span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="n">ws</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;A</span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Aplicar negrita a las etiquetas</span>
+            <span class="n">ws</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;B</span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Espacio entre la información del usuario y la tabla de membresías</span>
+        <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;Membresías Pagadas en CloudCMS:&quot;</span><span class="p">])</span>
+        <span class="n">ws</span><span class="p">[</span><span class="s1">&#39;A&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">max_row</span><span class="p">)]</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+
+        <span class="c1"># Escribir los encabezados</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Nombre de la Categoría&quot;</span><span class="p">,</span> <span class="s2">&quot;Descripción&quot;</span><span class="p">,</span> <span class="s2">&quot;Tipo&quot;</span><span class="p">,</span> <span class="s2">&quot;Subcategoría&quot;</span><span class="p">,</span> <span class="s2">&quot;Costo (Gs.)&quot;</span><span class="p">,</span><span class="s2">&quot;Tipo de Pago&quot;</span><span class="p">,</span> <span class="s2">&quot;Fecha de Pago&quot;</span><span class="p">]</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="c1"># Aplicar el estilo de negrita a los encabezados</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">[</span><span class="n">ws</span><span class="o">.</span><span class="n">max_row</span><span class="p">]:</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+       <span class="c1"># Ajustar el ancho de las columnas</span>
+        <span class="n">column_widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">width</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">column_widths</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">ws</span><span class="o">.</span><span class="n">column_dimensions</span><span class="p">[</span><span class="n">openpyxl</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_column_letter</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+ 
+        
+        <span class="c1"># Definir el estilo de borde</span>
+        <span class="n">thin_border</span> <span class="o">=</span> <span class="n">Border</span><span class="p">(</span>
+            <span class="n">left</span><span class="o">=</span><span class="n">Side</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;thin&#39;</span><span class="p">),</span>
+            <span class="n">right</span><span class="o">=</span><span class="n">Side</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;thin&#39;</span><span class="p">),</span>
+            <span class="n">top</span><span class="o">=</span><span class="n">Side</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;thin&#39;</span><span class="p">),</span>
+            <span class="n">bottom</span><span class="o">=</span><span class="n">Side</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;thin&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Aplicar el estilo de borde a los encabezados</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">[</span><span class="n">ws</span><span class="o">.</span><span class="n">max_row</span><span class="p">]:</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">border</span> <span class="o">=</span> <span class="n">thin_border</span>
+
+
+        <span class="c1"># Escribir los datos</span>
+        <span class="k">for</span> <span class="n">membership</span> <span class="ow">in</span> <span class="n">memberships</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">membership</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+                <span class="n">membership</span><span class="o">.</span><span class="n">category_desc</span><span class="p">,</span>
+                <span class="n">membership</span><span class="o">.</span><span class="n">category_type</span><span class="p">,</span>
+                <span class="n">membership</span><span class="o">.</span><span class="n">subcategory_type</span><span class="p">,</span>
+                <span class="n">membership</span><span class="o">.</span><span class="n">membership_cost</span><span class="p">,</span>
+                <span class="s2">&quot;TC/TD&quot;</span><span class="p">,</span>
+                <span class="n">membership</span><span class="o">.</span><span class="n">payment_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> %b, %Y %H:%M:%S&quot;</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">[</span><span class="n">ws</span><span class="o">.</span><span class="n">max_row</span><span class="p">]:</span>
+                <span class="n">cell</span><span class="o">.</span><span class="n">border</span> <span class="o">=</span> <span class="n">thin_border</span>
+
+
+        <span class="c1"># Escribir el total pagado</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;Total General Pagado:&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Gs. </span><span class="si">{</span><span class="n">total_paid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">[</span><span class="n">ws</span><span class="o">.</span><span class="n">max_row</span><span class="p">]:</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">border</span> <span class="o">=</span> <span class="n">thin_border</span>
+
+        <span class="c1"># Preparar la respuesta HTTP</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&#39;</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Membresias_</span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s2">.xlsx&quot;</span>
+        <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;attachment; filename=</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">wb</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+</div>
+
+
+<div class="viewcode-block" id="AllMembershipPaymentsView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.AllMembershipPaymentsView">[documentos]</a>
+<span class="nd">@method_decorator</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;accounts.can_view_membership_payments&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dispatch&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">AllMembershipPaymentsView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para gestionar y visualizar todos los pagos de membresías.</span>
+<span class="sd">    </span>
+<span class="sd">    Requiere el permiso &#39;accounts.can_view_membership_payments&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AllMembershipPaymentsView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.AllMembershipPaymentsView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para mostrar todos los pagos de membresías con opciones de filtrado.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: Renderiza la plantilla &#39;blogs/all_membership_payments.html&#39; con los pagos filtrados y el total pagado.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;start_date&#39;</span><span class="p">)</span>
+        <span class="n">end_date</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;end_date&#39;</span><span class="p">)</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">MembershipPayment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-payment_date&#39;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">query</span><span class="p">:</span>
+            <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">user__username__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">category__category__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">category_type__iexact</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span>
+                <span class="n">Q</span><span class="p">(</span><span class="n">membership_cost__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">start_date</span><span class="p">:</span>
+            <span class="n">start_date</span> <span class="o">=</span> <span class="n">make_aware</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">start_date</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">end_date</span><span class="p">:</span>
+            <span class="n">end_date</span> <span class="o">=</span> <span class="n">make_aware</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">end_date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">start_date</span><span class="p">:</span>
+                <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">payment_date__range</span><span class="o">=</span><span class="p">[</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">payment_date__lte</span><span class="o">=</span><span class="n">end_date</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">start_date</span><span class="p">:</span>
+            <span class="n">payments</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">payment_date__gte</span><span class="o">=</span><span class="n">start_date</span><span class="p">)</span>
+        
+        <span class="c1"># Si no se encuentran pagos en el rango de fechas, ajustar start_date a la fecha del primer pago</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">payments</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">start_date</span><span class="p">:</span>
+            <span class="n">first_payment</span> <span class="o">=</span> <span class="n">MembershipPayment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;payment_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">first_payment</span><span class="p">:</span>
+                <span class="n">start_date</span> <span class="o">=</span> <span class="n">first_payment</span><span class="o">.</span><span class="n">payment_date</span>
+                <span class="n">payments</span> <span class="o">=</span> <span class="n">MembershipPayment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">payment_date__gte</span><span class="o">=</span><span class="n">start_date</span><span class="p">)</span>
+     
+        <span class="n">total_paid</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">Sum</span><span class="p">(</span><span class="s1">&#39;membership_cost&#39;</span><span class="p">))[</span><span class="s1">&#39;membership_cost__sum&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;blogs/all_membership_payments.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;payments&#39;</span><span class="p">:</span> <span class="n">payments</span><span class="p">,</span> <span class="s1">&#39;total_paid&#39;</span><span class="p">:</span> <span class="n">total_paid</span><span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="AllMembershipPaymentsView.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.AllMembershipPaymentsView.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud POST para eliminar un pago de membresía.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponseRedirect: Redirige al usuario a la página de todos los pagos de membresías después de la eliminación.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">payment_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;payment_id&#39;</span><span class="p">)</span>
+        <span class="n">payment</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">MembershipPayment</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">payment_id</span><span class="p">)</span>
+        
+        <span class="c1"># Eliminar el registro correspondiente en PaidMembership</span>
+        <span class="n">PaidMembership</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">payment</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        
+        <span class="c1"># Eliminar el registro en MembershipPayment</span>
+        <span class="n">payment</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+        <span class="c1"># Recalcular el total pagado</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">MembershipPayment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">total_paid</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">Sum</span><span class="p">(</span><span class="s1">&#39;membership_cost&#39;</span><span class="p">))[</span><span class="s1">&#39;membership_cost__sum&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span>
+        
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;blogs:all_membership_payments&#39;</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="StatisticsView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.StatisticsView">[documentos]</a>
+<span class="nd">@method_decorator</span><span class="p">(</span><span class="n">login_required</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dispatch&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">StatisticsView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para mostrar estadísticas de los pagos de membresías.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StatisticsView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.StatisticsView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para generar y mostrar estadísticas de pagos de membresías.</span>
+
+<span class="sd">        Obtiene datos agregados de las membresías pagadas por categoría y por fecha,</span>
+<span class="sd">        prepara los datos para visualización en gráficos y renderiza la plantilla correspondiente.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: Renderiza la plantilla &#39;blogs/estadisticas.html&#39; con los datos de estadísticas.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Obtener los datos de las categorías y los totales comprados por cada categoría</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="n">MembershipPayment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s1">&#39;category__category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">Sum</span><span class="p">(</span><span class="s1">&#39;membership_cost&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-total&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Preparar los datos para el gráfico</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">category</span><span class="p">[</span><span class="s1">&#39;category__category&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">category</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">]</span>
+
+        <span class="c1"># Obtener los pagos agrupados por fecha</span>
+        <span class="n">payments_by_date</span> <span class="o">=</span> <span class="n">MembershipPayment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s1">&#39;payment_date__date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">Sum</span><span class="p">(</span><span class="s1">&#39;membership_cost&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;payment_date__date&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Preparar los datos para el gráfico de línea de tiempo</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">payment</span><span class="p">[</span><span class="s1">&#39;payment_date__date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments_by_date</span><span class="p">]</span>
+        <span class="n">totals</span> <span class="o">=</span> <span class="p">[</span><span class="n">payment</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments_by_date</span><span class="p">]</span>
+
+        <span class="c1"># Obtener los pagos agrupados por fecha y categoría</span>
+        <span class="n">payments_by_date_and_category</span> <span class="o">=</span> <span class="n">MembershipPayment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s1">&#39;payment_date__date&#39;</span><span class="p">,</span> <span class="s1">&#39;category__category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">Sum</span><span class="p">(</span><span class="s1">&#39;membership_cost&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;payment_date__date&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Preparar los datos para el gráfico de línea de tiempo con múltiples categorías</span>
+        <span class="n">category_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments_by_date_and_category</span><span class="p">:</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="n">payment</span><span class="p">[</span><span class="s1">&#39;category__category&#39;</span><span class="p">]</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">payment</span><span class="p">[</span><span class="s1">&#39;payment_date__date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">total</span> <span class="o">=</span> <span class="n">payment</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">category_data</span><span class="p">:</span>
+                <span class="n">category_data</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">category_data</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">total</span><span class="p">})</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span>
+            <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+            <span class="s1">&#39;dates&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dates</span><span class="p">),</span>
+            <span class="s1">&#39;totals&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">totals</span><span class="p">),</span>
+            <span class="s1">&#39;category_data&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">category_data</span><span class="p">),</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;blogs/estadisticas.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="ExportStatisticsView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ExportStatisticsView">[documentos]</a>
+<span class="nd">@method_decorator</span><span class="p">(</span><span class="n">login_required</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dispatch&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ExportStatisticsView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para exportar las estadísticas de membresías a un archivo Excel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ExportStatisticsView.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ExportStatisticsView.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud POST para generar y descargar un archivo Excel con las estadísticas de membresías.</span>
+<span class="sd">        </span>
+<span class="sd">        Obtiene los gráficos desde el formulario, crea un archivo Excel con los datos de las membresías pagadas,</span>
+<span class="sd">        añade los gráficos al archivo y prepara la respuesta HTTP para la descarga.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: Respuesta HTTP con el archivo Excel adjunto.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Obtener los datos de los gráficos desde el formulario</span>
+        <span class="n">pie_chart</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pie_chart&#39;</span><span class="p">)</span>
+        <span class="n">bar_chart</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bar_chart&#39;</span><span class="p">)</span>
+        <span class="n">line_chart</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;line_chart&#39;</span><span class="p">)</span>
+
+
+        <span class="c1"># Crear un nuevo libro de trabajo</span>
+        <span class="n">wb</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">Workbook</span><span class="p">()</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">active</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Análisis General de Membresías&quot;</span>
+
+        <span class="c1"># Establecer el título</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">merge_cells</span><span class="p">(</span><span class="s1">&#39;A1:G1&#39;</span><span class="p">)</span>
+        <span class="n">title_cell</span> <span class="o">=</span> <span class="n">ws</span><span class="p">[</span><span class="s1">&#39;A1&#39;</span><span class="p">]</span>
+        <span class="n">title_cell</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;CLOUDCMS&quot;</span>
+        <span class="n">title_cell</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">title_cell</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">(</span><span class="n">horizontal</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Espacio entre el título y la tabla de membresías</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;Todas las Membresías Pagadas en CloudCMS:&quot;</span><span class="p">])</span>
+        <span class="n">ws</span><span class="p">[</span><span class="s1">&#39;A&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">max_row</span><span class="p">)]</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+
+        <span class="c1"># Escribir los encabezados</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Usuario&quot;</span><span class="p">,</span> <span class="s2">&quot;Nombre de la Categoría&quot;</span><span class="p">,</span> <span class="s2">&quot;Tipo&quot;</span><span class="p">,</span> <span class="s2">&quot;Costo (Gs.)&quot;</span><span class="p">,</span> <span class="s2">&quot;Tipo de Pago&quot;</span><span class="p">,</span> <span class="s2">&quot;Fecha de Pago&quot;</span><span class="p">]</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="c1"># Aplicar el estilo de negrita a los encabezados</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">[</span><span class="n">ws</span><span class="o">.</span><span class="n">max_row</span><span class="p">]:</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Ajustar el ancho de las columnas</span>
+        <span class="n">column_widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">width</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">column_widths</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">ws</span><span class="o">.</span><span class="n">column_dimensions</span><span class="p">[</span><span class="n">openpyxl</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_column_letter</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+
+        <span class="c1"># Definir el estilo de borde</span>
+        <span class="n">thin_border</span> <span class="o">=</span> <span class="n">Border</span><span class="p">(</span>
+            <span class="n">left</span><span class="o">=</span><span class="n">Side</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;thin&#39;</span><span class="p">),</span>
+            <span class="n">right</span><span class="o">=</span><span class="n">Side</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;thin&#39;</span><span class="p">),</span>
+            <span class="n">top</span><span class="o">=</span><span class="n">Side</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;thin&#39;</span><span class="p">),</span>
+            <span class="n">bottom</span><span class="o">=</span><span class="n">Side</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;thin&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Aplicar el estilo de borde a los encabezados</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">[</span><span class="n">ws</span><span class="o">.</span><span class="n">max_row</span><span class="p">]:</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">border</span> <span class="o">=</span> <span class="n">thin_border</span>
+
+        <span class="c1"># Escribir los datos de todas las membresías pagadas</span>
+        <span class="n">payments</span> <span class="o">=</span> <span class="n">MembershipPayment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-payment_date&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">payment</span> <span class="ow">in</span> <span class="n">payments</span><span class="p">:</span>
+            <span class="n">payment_date</span> <span class="o">=</span> <span class="n">payment</span><span class="o">.</span><span class="n">payment_date</span>
+            <span class="k">if</span> <span class="n">is_naive</span><span class="p">(</span><span class="n">payment_date</span><span class="p">):</span>
+                <span class="n">payment_date</span> <span class="o">=</span> <span class="n">make_aware</span><span class="p">(</span><span class="n">payment_date</span><span class="p">)</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">payment</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                <span class="n">payment</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+                <span class="n">payment</span><span class="o">.</span><span class="n">category_type</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Gs. </span><span class="si">{</span><span class="n">payment</span><span class="o">.</span><span class="n">membership_cost</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;TC/TD&quot;</span><span class="p">,</span>  <span class="c1"># Asumiendo que el tipo de pago es siempre TC/TD</span>
+                <span class="n">localtime</span><span class="p">(</span><span class="n">payment</span><span class="o">.</span><span class="n">payment_date</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> %b, %Y %H:%M:%S&quot;</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">[</span><span class="n">ws</span><span class="o">.</span><span class="n">max_row</span><span class="p">]:</span>
+                <span class="n">cell</span><span class="o">.</span><span class="n">border</span> <span class="o">=</span> <span class="n">thin_border</span>
+
+        <span class="c1"># Calcular el total pagado</span>
+        <span class="n">total_paid</span> <span class="o">=</span> <span class="n">payments</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">Sum</span><span class="p">(</span><span class="s1">&#39;membership_cost&#39;</span><span class="p">))[</span><span class="s1">&#39;membership_cost__sum&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span>
+
+        <span class="c1"># Escribir el total pagado</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;Total General Pagado:&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Gs. </span><span class="si">{</span><span class="n">total_paid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">[</span><span class="n">ws</span><span class="o">.</span><span class="n">max_row</span><span class="p">]:</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">border</span> <span class="o">=</span> <span class="n">thin_border</span>
+
+
+        <span class="c1"># Añadir los gráficos al archivo Excel</span>
+        <span class="k">if</span> <span class="n">pie_chart</span><span class="p">:</span>
+            <span class="n">pie_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base64_to_image</span><span class="p">(</span><span class="n">pie_chart</span><span class="p">)</span>
+            <span class="n">ws</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="n">pie_image</span><span class="p">,</span> <span class="s1">&#39;I3&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">bar_chart</span><span class="p">:</span>
+            <span class="n">bar_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base64_to_image</span><span class="p">(</span><span class="n">bar_chart</span><span class="p">)</span>
+            <span class="n">ws</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="n">bar_image</span><span class="p">,</span> <span class="s1">&#39;I40&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">line_chart</span><span class="p">:</span>
+            <span class="n">line_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base64_to_image</span><span class="p">(</span><span class="n">line_chart</span><span class="p">)</span>
+            <span class="n">ws</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="n">line_image</span><span class="p">,</span> <span class="s1">&#39;I70&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Preparar la respuesta HTTP</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&#39;</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;attachment; filename=estadisticas_membresias.xlsx&#39;</span>
+        <span class="n">wb</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+
+<div class="viewcode-block" id="ExportStatisticsView.base64_to_image">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ExportStatisticsView.base64_to_image">[documentos]</a>
+    <span class="k">def</span> <span class="nf">base64_to_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base64_string</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convierte una cadena en base64 a un objeto de imagen compatible con openpyxl.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            base64_string (str): Cadena de imagen codificada en base64.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            openpyxl.drawing.image.Image: Objeto de imagen para insertar en el archivo Excel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">image_data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">base64_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">PILImage</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">image_data</span><span class="p">))</span>
+        <span class="n">image_io</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+        <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">image_io</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;PNG&#39;</span><span class="p">)</span>
+        <span class="n">image_io</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Image</span><span class="p">(</span><span class="n">image_io</span><span class="p">)</span></div>
+</div>
+
+    
+
+<div class="viewcode-block" id="RateBlogView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.RateBlogView">[documentos]</a>
+<span class="k">class</span> <span class="nc">RateBlogView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para gestionar la calificación de un blog por parte de un usuario.</span>
+<span class="sd">    </span>
+<span class="sd">    Permite a un usuario calificar un blog y actualiza las estadísticas de calificaciones correspondientes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RateBlogView.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.RateBlogView.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">blog_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud POST para calificar un blog.</span>
+<span class="sd">        </span>
+<span class="sd">        Obtiene la calificación enviada por el usuario, actualiza la calificación del blog y redirige al detalle del blog.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">            blog_id (int): ID del blog que se va a calificar.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponseRedirect: Redirige a la página de detalle del blog.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">blog</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Blog</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">blog_id</span><span class="p">)</span>
+        <span class="n">rating_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">))</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+
+        <span class="c1"># Obtener la calificación existente del usuario si existe</span>
+        <span class="n">rating</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">Rating</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;rating&#39;</span><span class="p">:</span> <span class="n">rating_value</span><span class="p">})</span>
+
+        <span class="c1"># Descontar la calificación anterior</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">created</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rating</span><span class="o">.</span><span class="n">rating</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">blog</span><span class="o">.</span><span class="n">one_star_ratings</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">rating</span><span class="o">.</span><span class="n">rating</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">blog</span><span class="o">.</span><span class="n">two_star_ratings</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">rating</span><span class="o">.</span><span class="n">rating</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">blog</span><span class="o">.</span><span class="n">three_star_ratings</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="c1"># Actualizar la calificación con la nueva</span>
+        <span class="n">rating</span><span class="o">.</span><span class="n">rating</span> <span class="o">=</span> <span class="n">rating_value</span>
+        <span class="n">rating</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="c1"># Incrementar la nueva calificación</span>
+        <span class="k">if</span> <span class="n">rating_value</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">one_star_ratings</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">rating_value</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">two_star_ratings</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">rating_value</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">blog</span><span class="o">.</span><span class="n">three_star_ratings</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">blog</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;manage:blog_detail&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+</div>
+
+    
+
+
+<div class="viewcode-block" id="ReportBlogView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ReportBlogView">[documentos]</a>
+<span class="k">class</span> <span class="nc">ReportBlogView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para gestionar el reporte de un blog por parte de un usuario.</span>
+<span class="sd">    </span>
+<span class="sd">    Permite a un usuario reportar un blog proporcionando una razón para el reporte.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ReportBlogView.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ReportBlogView.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud POST para reportar un blog.</span>
+<span class="sd">        </span>
+<span class="sd">        Obtiene la razón del reporte enviada por el usuario, crea un nuevo registro de reporte</span>
+<span class="sd">        y redirige al detalle del blog reportado.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">            id (int): ID del blog que se va a reportar.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponseRedirect: Redirige a la página de detalle del blog.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">blog</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Blog</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+        <span class="n">report_reason</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;report_reason&#39;</span><span class="p">)</span>
+        <span class="n">Report</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">report_reason</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;blogs:blog&#39;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">blog</span><span class="o">.</span><span class="n">slug</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ReportedBlogsView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ReportedBlogsView">[documentos]</a>
+<span class="k">class</span> <span class="nc">ReportedBlogsView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para visualizar todos los reportes de blogs.</span>
+<span class="sd">    </span>
+<span class="sd">    Permite a los administradores ver una lista de todos los reportes realizados sobre los blogs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ReportedBlogsView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ReportedBlogsView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para mostrar todos los reportes de blogs.</span>
+<span class="sd">        </span>
+<span class="sd">        Recupera todos los reportes ordenados por fecha de creación descendente y renderiza</span>
+<span class="sd">        la plantilla correspondiente.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: Renderiza la plantilla &#39;blogs/blogs_reportados.html&#39; con los reportes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reports</span> <span class="o">=</span> <span class="n">Report</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created_at&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;blogs/blogs_reportados.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;reports&#39;</span><span class="p">:</span> <span class="n">reports</span><span class="p">})</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="VerificarReporteView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.VerificarReporteView">[documentos]</a>
+<span class="k">class</span> <span class="nc">VerificarReporteView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para verificar un reporte específico de un blog.</span>
+<span class="sd">    </span>
+<span class="sd">    Permite a los administradores revisar los detalles de un reporte y el blog asociado.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="VerificarReporteView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.VerificarReporteView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para verificar un reporte específico.</span>
+<span class="sd">        </span>
+<span class="sd">        Recupera el reporte por su ID y el blog asociado, luego renderiza la plantilla correspondiente.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">            id (int): ID del reporte que se va a verificar.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: Renderiza la plantilla &#39;blogs/verificar_blog_reportado.html&#39; con el blog y el reporte.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Report</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+        <span class="n">blog</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">blog</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;blogs/verificar_blog_reportado.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;blog&#39;</span><span class="p">:</span> <span class="n">blog</span><span class="p">,</span> <span class="s1">&#39;report&#39;</span><span class="p">:</span> <span class="n">report</span><span class="p">})</span></div>
+</div>
+
+
+<div class="viewcode-block" id="ChangeBlogStatusView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ChangeBlogStatusView">[documentos]</a>
+<span class="k">class</span> <span class="nc">ChangeBlogStatusView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para cambiar el estado de un blog.</span>
+<span class="sd">    </span>
+<span class="sd">    Permite actualizar el estado de un blog específico y gestionar las acciones asociadas al cambio de estado.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="ChangeBlogStatusView.dispatch">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ChangeBlogStatusView.dispatch">[documentos]</a>
+    <span class="nd">@method_decorator</span><span class="p">(</span><span class="n">csrf_exempt</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sobrescribe el método dispatch para eximir de la verificación CSRF.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Argumentos posicionales.</span>
+<span class="sd">            **kwargs: Argumentos de palabra clave.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponse: Respuesta de la superclase dispatch.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChangeBlogStatusView.post">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.ChangeBlogStatusView.post">[documentos]</a>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">blog_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud POST para cambiar el estado de un blog.</span>
+<span class="sd">        </span>
+<span class="sd">        Obtiene el nuevo estado desde la solicitud, actualiza el estado del blog, elimina reportes si es necesario</span>
+<span class="sd">        y retorna una respuesta JSON indicando el resultado de la operación.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">            blog_id (int): ID del blog que se va a actualizar.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            JsonResponse: Respuesta JSON indicando éxito o error de la operación.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Request received for blog_id: </span><span class="si">{</span><span class="n">blog_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">blog</span> <span class="o">=</span> <span class="n">Blog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">blog_id</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>  <span class="c1"># Cargar el cuerpo de la solicitud como JSON</span>
+            <span class="n">new_status</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;new_status&#39;</span><span class="p">)</span>  <span class="c1"># Obtener new_status del JSON</span>
+            <span class="n">previous_status</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;previous_status&#39;</span><span class="p">)</span>  <span class="c1"># Obtener estado previo del JSON</span>
+            <span class="n">Comment</span> <span class="o">=</span> <span class="kc">None</span> 
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data received: new_status=</span><span class="si">{</span><span class="n">new_status</span><span class="si">}</span><span class="s2">, previous_status=</span><span class="si">{</span><span class="n">previous_status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">new_status</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;new_status es None&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;new_status es None&#39;</span><span class="p">})</span>
+
+            <span class="n">new_status</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_status</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">new_status</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Estado &quot;En edición&quot;</span>
+                <span class="n">blog</span><span class="o">.</span><span class="n">previous_status</span> <span class="o">=</span> <span class="n">blog</span><span class="o">.</span><span class="n">status</span>  <span class="c1"># Guardar el estado anterior</span>
+                <span class="n">blog</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">new_status</span>
+                <span class="n">blog</span><span class="o">.</span><span class="n">is_published</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Establecer is_published a False</span>
+                
+                <span class="n">blog</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+                <span class="c1"># Eliminar todos los reportes del blog</span>
+                <span class="n">Report</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">blog</span><span class="o">=</span><span class="n">blog</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Blog status updated and reports deleted successfully&quot;</span><span class="p">)</span>
+                
+                <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Estado no válido: </span><span class="si">{</span><span class="n">new_status</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Estado no válido.&#39;</span><span class="p">})</span>
+        <span class="k">except</span> <span class="n">Blog</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Blog no encontrado: </span><span class="si">{</span><span class="n">blog_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Blog no encontrado.&#39;</span><span class="p">})</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error al cambiar el estado del blog: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)})</span></div>
+</div>
+
+
+<div class="viewcode-block" id="IgnorarReporteView">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.IgnorarReporteView">[documentos]</a>
+<span class="k">class</span> <span class="nc">IgnorarReporteView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Vista para ignorar y eliminar un reporte de un blog.</span>
+<span class="sd">    </span>
+<span class="sd">    Permite a los administradores eliminar un reporte específico hecho por un usuario sobre un blog.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="IgnorarReporteView.get">
+<a class="viewcode-back" href="../../blogs_views.html#blogs.views.IgnorarReporteView.get">[documentos]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Maneja la solicitud GET para ignorar y eliminar un reporte de un blog.</span>
+<span class="sd">        </span>
+<span class="sd">        Recupera el reporte por su ID, lo elimina y redirige a la lista de reportes.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            request (HttpRequest): Objeto de la solicitud HTTP.</span>
+<span class="sd">            id (int): ID del reporte que se va a ignorar y eliminar.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            HttpResponseRedirect: Redirige a la página de todos los reportes de blogs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Report</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+        <span class="n">report</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;blogs:blogs_reportados&#39;</span><span class="p">)</span></div>
+</div>
 
 </pre></div>
 

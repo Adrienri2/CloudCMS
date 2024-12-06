@@ -68,7 +68,22 @@
         <canvas id="threeStarChart"></canvas>
       </div>
     </div>
+
   </div>
+  
+  <!-- Nuevo gráfico para Top 5 Blogs con más comentarios -->
+  <div class="row mt-5">
+    <div class="col-md-6 mb-4">
+      <div style="width: 80%; margin: auto;">
+        <canvas id="topCommentsChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-info mt-5">
+    Total de comentarios en la página web: {{ total_comments }}
+  </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -258,6 +273,76 @@ var threeStarChart = new Chart(document.getElementById('threeStarChart').getCont
     }
   },
 
+});
+// Gráfico Top 5 Blogs con más comentarios
+const topCommentsLinks = [
+  {% for blog in top_5_blogs %}
+    "{{ blog.link }}"{% if not forloop.last %}, {% endif %}
+  {% endfor %}
+];
+
+var topCommentsChart = new Chart(document.getElementById('topCommentsChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: [
+      {% for blog in top_5_blogs %}
+        "{{ blog.title }}"{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    ],
+    datasets: [{
+      label: 'Comentarios',
+      data: [
+        {% for blog in top_5_blogs %}
+          {{ blog.posts }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      ],
+      backgroundColor: 'rgba(255, 206, 86, 0.2)',
+      borderColor: 'rgba(255, 206, 86, 1)',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: 'Top 5 Blogs con más comentarios' },
+      datalabels: {
+        color: '#000',
+        formatter: (value, context) => {
+          return value;
+        },
+        font: {
+          weight: 'bold'
+        }
+      }
+    },
+    scales: {
+        x: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            },
+            title: {
+              display: true,
+              text: 'Comentarios'
+            }
+        },
+        y: {
+            title: {
+              display: true,
+              text: 'Título del Blog'
+            }
+        }
+    },
+    onClick: function(evt, elements) {
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const url = topCommentsLinks[index];
+        window.open(url, '_blank');
+      }
+    }
+  },
 });
 </script>
 {% endblock %}

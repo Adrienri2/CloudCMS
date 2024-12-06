@@ -26,6 +26,8 @@ import base64
 from io import BytesIO
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
+import requests
+from django.db.models import Count
 
 """
 Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.
@@ -302,7 +304,25 @@ def favorite_categories(request):
 
 
 class PagoView(View):
-    def get(self, request, category_id ):
+    """
+    Vista para manejar el pago de una categoría específica.
+
+    Método:
+        get(request, category_id):
+            Procesa la solicitud GET para mostrar la página de pago.
+    """
+
+    def get(self, request, category_id):
+        """
+        Maneja la solicitud GET para mostrar el formulario de pago.
+
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+            category_id (int): ID de la categoría para el pago.
+
+        Returns:
+            HttpResponse: Renderiza la plantilla 'blogs/pago.html' con los datos necesarios.
+        """
         category = get_object_or_404(Category, id=category_id)
         datos_tarjeta = None
         if hasattr(request.user, 'datos_tarjeta'):
@@ -312,18 +332,43 @@ class PagoView(View):
                 'fecha_vencimiento': request.user.datos_tarjeta.fecha_vencimiento,
                 'codigo_seguridad': request.user.datos_tarjeta.codigo_seguridad,
             }
-        return render(request, 'blogs/pago.html', {'category': category, 'datos_tarjeta': datos_tarjeta, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
+        return render(request, 'blogs/pago.html', {
+            'category': category,
+            'datos_tarjeta': datos_tarjeta,
+            'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY
+        })
 
 
 class CreateCheckoutSessionView(View):
-    def post(self, request, category_id, *args , **kwargs):
+    """
+    Vista para crear una sesión de pago con Stripe.
+
+    Método:
+        post(request, category_id, *args, **kwargs):
+            Procesa la solicitud POST para crear una sesión de pago.
+    """
+
+    def post(self, request, category_id, *args, **kwargs):
+        """
+        Maneja la solicitud POST para crear una sesión de pago mediante Stripe.
+
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+            category_id (int): ID de la categoría para el pago.
+            *args: Argumentos adicionales.
+            **kwargs: Argumentos de palabra clave adicionales.
+
+        Returns:
+            HttpResponseRedirect: Redirige al usuario a la URL de la sesión de pago.
+            str: Retorna el error en caso de excepción.
+        """
         category = get_object_or_404(Category, id=category_id)
         YOUR_DOMAIN = "http://127.0.0.1:8000/"
         try:
             checkout_session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
                 line_items=[
-                {
+                    {
                         'price_data': {
                             'currency': 'pyg',
                             'product_data': {
@@ -342,25 +387,76 @@ class CreateCheckoutSessionView(View):
             return redirect(checkout_session.url, code=303)
         except Exception as e:
             return str(e)
-        
 
 class SuccessView(View):
+    """
+    Vista para manejar la página de éxito después de un pago exitoso.
+
+    Método:
+        get(request, category_id):
+            Procesa la solicitud GET para mostrar la página de éxito.
+    """
+
     def get(self, request, category_id):
+        """
+        Maneja la solicitud GET para mostrar la página de éxito de pago.
+
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+            category_id (int): ID de la categoría para la cual se realizó el pago.
+
+        Returns:
+            HttpResponse: Renderiza la plantilla 'blogs/success.html' con los datos necesarios.
+        """
         category = get_object_or_404(Category, id=category_id)
         return render(request, 'blogs/success.html', {'category': category})
-    
+
+
 class CancelView(View):
+    """
+    Vista para manejar la cancelación de un pago.
+
+    Método:
+        get(request, category_id):
+            Procesa la solicitud GET para redirigir al usuario tras la cancelación.
+    """
+
     def get(self, request, category_id):
+        """
+        Maneja la solicitud GET para redirigir al usuario después de la cancelación del pago.
+
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+            category_id (int): ID de la categoría para la cual se intentó el pago.
+
+        Returns:
+            HttpResponseRedirect: Redirige al usuario a la página de inicio.
+        """
         category = get_object_or_404(Category, id=category_id)
         return redirect('index')
 
 
 @method_decorator(login_required, name='dispatch')
 class IrACategoriaView(View):
+    """
+    Vista para redirigir al usuario a una categoría específica y gestionar la membresía.
+    """
+
     def get(self, request, category_id):
+        """
+        Maneja la solicitud GET para redirigir al usuario a la categoría seleccionada.
+        Verifica si el usuario ya tiene una membresía para la categoría y actúa en consecuencia.
+
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+            category_id (int): ID de la categoría a la que se redirige.
+
+        Returns:
+            HttpResponseRedirect: Redirige al usuario a la página de la categoría o muestra un mensaje de éxito.
+        """
         category = get_object_or_404(Category, id=category_id)
 
-         # Verificar si el usuario ya tiene una membresía para esta categoría
+        # Verificar si el usuario ya tiene una membresía para esta categoría
         if PaidMembership.objects.filter(user=request.user, category=category).exists():
             messages.success(request, "Ya tienes una membresía para esta categoría. Ve y disfruta de los Artículos.")
            
@@ -384,14 +480,26 @@ class IrACategoriaView(View):
             )
             messages.success(request, "Tu membresía ha sido activada. Ahora puedes disfrutar de los Artículos.")
 
-        # Redirigir a la pagina de la categoria
+        # Redirigir a la página de la categoría
         return redirect('get_category', slug=category.slug)
-    
     
 
 @method_decorator(login_required, name='dispatch')
 class MembershipsView(View):
+    """
+    Vista para gestionar las membresías pagadas del usuario.
+    """
+
     def get(self, request):
+        """
+        Maneja la solicitud GET para mostrar las membresías del usuario con opciones de filtrado.
+
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+
+        Returns:
+            HttpResponse: Renderiza la plantilla 'blogs/memberships.html' con las membresías filtradas y el total pagado.
+        """
         query = request.GET.get('q')
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
@@ -433,10 +541,19 @@ class MembershipsView(View):
     
 
     def post(self, request):
+        """
+        Maneja la solicitud POST para eliminar una membresía del usuario.
+
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+
+        Returns:
+            HttpResponseRedirect: Redirige al usuario a la página de membresías después de la eliminación.
+        """
         membership_id = request.POST.get('membership_id')
         membership = get_object_or_404(PaidMembership, id=membership_id, user=request.user)
         
-         # Eliminar el registro correspondiente en MembershipPayment
+        # Eliminar el registro correspondiente en MembershipPayment
         MembershipPayment.objects.filter(user=request.user, category=membership.category).delete()
         
         # Eliminar la membresía
@@ -447,11 +564,23 @@ class MembershipsView(View):
         total_paid = memberships.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
 
         return redirect('blogs:memberships')
-    
 
 @method_decorator(login_required, name='dispatch')
 class ExportMembershipsView(View):
+    """
+    Vista para exportar las membresías pagadas del usuario a un archivo Excel.
+    """
+
     def get(self, request):
+        """
+        Maneja la solicitud GET para generar y descargar un archivo Excel con las membresías pagadas.
+        
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+
+        Returns:
+            HttpResponse: Respuesta HTTP con el archivo Excel adjunto.
+        """
         query = request.GET.get('q')
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
@@ -501,7 +630,7 @@ class ExportMembershipsView(View):
             ws[f'B{row}'] = value
             row += 1
 
-         # Espacio entre la información del usuario y la tabla de membresías
+        # Espacio entre la información del usuario y la tabla de membresías
         row += 1
 
         ws.append([])
@@ -612,6 +741,15 @@ class AllMembershipPaymentsView(View):
         return render(request, 'blogs/all_membership_payments.html', {'payments': payments, 'total_paid': total_paid})
     
     def post(self, request):
+        """
+        Maneja la solicitud POST para eliminar un pago de membresía.
+
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+
+        Returns:
+            HttpResponseRedirect: Redirige al usuario a la página de todos los pagos de membresías después de la eliminación.
+        """
         payment_id = request.POST.get('payment_id')
         payment = get_object_or_404(MembershipPayment, id=payment_id)
         
@@ -625,14 +763,16 @@ class AllMembershipPaymentsView(View):
         payments = MembershipPayment.objects.all()
         total_paid = payments.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
         
-        
         return redirect('blogs:all_membership_payments')
-    
 
 @method_decorator(login_required, name='dispatch')
 class StatisticsView(TemplateView):
     template_name = 'blogs/estadisticas.html'
     
+    """
+    Vista para mostrar estadísticas de los pagos de membresías.
+    """
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
@@ -644,6 +784,18 @@ class StatisticsView(TemplateView):
         # Aplicar el filtro en los pagos
         payments = filter_payments(query, start_date, end_date)
 
+        """
+        Maneja la solicitud GET para generar y mostrar estadísticas de pagos de membresías.
+
+        Obtiene datos agregados de las membresías pagadas por categoría y por fecha,
+        prepara los datos para visualización en gráficos y renderiza la plantilla correspondiente.
+
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+
+        Returns:
+            HttpResponse: Renderiza la plantilla 'blogs/estadisticas.html' con los datos de estadísticas.
+        """
         # Obtener los datos de las categorías y los totales comprados por cada categoría
         categories = payments.values('category__category').annotate(total=Sum('membership_cost')).order_by('-total')
 
@@ -682,7 +834,23 @@ class StatisticsView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class ExportStatisticsView(View):
+    """
+    Vista para exportar las estadísticas de membresías a un archivo Excel.
+    """
+
     def post(self, request):
+        """
+        Maneja la solicitud POST para generar y descargar un archivo Excel con las estadísticas de membresías.
+        
+        Obtiene los gráficos desde el formulario, crea un archivo Excel con los datos de las membresías pagadas,
+        añade los gráficos al archivo y prepara la respuesta HTTP para la descarga.
+        
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+        
+        Returns:
+            HttpResponse: Respuesta HTTP con el archivo Excel adjunto.
+        """
         # Obtener los datos de los gráficos desde el formulario
         pie_chart = request.POST.get('pie_chart')
         bar_chart = request.POST.get('bar_chart')
@@ -757,32 +925,28 @@ class ExportStatisticsView(View):
             for cell in ws[ws.max_row]:
                 cell.border = thin_border
 
-         # Calcular el total pagado
+        # Calcular el total pagado
         total_paid = payments.aggregate(Sum('membership_cost'))['membership_cost__sum'] or 0
 
-         # Escribir el total pagado
+        # Escribir el total pagado
         ws.append([])
         ws.append(["Total General Pagado:", f"Gs. {total_paid}"])
         for cell in ws[ws.max_row]:
             cell.border = thin_border
-        
 
 
         # Añadir los gráficos al archivo Excel
         if pie_chart:
             pie_image = self.base64_to_image(pie_chart)
             ws.add_image(pie_image, 'I3')
-            
 
         if bar_chart:
             bar_image = self.base64_to_image(bar_chart)
             ws.add_image(bar_image, 'I40')
-            
 
         if line_chart:
             line_image = self.base64_to_image(line_chart)
             ws.add_image(line_image, 'I70')
-            
 
         # Preparar la respuesta HTTP
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -791,6 +955,15 @@ class ExportStatisticsView(View):
         return response
 
     def base64_to_image(self, base64_string):
+        """
+        Convierte una cadena en base64 a un objeto de imagen compatible con openpyxl.
+        
+        Args:
+            base64_string (str): Cadena de imagen codificada en base64.
+        
+        Returns:
+            openpyxl.drawing.image.Image: Objeto de imagen para insertar en el archivo Excel.
+        """
         image_data = base64.b64decode(base64_string.split(',')[1])
         image = PILImage.open(BytesIO(image_data))
         image_io = BytesIO()
@@ -800,7 +973,25 @@ class ExportStatisticsView(View):
     
 
 class RateBlogView(View):
+    """
+    Vista para gestionar la calificación de un blog por parte de un usuario.
+    
+    Permite a un usuario calificar un blog y actualiza las estadísticas de calificaciones correspondientes.
+    """
+
     def post(self, request, blog_id):
+        """
+        Maneja la solicitud POST para calificar un blog.
+        
+        Obtiene la calificación enviada por el usuario, actualiza la calificación del blog y redirige al detalle del blog.
+        
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+            blog_id (int): ID del blog que se va a calificar.
+        
+        Returns:
+            HttpResponseRedirect: Redirige a la página de detalle del blog.
+        """
         blog = get_object_or_404(Blog, id=blog_id)
         rating_value = int(request.POST.get('rating'))
         user = request.user
@@ -835,33 +1026,115 @@ class RateBlogView(View):
 
 
 class ReportBlogView(View):
+    """
+    Vista para gestionar el reporte de un blog por parte de un usuario.
+    
+    Permite a un usuario reportar un blog proporcionando una razón para el reporte.
+    """
+
     def post(self, request, id):
+        """
+        Maneja la solicitud POST para reportar un blog.
+        
+        Obtiene la razón del reporte enviada por el usuario, crea un nuevo registro de reporte
+        y redirige al detalle del blog reportado.
+        
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+            id (int): ID del blog que se va a reportar.
+        
+        Returns:
+            HttpResponseRedirect: Redirige a la página de detalle del blog.
+        """
         blog = get_object_or_404(Blog, id=id)
         report_reason = request.POST.get('report_reason')
         Report.objects.create(blog=blog, user=request.user, reason=report_reason)
         return redirect('blogs:blog', slug=blog.slug)
-    
+
 
 class ReportedBlogsView(View):
+    """
+    Vista para visualizar todos los reportes de blogs.
+    
+    Permite a los administradores ver una lista de todos los reportes realizados sobre los blogs.
+    """
+
     def get(self, request):
+        """
+        Maneja la solicitud GET para mostrar todos los reportes de blogs.
+        
+        Recupera todos los reportes ordenados por fecha de creación descendente y renderiza
+        la plantilla correspondiente.
+        
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+        
+        Returns:
+            HttpResponse: Renderiza la plantilla 'blogs/blogs_reportados.html' con los reportes.
+        """
         reports = Report.objects.all().order_by('-created_at')
         return render(request, 'blogs/blogs_reportados.html', {'reports': reports})
-    
 
 
 class VerificarReporteView(View):
+    """
+    Vista para verificar un reporte específico de un blog.
+    
+    Permite a los administradores revisar los detalles de un reporte y el blog asociado.
+    """
+
     def get(self, request, id):
+        """
+        Maneja la solicitud GET para verificar un reporte específico.
+        
+        Recupera el reporte por su ID y el blog asociado, luego renderiza la plantilla correspondiente.
+        
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+            id (int): ID del reporte que se va a verificar.
+        
+        Returns:
+            HttpResponse: Renderiza la plantilla 'blogs/verificar_blog_reportado.html' con el blog y el reporte.
+        """
         report = get_object_or_404(Report, id=id)
         blog = report.blog
         return render(request, 'blogs/verificar_blog_reportado.html', {'blog': blog, 'report': report})
 
-
 class ChangeBlogStatusView(View):
+    """
+    Vista para cambiar el estado de un blog.
+    
+    Permite actualizar el estado de un blog específico y gestionar las acciones asociadas al cambio de estado.
+    """
+    
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
+        """
+        Sobrescribe el método dispatch para eximir de la verificación CSRF.
+        
+        Args:
+            *args: Argumentos posicionales.
+            **kwargs: Argumentos de palabra clave.
+        
+        Returns:
+            HttpResponse: Respuesta de la superclase dispatch.
+        """
         return super().dispatch(*args, **kwargs)
 
     def post(self, request, blog_id):
+        """
+        Maneja la solicitud POST para cambiar el estado de un blog.
+        
+        Obtiene el nuevo estado desde la solicitud, actualiza el estado del blog, elimina reportes si es necesario
+        y retorna una respuesta JSON indicando el resultado de la operación.
+        
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+            blog_id (int): ID del blog que se va a actualizar.
+        
+        Returns:
+            JsonResponse: Respuesta JSON indicando éxito o error de la operación.
+        """
         try:
             print(f"Request received for blog_id: {blog_id}")
             blog = Blog.objects.get(id=blog_id)
@@ -900,9 +1173,26 @@ class ChangeBlogStatusView(View):
             print(f"Error al cambiar el estado del blog: {str(e)}")
             return JsonResponse({'success': False, 'error': str(e)})
 
-
 class IgnorarReporteView(View):
+    """
+    Vista para ignorar y eliminar un reporte de un blog.
+    
+    Permite a los administradores eliminar un reporte específico hecho por un usuario sobre un blog.
+    """
+    
     def get(self, request, id):
+        """
+        Maneja la solicitud GET para ignorar y eliminar un reporte de un blog.
+        
+        Recupera el reporte por su ID, lo elimina y redirige a la lista de reportes.
+        
+        Args:
+            request (HttpRequest): Objeto de la solicitud HTTP.
+            id (int): ID del reporte que se va a ignorar y eliminar.
+        
+        Returns:
+            HttpResponseRedirect: Redirige a la página de todos los reportes de blogs.
+        """
         report = get_object_or_404(Report, id=id)
         report.delete()
         return redirect('blogs:blogs_reportados')
@@ -911,12 +1201,25 @@ class IgnorarReporteView(View):
 
 @method_decorator(login_required, name='dispatch')
 class BlogStatisticsView(TemplateView):
+    """
+    Vista para mostrar estadísticas detalladas de los blogs.
+
+    Esta vista permite a los usuarios autenticados ver estadísticas como la cantidad de compartidos,
+    calificaciones, visualizaciones y comentarios de los blogs. Además, integra datos de la API de Disqus
+    para obtener información sobre los comentarios y presenta los blogs más comentados.
+
+    Atributos:
+        template_name (str): Nombre de la plantilla utilizada para renderizar la vista.
+
+    Métodos:
+        get_context_data(**kwargs):
+            Obtiene y procesa los datos necesarios para mostrar las estadísticas en la plantilla.
+    """
     template_name = 'blogs/blog_statistics.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
- 
         # Obtener los parámetros de filtro desde el request
         author_id = self.request.GET.get('author')
         category_id = self.request.GET.get('category')
@@ -939,12 +1242,10 @@ class BlogStatisticsView(TemplateView):
         # Obtener los datos de los blogs y los totales de compartidos, calificaciones y visualizaciones
         blog_data = blogs.values('title', 'share_count', 'one_star_ratings', 'two_star_ratings', 'three_star_ratings', 'views')
         
-        
-         # Filtrar los datos para cada gráfico
+        # Filtrar los datos para cada gráfico
         one_star_data = [blog for blog in blog_data if blog['one_star_ratings'] > 0]
         two_star_data = [blog for blog in blog_data if blog['two_star_ratings'] > 0]
         three_star_data = [blog for blog in blog_data if blog['three_star_ratings'] > 0]
-
 
         # Preparar los datos para el gráfico de barras
         labels = [blog['title'] for blog in blog_data]
@@ -975,5 +1276,49 @@ class BlogStatisticsView(TemplateView):
         # Pasar los autores y categorías al contexto para los filtros
         context['authors'] = User.objects.filter(role='author')
         context['categories'] = Category.objects.all()
+
+        # Configuración de Disqus
+        DISQUS_SHORTNAME = 'cloudcms'
+        DISQUS_API_KEY = 'CspBCzjGe9AExwI2rz5CsJu43fsw1vExTAfLI09s1W1F0ll5O6Td4G8BAd97TJ7B'
+        DISQUS_API_URL = 'https://disqus.com/api/3.0/threads/list.json'
+
+        total_comments = 0
+        top_5_blogs = []
+
+        try:
+            # Parámetros para la API de Disqus
+            params = {
+                'forum': DISQUS_SHORTNAME,
+                'api_key': DISQUS_API_KEY,
+                'limit': 100,
+                'include': 'open'
+            }
+
+            # Obtener datos de la API
+            response = requests.get(DISQUS_API_URL, params=params)
+            response.raise_for_status()
+            data = response.json()
+            threads = data.get('response', [])
+
+            # Procesar datos de Disqus
+            blogs_data = []
+            for thread in threads:
+                if not thread.get('isDeleted', False):  # Excluir hilos eliminados
+                    title = thread.get('title', 'Título no disponible')
+                    posts = thread.get('posts', 0)
+                    link = thread.get('link', 'Enlace no disponible')
+                    total_comments += posts  # Acumular comentarios
+                    blogs_data.append({'title': title, 'posts': posts, 'link': link})
+
+            # Ordenar por número de comentarios y obtener los 5 más comentados
+            top_5_blogs = sorted(blogs_data, key=lambda x: x['posts'], reverse=True)[:5]
+
+        except Exception as e:
+            total_comments = 'Error al obtener los comentarios'
+            top_5_blogs = []
+
+        # Pasar los datos al contexto
+        context['total_comments'] = total_comments
+        context['top_5_blogs'] = top_5_blogs
 
         return context
