@@ -31,9 +31,15 @@
   <div class="col-md-12 text-center">
     <form id="exportForm" method="post" action="{% url 'blogs:export_statistics' %}">
       {% csrf_token %}
+
       <input type="hidden" name="pie_chart" id="pieChartInput">
       <input type="hidden" name="bar_chart" id="barChartInput">
       <input type="hidden" name="line_chart" id="lineChartInput">
+      <!-- Enviar los filtros aplicados -->
+      <input type="hidden" name="q" value="{{ request.GET.q }}">
+      <input type="hidden" name="start_date" value="{{ request.GET.start_date }}">
+      <input type="hidden" name="end_date" value="{{ request.GET.end_date }}">
+      
       <button type="submit" class="btn btn-primary">Exportar Análisis</button>
     </form>
   </div>

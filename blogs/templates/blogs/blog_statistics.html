@@ -1,0 +1,348 @@
+{% extends 'layout.html' %}
+
+{% block title %}Estadísticas de Blogs{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+  <h2>Estadísticas de Blogs</h2>
+  <form method="get" class="mb-4">
+    <div class="row">
+      <div class="col-md-4">
+        <label for="author">Autor</label>
+        <select id="author" name="author" class="form-control">
+          <option value="">Todos</option>
+          {% for user in authors %}
+          <option value="{{ user.id }}" {% if request.GET.author == user.id|stringformat:"s" %}selected{% endif %}>{{ user.username }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="category">Categoría</label>
+        <select id="category" name="category" class="form-control">
+          <option value="">Todas</option>
+          {% for category in categories %}
+          <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.category }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="start_date">Fecha de Publicación Desde</label>
+        <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request.GET.start_date }}">
+      </div>
+      <div class="col-md-4">
+        <label for="end_date">Fecha de Publicación Hasta</label>
+        <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request.GET.end_date }}">
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div style="width: 80%; margin: auto;">
+        <canvas id="shareCountChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div style="width: 80%; margin: auto;">
+        <canvas id="viewsChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-md-4 mb-4">
+      <div style="width: 80%; margin: auto;">
+        <canvas id="oneStarChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div style="width: 80%; margin: auto;">
+        <canvas id="twoStarChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div style="width: 80%; margin: auto;">
+        <canvas id="threeStarChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+  
+  <!-- Nuevo gráfico para Top 5 Blogs con más comentarios -->
+  <div class="row mt-5">
+    <div class="col-md-6 mb-4">
+      <div style="width: 80%; margin: auto;">
+        <canvas id="topCommentsChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-info mt-5">
+    Total de comentarios en la página web: {{ total_comments }}
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script>
+  var shareCountChart = new Chart(document.getElementById('shareCountChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+        labels: {{ labels|safe }},
+        datasets: [{
+            label: 'Veces Compartido',
+            data: {{ share_counts|safe }},
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'Blogs más compartidos' },
+            datalabels: {
+              color: '#000',
+              formatter: (value, context) => {
+                return value;
+              },
+              font: {
+                weight: 'bold'
+              }
+            } 
+        },
+        scales: {
+            x: {
+                display: false // Ocultar etiquetas del eje X
+            }
+        }
+    },
+  
+});
+
+var viewsChart = new Chart(document.getElementById('viewsChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: {{ labels|safe }},
+    datasets: [{
+        label: 'Visualizaciones',
+        data: {{ views|safe }},
+        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Visualizaciones de los Blogs' },
+      datalabels: {
+        color: '#000',
+        formatter: (value, context) => {
+          return value;
+        },
+        font: {
+          weight: 'bold'
+        }
+      }
+    },
+    scales: {
+        x: {
+            display: false // Ocultar etiquetas del eje X
+        }
+    }
+  },
+  
+});
+
+var oneStarChart = new Chart(document.getElementById('oneStarChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: {{ labels|safe }},
+    datasets: [
+      {
+        label: '1 Estrella',
+        data: {{ one_star_ratings|safe }},
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Blogs calificados con 1 Estrella' },
+      datalabels: {
+        color: '#000',
+        formatter: (value, context) => {
+          return value;
+        },
+        font: {
+          weight: 'bold'
+        }
+      }
+    },
+    scales: {
+        x: {
+            display: false // Ocultar etiquetas del eje X
+        }
+    }
+  },
+
+});
+
+var twoStarChart = new Chart(document.getElementById('twoStarChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: {{ labels|safe }},
+    datasets: [
+      {
+        label: '2 Estrellas',
+        data: {{ two_star_ratings|safe }},
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Blogs calificados con 2 Estrellas' },
+      datalabels: {
+        color: '#000',
+        formatter: (value, context) => {
+          return value;
+        },
+        font: {
+          weight: 'bold'
+        }
+      }
+    },
+    scales: {
+        x: {
+            display: false // Ocultar etiquetas del eje X
+        }
+    }
+  },
+  
+});
+
+var threeStarChart = new Chart(document.getElementById('threeStarChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: {{ labels|safe }},
+    datasets: [
+      {
+        label: '3 Estrellas',
+        data: {{ three_star_ratings|safe }},
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Blogs calificados con 3 Estrellas' },
+      datalabels: {
+        color: '#000',
+        formatter: (value, context) => {
+          return value;
+        },
+        font: {
+          weight: 'bold'
+        }
+      }
+    },
+    scales: {
+        x: {
+            display: false // Ocultar etiquetas del eje X
+        }
+    }
+  },
+
+});
+// Gráfico Top 5 Blogs con más comentarios
+const topCommentsLinks = [
+  {% for blog in top_5_blogs %}
+    "{{ blog.link }}"{% if not forloop.last %}, {% endif %}
+  {% endfor %}
+];
+
+var topCommentsChart = new Chart(document.getElementById('topCommentsChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: [
+      {% for blog in top_5_blogs %}
+        "{{ blog.title }}"{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    ],
+    datasets: [{
+      label: 'Comentarios',
+      data: [
+        {% for blog in top_5_blogs %}
+          {{ blog.posts }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      ],
+      backgroundColor: 'rgba(255, 206, 86, 0.2)',
+      borderColor: 'rgba(255, 206, 86, 1)',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: 'Top 5 Blogs con más comentarios' },
+      datalabels: {
+        color: '#000',
+        formatter: (value, context) => {
+          return value;
+        },
+        font: {
+          weight: 'bold'
+        }
+      }
+    },
+    scales: {
+        x: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            },
+            title: {
+              display: true,
+              text: 'Comentarios'
+            }
+        },
+        y: {
+            title: {
+              display: true,
+              text: 'Título del Blog'
+            }
+        }
+    },
+    onClick: function(evt, elements) {
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const url = topCommentsLinks[index];
+        window.open(url, '_blank');
+      }
+    }
+  },
+});
+</script>
+{% endblock %}

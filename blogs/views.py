@@ -1,5 +1,6 @@
 import json
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -25,6 +26,8 @@ import base64
 from io import BytesIO
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
+import requests
+from django.db.models import Count
 
 """
 Este módulo define las vistas para la aplicación de blogs, incluyendo la visualización de blogs, creación de comentarios, respuestas, marcadores y likes.
@@ -123,6 +126,26 @@ class CreateLike(View):
             messages.success(request, "Me gusta este blog")
         return redirect('blogs:blog', slug=blog.slug)
     
+@method_decorator(csrf_exempt, name='dispatch')
+class IncrementShareCountView(View):
+    def post(self, request, blog_id):
+        try:
+            print(f"Solicitud recibida para incrementar el contador de compartidos para blog_id: {blog_id}")
+            blog = Blog.objects.get(id=blog_id)
+            print(f"Blog encontrado: {blog.title} con share_count actual: {blog.share_count}")
+            blog.share_count = F('share_count') + 1
+            blog.save()
+            blog.refresh_from_db()  # Refrescar el objeto para obtener el valor actualizado
+            print(f"Nuevo share_count para blog_id {blog_id}: {blog.share_count}")
+            return JsonResponse({'success': True})
+        except Blog.DoesNotExist:
+            print(f"Blog con id {blog_id} no encontrado")
+            return JsonResponse({'success': False, 'error': 'Blog no encontrado'})
+        except Exception as e:
+            print(f"Ocurrió un error: {str(e)}")
+            return JsonResponse({'success': False, 'error': str(e)})
+        
+
 class CreateComment(View):
     """
     Vista para crear un comentario en un blog.
@@ -834,6 +857,14 @@ class ExportStatisticsView(View):
         line_chart = request.POST.get('line_chart')
 
 
+        # Obtener los filtros de `query`, `start_date`, y `end_date` desde el request
+        query = request.POST.get('q')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+
+        # Filtrar los pagos utilizando la función `filter_payments`
+        payments = filter_payments(query, start_date, end_date)
+
         # Crear un nuevo libro de trabajo
         wb = openpyxl.Workbook()
         ws = wb.active
@@ -878,7 +909,6 @@ class ExportStatisticsView(View):
             cell.border = thin_border
 
         # Escribir los datos de todas las membresías pagadas
-        payments = MembershipPayment.objects.all().order_by('-payment_date')
         for payment in payments:
             payment_date = payment.payment_date
             if is_naive(payment_date):
@@ -1166,3 +1196,129 @@ class IgnorarReporteView(View):
         report = get_object_or_404(Report, id=id)
         report.delete()
         return redirect('blogs:blogs_reportados')
+    
+
+
+@method_decorator(login_required, name='dispatch')
+class BlogStatisticsView(TemplateView):
+    """
+    Vista para mostrar estadísticas detalladas de los blogs.
+
+    Esta vista permite a los usuarios autenticados ver estadísticas como la cantidad de compartidos,
+    calificaciones, visualizaciones y comentarios de los blogs. Además, integra datos de la API de Disqus
+    para obtener información sobre los comentarios y presenta los blogs más comentados.
+
+    Atributos:
+        template_name (str): Nombre de la plantilla utilizada para renderizar la vista.
+
+    Métodos:
+        get_context_data(**kwargs):
+            Obtiene y procesa los datos necesarios para mostrar las estadísticas en la plantilla.
+    """
+    template_name = 'blogs/blog_statistics.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Obtener los parámetros de filtro desde el request
+        author_id = self.request.GET.get('author')
+        category_id = self.request.GET.get('category')
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        
+        # Filtrar los blogs
+        blogs = Blog.objects.filter(is_active=True, is_published=True).order_by('-published_on')
+        if author_id:
+            blogs = blogs.filter(creator_id=author_id)
+        if category_id:
+            blogs = blogs.filter(category_id=category_id)
+        if start_date:
+            start_date = make_aware(datetime.strptime(start_date, '%Y-%m-%d'))
+            blogs = blogs.filter(published_on__gte=start_date)
+        if end_date:
+            end_date = make_aware(datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)) - timedelta(microseconds=1)
+            blogs = blogs.filter(published_on__lte=end_date)
+        
+        # Obtener los datos de los blogs y los totales de compartidos, calificaciones y visualizaciones
+        blog_data = blogs.values('title', 'share_count', 'one_star_ratings', 'two_star_ratings', 'three_star_ratings', 'views')
+        
+        # Filtrar los datos para cada gráfico
+        one_star_data = [blog for blog in blog_data if blog['one_star_ratings'] > 0]
+        two_star_data = [blog for blog in blog_data if blog['two_star_ratings'] > 0]
+        three_star_data = [blog for blog in blog_data if blog['three_star_ratings'] > 0]
+
+        # Preparar los datos para el gráfico de barras
+        labels = [blog['title'] for blog in blog_data]
+        share_counts = [blog['share_count'] for blog in blog_data]
+
+        one_star_labels = [blog['title'] for blog in one_star_data]
+        one_star_ratings = [blog['one_star_ratings'] for blog in blog_data]
+
+        two_star_labels = [blog['title'] for blog in two_star_data]
+        two_star_ratings = [blog['two_star_ratings'] for blog in blog_data]
+
+        three_star_labels = [blog['title'] for blog in three_star_data]
+        three_star_ratings = [blog['three_star_ratings'] for blog in blog_data]
+
+        views = [blog['views'] for blog in blog_data]
+
+        # Pasar los datos al contexto
+        context['labels'] = json.dumps(labels)
+        context['share_counts'] = json.dumps(share_counts)
+        context['one_star_labels'] = json.dumps(one_star_labels)
+        context['one_star_ratings'] = json.dumps(one_star_ratings)
+        context['two_star_labels'] = json.dumps(two_star_labels)
+        context['two_star_ratings'] = json.dumps(two_star_ratings)
+        context['three_star_labels'] = json.dumps(three_star_labels)
+        context['three_star_ratings'] = json.dumps(three_star_ratings)
+        context['views'] = json.dumps(views)
+        
+        # Pasar los autores y categorías al contexto para los filtros
+        context['authors'] = User.objects.filter(role='author')
+        context['categories'] = Category.objects.all()
+
+        # Configuración de Disqus
+        DISQUS_SHORTNAME = 'cloudcms'
+        DISQUS_API_KEY = 'CspBCzjGe9AExwI2rz5CsJu43fsw1vExTAfLI09s1W1F0ll5O6Td4G8BAd97TJ7B'
+        DISQUS_API_URL = 'https://disqus.com/api/3.0/threads/list.json'
+
+        total_comments = 0
+        top_5_blogs = []
+
+        try:
+            # Parámetros para la API de Disqus
+            params = {
+                'forum': DISQUS_SHORTNAME,
+                'api_key': DISQUS_API_KEY,
+                'limit': 100,
+                'include': 'open'
+            }
+
+            # Obtener datos de la API
+            response = requests.get(DISQUS_API_URL, params=params)
+            response.raise_for_status()
+            data = response.json()
+            threads = data.get('response', [])
+
+            # Procesar datos de Disqus
+            blogs_data = []
+            for thread in threads:
+                if not thread.get('isDeleted', False):  # Excluir hilos eliminados
+                    title = thread.get('title', 'Título no disponible')
+                    posts = thread.get('posts', 0)
+                    link = thread.get('link', 'Enlace no disponible')
+                    total_comments += posts  # Acumular comentarios
+                    blogs_data.append({'title': title, 'posts': posts, 'link': link})
+
+            # Ordenar por número de comentarios y obtener los 5 más comentados
+            top_5_blogs = sorted(blogs_data, key=lambda x: x['posts'], reverse=True)[:5]
+
+        except Exception as e:
+            total_comments = 'Error al obtener los comentarios'
+            top_5_blogs = []
+
+        # Pasar los datos al contexto
+        context['total_comments'] = total_comments
+        context['top_5_blogs'] = top_5_blogs
+
+        return context

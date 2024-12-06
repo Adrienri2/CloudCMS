@@ -66,7 +66,7 @@
       </form>
     </div>
     <div class="col">
-      <button class="text-primary float-end" style="background:none!important;border:none;padding:0!important;" data-bs-toggle="modal" data-bs-target="#shareModal">
+      <button id="shareButton" class="text-primary float-end" style="background:none!important;border:none;padding:0!important;" data-bs-toggle="modal" data-bs-target="#shareModal">
         <i class="bi bi-box-arrow-up"></i>
       </button>
     </div>
@@ -131,23 +131,19 @@
 
   <div id="disqus_thread"></div>
   <script>
-      /**
-      *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-      /*
       var disqus_config = function () {
-      this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-      this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+          this.page.url = "{{ request.build_absolute_uri }}";  // URL completa de la página
+          this.page.identifier = "{{ blog.id }}"; // Identificador único del blog
+          this.page.title = "{{ blog.title }}"; // Título del blog
       };
-      */
-      (function() { // DON'T EDIT BELOW THIS LINE
-      var d = document, s = d.createElement('script');
-      s.src = 'https://cloudcms.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
+      (function() { // NO EDITAR BAJO ESTA LÍNEA
+          var d = document, s = d.createElement('script');
+          s.src = 'https://cloudcms.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
       })();
   </script>
-  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comentarios proporcionados por Disqus.</a></noscript>
 </div>
 
 <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
@@ -281,14 +277,35 @@
 </script>
 
 <script>
-  function copyUrl() {
-    const url = "{{ request.build_absolute_uri }}";
-    navigator.clipboard.writeText(url).then(function() {
-      alert('URL copiada al portapapeles');
-    }, function(err) {
-      console.error('Error al copiar la URL: ', err);
+ 
+  document.addEventListener('DOMContentLoaded', function() {
+    const shareButton = document.getElementById('shareButton');
+    shareButton.addEventListener('click', function() {
+      incrementShareCount({{ blog.id }});
+    });
+  });
+
+  function incrementShareCount(blogId) {
+    fetch(`/blogs/increment_share_count/${blogId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}',
+         
+      },
+      body: JSON.stringify({ 'blog_id': blogId })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.success) {
+        console.error('Error incrementando el contador de compartidos:', data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error incrementando el contador de compartidos:', error);
     });
   }
+
   
   </script>
 

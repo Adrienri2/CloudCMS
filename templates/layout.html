@@ -230,6 +230,14 @@
                   </li>
                   <li>
                     {% if request.user.role == 'admin' %}
+                    <a class="dropdown-item" href="{% url 'blogs:blog_statistics' %}">
+                      <i class="bi bi-bar-chart"></i>
+                      Estadísticas de Blogs
+                    </a>
+                    {% endif %}
+                  </li>
+                  <li>
+                    {% if request.user.role == 'admin' %}
                     <a class="dropdown-item" href="{% url 'manage:comment' %}">
                       <i class="bi bi-chat-left-text"></i>
                       Comentarios

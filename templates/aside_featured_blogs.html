@@ -71,7 +71,11 @@
     <ul class="list-group">
       {% for blog in featured_blogs %}
         <li class="list-group-item">
-          <a href="{% url 'manage:blog_detail' blog.id %}"><i class="fas fa-star"></i> {{ blog.title }}</a>
+          {% if request.user.is_authenticated or blog.category.subcategory_type == "publica" %}
+            <a href="{% url 'blogs:blog' blog.slug %}"><i class="fas fa-star"></i> {{ blog.title }}</a>
+          {% else %}
+            <a href="#"><i class="fas fa-star"></i> {{ blog.title }}</a>
+          {% endif %}
           <div class="blog-meta">
             <span>Categoria: {{ blog.category.category }}</span><br>
             <span>Autor: {{ blog.creator.username }}</span>
